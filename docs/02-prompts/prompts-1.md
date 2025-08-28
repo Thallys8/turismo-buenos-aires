@@ -28,11 +28,11 @@ Un analisis detallado de que implementa normalmente en su diseño una pagina de 
 
 ### Captura de pantalla del resultado obtenido:
 
-![Primer captura de resultado obtenido](https://i.ibb.co/yB5WwyzQ/resultado1.jpg)
+![Primer captura de resultado](https://i.ibb.co/yB5WwyzQ/resultado1.jpg)
 
-![Segunda captura de resultado obtenido](https://i.ibb.co/qLYgcFhH/resultado2.jpg)
+![Segunda captura de resultado](https://i.ibb.co/qLYgcFhH/resultado2.jpg)
 
-![Tercera captura de resultado obtenido](https://i.ibb.co/sJCkkRPX/resultado3.jpg)
+![Tercera captura de resultado](https://i.ibb.co/sJCkkRPX/resultado3.jpg)
 
 ### Correcciones manuales realizadas:
 

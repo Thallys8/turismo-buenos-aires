@@ -15,8 +15,8 @@ Cuales son las practicas y elementos mas importantes para poder lograr un buen S
 Un detalle de lo que debemos tener en cuenta al crear el sitio web para un mejor SEO y Accesibilidad
 
 ### Captura de pantalla del resultado obtenido:
-![Captura de prompt solicitado](https://i.ibb.co/8D0f7xd2/resultado11.jpg)
-![Captura de prompt solicitado](https://i.ibb.co/G4QwdHcC/resultado21.jpg)
+![Primer captura de resultado](https://i.ibb.co/8D0f7xd2/resultado11.jpg)
+![Segunda captura de resultado](https://i.ibb.co/G4QwdHcC/resultado21.jpg)
 
 ### Correcciones manuales realizadas:
 - Se agregaron muy breves descripciones y/o traducciones de los terminos desconocidos

@@ -18,7 +18,7 @@ Se espera un detalle de las corrientes de diseño actuales que mas uso tengan y 
 
 ### Captura de pantalla del resultado obtenido:
 ![Primer captura de resultado](https://i.ibb.co/Y4Hs0d5S/resultado4num1.jpg)
-![Primer captura de resultado](https://i.ibb.co/8ggk59TG/resultado4num2.jpg)
+![Segunda captura de resultado](https://i.ibb.co/8ggk59TG/resultado4num2.jpg)
 
 
 ### Correcciones manuales realizadas:

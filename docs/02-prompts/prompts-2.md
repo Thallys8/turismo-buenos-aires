@@ -20,8 +20,8 @@ Se esperaba una guia o recomendacion funcional de como implementar correctamente
 
 
 ### Captura de pantalla del resultado obtenido:
-![Primer captura de resultado obtenido](https://i.ibb.co/bgP8CRPr/resultado12.jpg)
-![Primer captura de resultado obtenido](https://i.ibb.co/DPGj7JBX/resultado22.jpg)
+![Primer captura de resultado](https://i.ibb.co/bgP8CRPr/resultado12.jpg)
+![Segunda captura de resultado](https://i.ibb.co/DPGj7JBX/resultado22.jpg)
 
 ### Correcciones manuales realizadas:
 - No se vio necesario hacer correcciones en lo propuesto
