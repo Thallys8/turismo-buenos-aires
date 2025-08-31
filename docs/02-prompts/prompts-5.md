@@ -17,10 +17,11 @@ cumpla mejor con las mejores practicas de SEO y accesibilidad
 ### Resultado esperado:
 Se espera recibir recomendaciones y puntualizar errores o lugares donde se pueda mejorar la implementacion del html en index.html 
 
+### Resultado obtenido:
+Se obtuvo consejos puntuales en relacion a como mejorar la implementacion del index.html
+
 ### Captura de pantalla del resultado obtenido:
 ![Primer captura de resultado](https://i.ibb.co/CKQTHm6Q/resultado5num1.jpg)
-
-
 
 ### Correcciones manuales realizadas:
 - Se revisaron lo propuesto para poder aplicarlo a nuestro html

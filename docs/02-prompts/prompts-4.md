@@ -16,10 +16,12 @@
 ### Resultado esperado:
 Se espera un detalle de las corrientes de diseño actuales que mas uso tengan y una breve explicacion de que beneficios pueden llegar aportar al aplicarlas
 
+### Resultado obtenido:
+Se obtuvo un listado y descripcion de las corrientes actuales de diseño web y un breve detalle de porque utilizarlas
+
 ### Captura de pantalla del resultado obtenido:
 ![Primer captura de resultado](https://i.ibb.co/Y4Hs0d5S/resultado4num1.jpg)
 ![Segunda captura de resultado](https://i.ibb.co/8ggk59TG/resultado4num2.jpg)
-
 
 ### Correcciones manuales realizadas:
 - Se agregaron links de ejemplos de proponentes del estilo de diseño para cada ejemplo presentado

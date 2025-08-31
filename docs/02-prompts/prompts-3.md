@@ -14,6 +14,9 @@ Cuales son las practicas y elementos mas importantes para poder lograr un buen S
 ### Resultado esperado:
 Un detalle de lo que debemos tener en cuenta al crear el sitio web para un mejor SEO y Accesibilidad
 
+### Resultado obtenido:
+Se obtuvo una lista de las practicas mas importantes para aplicar mejor un buen SEO y accesibilidad
+
 ### Captura de pantalla del resultado obtenido:
 ![Primer captura de resultado](https://i.ibb.co/8D0f7xd2/resultado11.jpg)
 ![Segunda captura de resultado](https://i.ibb.co/G4QwdHcC/resultado21.jpg)

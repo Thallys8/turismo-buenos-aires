@@ -18,6 +18,8 @@ eficiente e intuitiva y evitar que pase desapercibida?
 ### Resultado esperado:
 Se esperaba una guia o recomendacion funcional de como implementar correctamente un sistema que separe las oportunidades turisticas diurnas y nocturnas
 
+### Resultado obtenido:
+Se obtuvo una propuesta practica de como se podria implementar la funcionalidad deseada
 
 ### Captura de pantalla del resultado obtenido:
 ![Primer captura de resultado](https://i.ibb.co/bgP8CRPr/resultado12.jpg)

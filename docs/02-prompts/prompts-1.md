@@ -23,8 +23,10 @@ Que es lo mas destacable y que no puede faltar en el diseño de funciones y el c
 ![Captura de prompt solicitado](https://i.ibb.co/s9Xhxyrj/prompt.jpg)
 
 ### Resultado esperado:
-
 Un analisis detallado de que implementa normalmente en su diseño una pagina de turismo
+
+### Resultado obtenido:
+Se obtuvo un analisis claro sobre las caracteristicas destacadas de los ejemplos presentados
 
 ### Captura de pantalla del resultado obtenido:
 
