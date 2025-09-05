@@ -13,6 +13,11 @@ PR: [#2](https://github.com/Thallys8/turismo-buenos-aires/pull/2) @Tomig02 (Desa
 PR: [#3](https://github.com/Thallys8/turismo-buenos-aires/pull/3) @Tomig02 (Desarrollador Frontend + Especialista en IA y Prompt Engineering)
 - [feature/disenador-ux] Se creó el directorio docs\01-mockup y se agregó la versión 1 del mockup.  
 PR: [#5](https://github.com/Thallys8/turismo-buenos-aires/pull/5#issue-3388425716). THallys8 (Coordinador y DevOps + Documentador y Diseñador UX).
+- [feature/coordinador] Agregando Tamplete de pull request.  
+PR: [#12].(feature/coordinador-setup-repo-and-pages). THallys8 (Coordinador y DevOps + Documentador y Diseñador UX).  
+
 ### Changed 
+- [feature/disenador-ux] Actualizando Readme, agregando la ubicación de changelog.  
+PR: [#8](feature/doc-ux-add-readme-and-mockup). THallys8 (Coordinador y DevOps + Documentador y Diseñador UX).  
 
 ### Fixed
