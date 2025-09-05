@@ -20,6 +20,6 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 ## 👥 Integrantes <!-- PENDIENTE (Cargar matricula) -->
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
-| Thallys Gomes Leandro  | Matricula   | Thallys8  | Coordinador / DevOps + Documentador / Diseñador UX | 
+| Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Documentador / Diseñador UX | 
 | Guardo Tomas Agostino  | 153835  | Tomig02  | Desarrollador Frontend +  Especialista en IA y Prompt Engineering  | 
 
