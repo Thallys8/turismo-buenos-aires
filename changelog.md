@@ -21,8 +21,3 @@ PR: [#12].(feature/coordinador-setup-repo-and-pages). THallys8 (Coordinador y De
 PR: [#8](feature/doc-ux-add-readme-and-mockup). THallys8 (Coordinador y DevOps + Documentador y Diseñador UX).  
 
 ### Fixed
-- [feature/coordinador-setup-repo-and-pages] Se corrigio las carpetas de las .github templates.  
-PR: [#15](https://github.com/Thallys8/turismo-buenos-aires/pull/15) @Tomig02 (Desarrollador Frontend + Especialista en IA y Prompt Engineering)
-
-## [Contingencias]
-- [abandono-de-compañero] 27/08 Lucas tuvo que abandonar la carrera por falta de tiempo
