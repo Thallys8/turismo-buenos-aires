@@ -11,13 +11,13 @@ Este proyecto se trata de una pagina web interactiva dedicada a la promocion tur
 ## 🎯 Objetivo del entregable
 En esta entrega se busca completar la estructuracion del git y index.html inicial, preparar un mockup inicial del diseño, Registrar al menos 5 prompts de IA y lograr un README y CHANGELOG que detallen nuestro trabajo
 
-## 📂 Documentacion <!-- PENDIENTE (Link Mockup y Changelog) -->
+## 📂 Documentacion
 - [Mockup](https://www.figma.com/design/zM85pnRTZeivKJJcz2ikc9/Turismo-Buenos-Aires?node-id=0-1&p=f&t=iUcnCjVoltQsJJyO-0) 
 - [Indice de prompts](./docs/02-prompts/prompts.md)
 - [Changelog](changelog.md) 
 
 
-## 👥 Integrantes <!-- PENDIENTE (Cargar matricula) -->
+## 👥 Integrantes
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
 | Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Documentador / Diseñador UX | 
