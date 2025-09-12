@@ -32,7 +32,7 @@ PR: [#8](https://github.com/Thallys8/turismo-buenos-aires/pull/8). THallys8 (Coo
 - [feature/coordinador-setup-repo-and-pages] Se corrigio las carpetas de las .github templates.  
 PR: [#15](https://github.com/Thallys8/turismo-buenos-aires/pull/15) @Tomig02 (Desarrollador Frontend + Especialista en IA y Prompt Engineering)
 - [feature/correcciones-actividad-obligatoria-1] Se aplico las correcciones solicitadas sobre el readme y changelog.  
-PR: [#15](https://github.com/Thallys8/turismo-buenos-aires/pull/24) @Tomig02 (Desarrollador Frontend + Especialista en IA y Prompt Engineering)
+PR: [#24](https://github.com/Thallys8/turismo-buenos-aires/pull/24) @Tomig02 (Desarrollador Frontend + Especialista en IA y Prompt Engineering)
 
 ## [Contingencias]
 - [abandono-de-compañero] 27/08 Lucas tuvo que abandonar la carrera por falta de tiempo
