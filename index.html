@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/components.css">
+
     <title>InfoBaires</title>
 </head>
 <body>
@@ -33,16 +37,20 @@
         <span>V Descubrilo V</span>
     </header>
 
-    <section>
-        <img src="https://i.ibb.co/6RvN1WXx/foto-dia.png" alt="foto-dia">
-        <button>Actividades nocturnas</button>
+    <section aria-label="selector de actividades diurnas o nocturnas" class="seleccion-dia-noche">
+        <div>
+            <img src="https://i.ibb.co/6RvN1WXx/foto-dia.png" alt="foto-dia">
+            <button>Actividades nocturnas</button>
+        </div>
         
-        <img src="https://i.ibb.co/7JvQ6wMw/foto-noche.png" alt="foto-noche">
-        <button>Actividades diurnas</button>
+        <div>
+            <img src="https://i.ibb.co/7JvQ6wMw/foto-noche.png" alt="foto-noche">
+            <button>Actividades diurnas</button>
+        </div>
     </section>
 
     <!-- Se activa al seleccionar las opcion de actividades diurnas -->
-    <section  aria-label="actividades para hacer durante el dia" id="actividad-diurna"> <!-- Orden horizontal, pequeño margen entre elementos -->
+    <section class="lista-actividades" aria-label="actividades para hacer durante el dia" id="actividad-diurna"> <!-- Orden horizontal, pequeño margen entre elementos -->
         <h2>actividades de dia</h2>
 
         <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
@@ -57,8 +65,8 @@
             <img src="https://i.ibb.co/MyLFyLHq/rosedales.png" alt="foto aerea de los rosedales">
         </article>
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
+        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+            
 
             <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
                 <hgroup>
@@ -68,7 +76,7 @@
                 <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
             </div>
             
-            
+            <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
         </article>  
 
         <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
@@ -83,9 +91,7 @@
             <img src="https://i.ibb.co/KzQp375p/japones.png" alt="foto de los jardines japones">
         </article>  
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <img src="https://i.ibb.co/TMKYL4VY/laboca.png" alt="barrio de la boca">
-            
+        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
             <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
                 <hgroup>
                     <h3>barrio de La Boca</h3>
@@ -93,12 +99,14 @@
                 </hgroup>
                 <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
             </div>
+
+            <img src="https://i.ibb.co/TMKYL4VY/laboca.png" alt="barrio de la boca">
         </article>      
     </section>
 
 
     <!-- Se activa al seleccionar las opcion de actividades nocturnas -->
-    <section aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
+    <section class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
         <h2>actividades de noche</h2>
 
         <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
@@ -114,9 +122,7 @@
             <img src="https://i.ibb.co/HpHg41Wq/bar.png" alt="interior del bar rey de copas">
         </article>
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño" border="0">
-
+        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
             <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
                 <hgroup>
                     <h3>Tango Porteño</h3>
@@ -125,7 +131,7 @@
                 <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
             </div>
             
-            
+            <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño">
         </article>  
 
         <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
@@ -140,9 +146,7 @@
             <img src="https://i.ibb.co/8gxbT1Lf/flotante.png" alt="foto del casino flotante">
         </article>  
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
-            
+        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
             <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
                 <hgroup>
                     <h3>Puerto Madero</h3>
@@ -150,9 +154,12 @@
                 </hgroup>
                 <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
             </div>
+
+            <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
         </article> 
     </section>
 
+    <!--
     <section aria-label="formulario selector de actividades">
         <hgroup>
             <h2>Buscador de actividades</h2>
@@ -164,7 +171,7 @@
             <div>
                 <label for="id-dias-semana">¿que dia?</label> <br/>
 
-                <select name="dias-semana" id="id-dias-semana" multiple> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
+                <select name="dias-semana" id="id-dias-semana" multiple> <-!-- Estilizado como botones, cambio de color segun el seleccionado --<>
                     <option value="1">Lunes</option>
                     <option value="2">Martes</option>
                     <option value="3">Miercoles</option>
@@ -178,7 +185,7 @@
             <div>
                 <label for="id-horario">¿Cuando te gusta salir?</label> <br/>
 
-                <select name="horario" id="id-horario"> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
+                <select name="horario" id="id-horario"> <-!-- Estilizado como botones, cambio de color segun el seleccionado --<>
                     <option value="1">Me gusta salir de noche</option>
                     <option value="2">Me gusta salir de dia</option>
                 </select>
@@ -210,8 +217,8 @@
 
             <button type="submit">Busquemos</button>
         </form>
-    </section>
-
+    </section> -->
+    
     <footer>
 
     </footer>

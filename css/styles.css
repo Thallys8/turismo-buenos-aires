@@ -1,0 +1,106 @@
+
+*{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+nav{
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 2.5em;
+    padding: 0.25em 2em;
+
+    background-color: aqua;
+}
+nav img{
+    margin-right: 5em;
+}
+nav a {
+    text-decoration: none;
+}
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+
+    width: 25em;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+header img {
+    margin-bottom: 1em;
+}
+header hgroup, header p{
+    text-align: center;
+}
+header hgroup * {
+    margin: 0;
+}
+
+.seleccion-dia-noche{
+    margin-top: 2em;
+    margin-bottom: 5em;
+    display: flex;
+    justify-content: space-around;
+}
+.seleccion-dia-noche img{
+    width: 20vw;
+    margin-bottom: 0.5em;
+}
+.seleccion-dia-noche div{
+    display: flex;
+    flex-direction: column;
+}
+.seleccion-dia-noche button{
+    align-self: center;
+    width: 80%;
+    padding: 1em;
+
+    border-radius: 0.7em;
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+.tarjeta{
+    justify-self: center;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+
+    width: 60%;
+
+    margin-bottom: 3em;
+}
+.tarjeta div{
+    margin-right: 2em;
+    margin-left: 2em;
+
+    width: 35%;
+}
+.tarjeta img{
+    object-fit: cover;
+    width: 55%;
+    height: 38vh;
+}
+.reversa{
+    flex-direction: row-reverse;
+}
+
+.lista-actividades h2{
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 2em;
+    margin-top: 4em;
+
+    text-transform: uppercase;
+}
