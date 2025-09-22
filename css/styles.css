@@ -2,20 +2,23 @@
 *{
     box-sizing: border-box;
 }
-body{
+html, body{
     margin: 0;
     padding: 0;
 }
 nav{
+    width: 100%;
     display: flex;
     align-items: center;
+
+    min-height: 4em;
 
     margin-bottom: 2.5em;
     padding: 0.25em 2em;
 
     background-color: aqua;
 }
-nav img{
+nav img.logo{
     margin-right: 5em;
 }
 nav a {
@@ -28,6 +31,20 @@ nav ul {
 
     width: 25em;
 }
+nav .burger{
+    width: 3em;
+    height: 3em;
+
+    background-color: transparent;
+    border: none;
+
+    margin-left: auto;
+    margin-right: none;
+}
+nav .burger img{
+    width: 100%;
+    height: 80%;
+}
 
 header{
     display: flex;
@@ -37,6 +54,7 @@ header{
 }
 header img {
     margin-bottom: 1em;
+    max-width: 100%;
 }
 header hgroup, header p{
     text-align: center;
@@ -46,14 +64,17 @@ header hgroup * {
 }
 
 .seleccion-dia-noche{
-    margin-top: 2em;
-    margin-bottom: 5em;
+    margin: 2em 1em 0em 1em;
     display: flex;
     justify-content: space-around;
 }
 .seleccion-dia-noche img{
-    width: 20vw;
+    align-self: center;
+    width: 90%;
+    height: 60%;
     margin-bottom: 0.5em;
+
+    object-fit: cover;
 }
 .seleccion-dia-noche div{
     display: flex;
@@ -64,6 +85,7 @@ header hgroup * {
     width: 80%;
     padding: 1em;
 
+    border: none;
     border-radius: 0.7em;
 
     text-align: center;
@@ -77,9 +99,13 @@ header hgroup * {
     justify-content: space-between;
     margin: auto;
 
-    width: 60%;
+    width: 90%;
 
     margin-bottom: 3em;
+
+    overflow: hidden;
+    border-radius: 2em;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .tarjeta div{
     margin-right: 2em;
@@ -103,4 +129,65 @@ header hgroup * {
     margin-top: 4em;
 
     text-transform: uppercase;
+}
+
+.seleccion-actividades{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 1em;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+.seleccion-actividades hgroup p{
+    justify-self: center;
+    width: 50%;
+}
+.selector-avanzado{
+    display: flex;
+    align-items: center;
+    width: 70%;
+}
+.selector-avanzado form{
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.selector-avanzado form div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.selector-avanzado form label{
+    margin-right: 1em;
+}
+
+.selector-avanzado form div#id-dias-semana{
+    flex-direction: row;
+    margin-bottom: 0;
+}
+.selector-avanzado .check-dia{
+    width: 6.5em;
+    flex-direction: row;
+    padding: 0.25em;
+    background: blue;
+    border-radius: 0.2em;
+    margin-right: 0.15em;
+    margin-bottom: 0;
+}
+.selector-avanzado .check-dia input{
+    margin-right: 0.4em;
+}
+.selector-avanzado select{
+    padding: 0.5em;
+    text-align: center;
+}
+.selector-avanzado button{
+    width: 20%;
+    align-self: center;
 }

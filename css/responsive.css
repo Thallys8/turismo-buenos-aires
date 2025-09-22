@@ -1,0 +1,73 @@
+@media only screen and (max-width: 660px) {
+    .burger{
+        display: block;
+    }
+    .links-nav{
+        display: none;
+    }
+    .seleccion-dia-noche{
+        flex-direction: column;
+    }
+    .seleccion-dia-noche div{
+        width: 80%;
+
+        margin: auto;
+        margin-bottom: 2em;
+    }
+
+    .tarjeta{
+        flex-direction: column;
+    }
+    .tarjeta div{
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
+    .tarjeta img{
+        width: 100%;
+    }
+
+    header p{
+        width: 80%;
+    }
+
+    .seleccion-actividades{
+        flex-direction: column;
+    }
+    .seleccion-actividades hgroup p{
+        width: 100%;
+    }
+    .seleccion-actividades .selector-avanzado{
+        width: 95%;
+    }
+    .seleccion-actividades .selector-avanzado form div{
+        flex-direction: column;
+    }
+    #id-dias-semana{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #id-dias-semana .check-dia{
+        margin: 0.1em;
+        flex-direction: row;
+    }
+}
+@media only screen and (min-width: 660px){
+    .burger{
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1080px) 
+{
+    .actividades-opciones{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .tarjeta{
+        width: 45%;
+        margin: auto;
+        margin-bottom: 2em;
+    }
+}

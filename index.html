@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c8622524a9.js" crossorigin="anonymous"></script> <!-- iconos fontawesome-->
 
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/components.css">
-
+    <link rel="stylesheet" href="./css/responsive.css">
     <title>InfoBaires</title>
 </head>
 <body>
     <nav style="display: flex;"> <!-- CSS: barra de navegacion, alineacion horizontal, centrado vertical, espaciado igual entre elementos -->
-        <a href="" aria-label="Logo, volver a la pagina principal"> <img src="" alt="logo del sitio web" srcset=""> </a>
+        <a href="" aria-label="Logo, volver a la pagina principal"> <img class="logo" src="" alt="logo del sitio web" srcset=""> </a>
 
-        <ul> <!-- activarian un menu de opciones en focus/hover, por ej. Que hacer >>> actividades diurnas, actividades nocturnas, etc. -->
+        <ul class="links-nav"> <!-- activarian un menu de opciones en focus/hover, por ej. Que hacer >>> actividades diurnas, actividades nocturnas, etc. -->
             <li> <button href="" aria-label="Que hacer, actividades en la ciudad">Que hacer</button> </li>
             <li> <button href="" aria-label="Consejos, para una mejor estadia">Consejos</button> </li>
             <li> <button href="" aria-label="Conoce mas sobre la ciudad">Informacion</button> </li>
             <li> <button href="" aria-label="Contactos utiles">Contacto</button> </li>
         </ul>
+
+        <button aria-label="menu de opciones para telefonos" class="burger">
+            <img src="https://i.ibb.co/wrdJJtDb/bars-solid-full.png" alt="bars-solid-full">
+        </button>
     </nav>
 
     <header> <!-- CSS: imagen de ancho completo, 100% del VH, texto centrado -->
@@ -49,59 +54,142 @@
         </div>
     </section>
 
+    <section class="seleccion-actividades">
+        <hgroup>
+            <h2>Buscador de actividades</h2>
+            <p>¿Estas buscando algo para hacer? Dejanos recomendarte lo que Buenos Aires tiene para ofrecerte</p>
+        </hgroup>
+        
+        <div class="selector-avanzado">
+            <form action="">
+                <div>
+                    <label for="id-dias-semana">¿que dia?</label> <br/>
+                    
+                    <div id="id-dias-semana">
+                        <div class="check-dia">
+                            <input type="checkbox" id="lunes" />
+                            <label for="lunes">Lunes</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="martes" />
+                            <label for="martes">Martes</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="miercoles" />
+                            <label for="miercoles">Miercoles</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="jueves" />
+                            <label for="jueves">Jueves</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="viernes" />
+                            <label for="viernes">Viernes</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="sabado" />
+                            <label for="sabado">Sabado</label>
+                        </div>
+                        <div class="check-dia">
+                            <input type="checkbox" id="domingo" />
+                            <label for="domingo">Domingo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="id-horario">¿Cuando te gusta salir?</label> <br/>
+
+                    <select name="horario" id="id-horario"> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
+                        <option value="1">Me gusta salir de noche</option>
+                        <option value="2">Me gusta salir de dia</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="id-tipo-actividad">¿Que te gusta hacer?</label> <br/>
+
+                    <select name="tipo-actividad" id="id-tipo-actividad">
+                        <option value="1">Deporte</option>
+                        <option value="2">Fiesta</option>
+                        <option value="3">Cultura</option>
+                        <option value="4">Relajacion</option>
+                        <option value="5">Cualquiera</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="id-tipo-grupo">¿Con quienes?</label> <br/>
+
+                    <select name="tipo-grupo" id="id-tipo-grupo">
+                        <option value="1">Familia</option>
+                        <option value="2">Amigos</option>
+                        <option value="3">Pareja</option>
+                        <option value="4">Desconocidos</option>
+                        <option value="5">Cualquiera</option>
+                    </select>
+                </div>
+
+                <button type="submit">Busquemos</button>
+            </form>
+        </div>
+    </section>
     <!-- Se activa al seleccionar las opcion de actividades diurnas -->
     <section class="lista-actividades" aria-label="actividades para hacer durante el dia" id="actividad-diurna"> <!-- Orden horizontal, pequeño margen entre elementos -->
         <h2>actividades de dia</h2>
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Rosedal de palermo</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
+        <div class="actividades-opciones">
+            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Rosedal de palermo</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+                
+                <img src="https://i.ibb.co/MyLFyLHq/rosedales.png" alt="foto aerea de los rosedales">
+            </article>
+
+            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                
+
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Jardín Botánico de Buenos Aires</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+                
+                <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
+            </article>  
+
+            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Jardín Japonés de Buenos Aires</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+                
+                <img src="https://i.ibb.co/KzQp375p/japones.png" alt="foto de los jardines japones">
+            </article>  
+
+            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>barrio de La Boca</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+
+                <img src="https://i.ibb.co/TMKYL4VY/laboca.png" alt="barrio de la boca">
+            </article>  
+        </div>
             
-            <img src="https://i.ibb.co/MyLFyLHq/rosedales.png" alt="foto aerea de los rosedales">
-        </article>
-
-        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            
-
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Jardín Botánico de Buenos Aires</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
-            
-            <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
-        </article>  
-
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Jardín Japonés de Buenos Aires</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
-            
-            <img src="https://i.ibb.co/KzQp375p/japones.png" alt="foto de los jardines japones">
-        </article>  
-
-        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>barrio de La Boca</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
-
-            <img src="https://i.ibb.co/TMKYL4VY/laboca.png" alt="barrio de la boca">
-        </article>      
     </section>
 
 
@@ -109,115 +197,57 @@
     <section class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
         <h2>actividades de noche</h2>
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Rey de Copas Bar</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
-            
-            
-            <img src="https://i.ibb.co/HpHg41Wq/bar.png" alt="interior del bar rey de copas">
-        </article>
+        <div class="actividades-opciones">
+            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Rey de Copas Bar</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+                
+                
+                <img src="https://i.ibb.co/HpHg41Wq/bar.png" alt="interior del bar rey de copas">
+            </article>
 
-        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Tango Porteño</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
-            
-            <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño">
-        </article>  
+            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Tango Porteño</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
+                
+                <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño">
+            </article>  
 
-        <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>El casino flotante</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
+            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>El casino flotante</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
 
-            <img src="https://i.ibb.co/8gxbT1Lf/flotante.png" alt="foto del casino flotante">
-        </article>  
+                <img src="https://i.ibb.co/8gxbT1Lf/flotante.png" alt="foto del casino flotante">
+            </article>  
 
-        <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-            <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
-                <hgroup>
-                    <h3>Puerto Madero</h3>
-                    <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                </hgroup>
-                <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-            </div>
+            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                    <hgroup>
+                        <h3>Puerto Madero</h3>
+                        <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
+                    </hgroup>
+                    <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                </div>
 
-            <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
-        </article> 
+                <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
+            </article> 
+        </div>
     </section>
-
-    <!--
-    <section aria-label="formulario selector de actividades">
-        <hgroup>
-            <h2>Buscador de actividades</h2>
-            <p>¿Estas buscando algo para hacer? Dejanos recomendarte lo que Buenos Aires tiene para ofrecerte</p>
-        </hgroup>
-        
-
-        <form action="">
-            <div>
-                <label for="id-dias-semana">¿que dia?</label> <br/>
-
-                <select name="dias-semana" id="id-dias-semana" multiple> <-!-- Estilizado como botones, cambio de color segun el seleccionado --<>
-                    <option value="1">Lunes</option>
-                    <option value="2">Martes</option>
-                    <option value="3">Miercoles</option>
-                    <option value="4">Jueves</option>
-                    <option value="5">Viernes</option>
-                    <option value="6">Sabado</option>
-                    <option value="7">Domingo</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="id-horario">¿Cuando te gusta salir?</label> <br/>
-
-                <select name="horario" id="id-horario"> <-!-- Estilizado como botones, cambio de color segun el seleccionado --<>
-                    <option value="1">Me gusta salir de noche</option>
-                    <option value="2">Me gusta salir de dia</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="id-tipo-actividad">¿Que te gusta hacer?</label> <br/>
-
-                <select name="tipo-actividad" id="id-tipo-actividad">
-                    <option value="1">Deporte</option>
-                    <option value="2">Fiesta</option>
-                    <option value="3">Cultura</option>
-                    <option value="4">Relajacion</option>
-                    <option value="5">Cualquiera</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="id-tipo-grupo">¿Con quienes?</label> <br/>
-
-                <select name="tipo-grupo" id="id-tipo-grupo">
-                    <option value="1">Familia</option>
-                    <option value="2">Amigos</option>
-                    <option value="3">Pareja</option>
-                    <option value="4">Desconocidos</option>
-                    <option value="5">Cualquiera</option>
-                </select>
-            </div>
-
-            <button type="submit">Busquemos</button>
-        </form>
-    </section> -->
     
     <footer>
 
