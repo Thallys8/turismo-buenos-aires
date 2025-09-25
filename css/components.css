@@ -1,0 +1,44 @@
+
+button{
+    padding: 1em;
+    background-color: darkgrey;
+
+    border-radius: 0.7em;
+    border: 1px solid darkgray;
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+button:hover{
+    cursor: pointer;
+    background-color: rgb(131, 131, 131);
+}
+button:active{
+    border: 1px solid black;
+}
+
+nav .burger{
+    width: 2.5em;
+    height: 2.5em;
+    padding: 0;
+
+    background-color: transparent;
+    border: none;
+
+    margin-left: auto;
+    margin-right: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav .burger:hover{
+    cursor: pointer;
+    background-color: #0000000c;
+}
+nav .burger img{
+    margin: auto;
+    width: 100%;
+    height: 80%;
+}

@@ -11,15 +11,24 @@ nav{
     display: flex;
     align-items: center;
 
-    min-height: 4em;
+    height: 5em;
 
-    margin-bottom: 2.5em;
-    padding: 0.25em 2em;
+    padding: 0.5em 3em;
 
-    background-color: aqua;
+    background-color: whitesmoke;
+}
+nav button{
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: black;
+}
+nav button:hover{
+    color: rgb(70, 70, 70);
 }
 nav img.logo{
     margin-right: 5em;
+    height: 3em;
 }
 nav a {
     text-decoration: none;
@@ -29,21 +38,7 @@ nav ul {
     justify-content: space-between;
     list-style: none;
 
-    width: 25em;
-}
-nav .burger{
-    width: 3em;
-    height: 3em;
-
-    background-color: transparent;
-    border: none;
-
-    margin-left: auto;
-    margin-right: none;
-}
-nav .burger img{
-    width: 100%;
-    height: 80%;
+    width: 40em;
 }
 
 header{
@@ -51,8 +46,12 @@ header{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    height: 100vh;
 }
 header img {
+    width: 100%;
+    height: 100%;
     margin-bottom: 1em;
     max-width: 100%;
 }
@@ -83,14 +82,6 @@ header hgroup * {
 .seleccion-dia-noche button{
     align-self: center;
     width: 80%;
-    padding: 1em;
-
-    border: none;
-    border-radius: 0.7em;
-
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 1em;
 }
 
 .tarjeta{
