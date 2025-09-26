@@ -7,7 +7,7 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ## [Unreleased]
 
 ### Added  
-- [feature/desarrollador-frontend-estilos-css] Se genero el codigo css para estilos y responsive
+- [feature/desarrollador-frontend-estilos-css] Se genero el codigo css para estilos y responsive  
 PR: [#28](https://github.com/Thallys8/turismo-buenos-aires/pull/28) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 ### Changed 
@@ -15,6 +15,8 @@ PR: [#28](https://github.com/Thallys8/turismo-buenos-aires/pull/28) @Tomig02 (De
 PR: [#27](https://github.com/Thallys8/turismo-buenos-aires/pull/27) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 ### Fixed
+- [feature/desarrollador-frontend-estilos-css] correcciones al codigo css y comentarios mas correcciones en el html  
+PR: [#28](https://github.com/Thallys8/turismo-buenos-aires/pull/29) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 
 ## [Release Actividad Obligatoria Nº 1] - 2025-09-05
