@@ -4,10 +4,10 @@
 
 button{
     padding: 1em;
-    background-color: darkgrey;
+    background-color: #88EE9E;
 
     border-radius: 0.7em;
-    border: 1px solid darkgray;
+    border: 1px solid #88EE9E;
 
     text-align: center;
     text-transform: uppercase;
@@ -15,7 +15,7 @@ button{
 }
 button:hover{
     cursor: pointer;
-    background-color: rgb(131, 131, 131);
+    background-color: #92faa9;
 }
 button:active{
     border: 1px solid black;
@@ -57,7 +57,7 @@ nav .burger img{
 }
 .seleccion-dia-noche img{
     align-self: center;
-    width: 90%;
+    width: 80%;
     height: 60%;
     margin-bottom: 0.5em;
 
@@ -69,7 +69,7 @@ nav .burger img{
 }
 .seleccion-dia-noche button{
     align-self: center;
-    width: 80%;
+    width: 88%;
 }
 
 
@@ -118,10 +118,13 @@ nav .burger img{
 /* ----------- DISEÑO PARA SISTEMA SELECTOR DE ACTIVIDADES ----------- */
 
 .seleccion-actividades{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 1em;
-    width: 100%;
+    padding: 3em 1em;
+    width: 80%;
+    margin: 0 auto;
+
+    background-color: #eeeeee;
+    border-radius: 0.1em;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
     display: flex;
     justify-content: space-around;
@@ -135,7 +138,8 @@ nav .burger img{
 .selector-avanzado{
     display: flex;
     align-items: center;
-    width: 70%;
+    justify-content: center;
+    width: 65%;
 }
 .selector-avanzado form{
     height: 100%;
@@ -147,6 +151,7 @@ nav .burger img{
 .selector-avanzado form div{
     display: flex;
     align-items: center;
+
     margin-bottom: 1em;
 }
 .selector-avanzado form label{
@@ -159,10 +164,13 @@ nav .burger img{
     margin-bottom: 0;
 }
 .selector-avanzado .check-dia{
-    width: 6.5em;
+    width: auto;
+    display: inline-block;
+
     flex-direction: row;
     padding: 0.25em;
-    background: blue;
+    background: #CAF1FA;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 0.2em;
     margin-right: 0.15em;
     margin-bottom: 0;
@@ -173,10 +181,20 @@ nav .burger img{
 
 /* demas selects y el boton de submit */
 .selector-avanzado select{
+    width: 15em;
+
     padding: 0.5em;
     text-align: center;
+    
+    margin-left: auto;
+
+    border-radius: 1em;
+    background-color: #CAF1FA;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border: none;
 }
 .selector-avanzado button{
+    min-width: fit-content;
     width: 20%;
     align-self: center;
 }

@@ -31,30 +31,42 @@
         width: 80%;
     }
 
+    #id-dias-semana{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+@media only screen and (min-width: 660px){
+    .burger{
+        display: none;
+    }
+}
+@media only screen and (max-width: 1080px){
     .seleccion-actividades{
         flex-direction: column;
     }
+    
     .seleccion-actividades hgroup p{
         width: 100%;
     }
-    .seleccion-actividades .selector-avanzado{
+    .selector-avanzado{
         width: 95%;
     }
-    .seleccion-actividades .selector-avanzado form div{
-        flex-direction: column;
+    .selector-avanzado form{
+        width: 100%;
     }
-    #id-dias-semana{
-        flex-wrap: wrap;
+    .selector-avanzado form div{
+        width: 100%;
+        flex-direction: column;
         justify-content: center;
     }
     #id-dias-semana .check-dia{
         margin: 0.1em;
         flex-direction: row;
     }
-}
-@media only screen and (min-width: 660px){
-    .burger{
-        display: none;
+
+    .selector-avanzado select{
+        margin: 0;
     }
 }
 
