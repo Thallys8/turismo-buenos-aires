@@ -10,10 +10,10 @@
     <title>InfoBaires</title>
 </head>
 <body>
-    <nav style="display: flex;"> <!-- CSS: barra de navegacion, alineacion horizontal, centrado vertical, espaciado igual entre elementos -->
+    <nav style="display: flex;">
         <a href="" aria-label="Logo, volver a la pagina principal"> <img src="https://i.ibb.co/N24JzynZ/buenos-aires-ciudad-seeklogo.png" alt="buenos-aires-ciudad-seeklogo" class="logo"> </a>
 
-        <ul class="links-nav"> <!-- activarian un menu de opciones en focus/hover, por ej. Que hacer >>> actividades diurnas, actividades nocturnas, etc. -->
+        <ul class="links-nav"> <!-- JS: activarian un menu de opciones en focus/hover, por ej. Que hacer >>> actividades diurnas, actividades nocturnas, etc. -->
             <li> <button href="" aria-label="Que hacer, actividades en la ciudad">Que hacer</button> </li>
             <li> <button href="" aria-label="Consejos, para una mejor estadia">Consejos</button> </li>
             <li> <button href="" aria-label="Conoce mas sobre la ciudad">Informacion</button> </li>
@@ -25,7 +25,7 @@
         </button>
     </nav>
 
-    <header> <!-- CSS: imagen de ancho completo, 100% del VH, texto centrado -->
+    <header>
         <img src="https://i.ibb.co/fdngNVrw/fotoprincipal.png" alt="imagen de buenos aires como fondo promocional">
 
         <hgroup>
@@ -42,6 +42,8 @@
     </header>
 
     <section aria-label="selector de actividades diurnas o nocturnas" class="seleccion-dia-noche">
+        <!-- JS: Al hacer click en una de estas opciones, cambiaria el diseño/color segun corresponda (dia/noche)-->
+
         <div>
             <img src="https://i.ibb.co/6RvN1WXx/foto-dia.png" alt="foto-dia">
             <button>Actividades nocturnas</button>
@@ -54,6 +56,9 @@
     </section>
 
     <section class="seleccion-actividades">
+        <!-- JS: Segun que opciones elija el usuario, se le presentara las actividades o lugares correspondientes-->
+        <!-- Por ejemplo: Una actividad deportiva familiar diurna para el fin de semana -->
+
         <hgroup>
             <h2>Buscador de actividades</h2>
             <p>¿Estas buscando algo para hacer? Dejanos recomendarte lo que Buenos Aires tiene para ofrecerte</p>
@@ -133,13 +138,14 @@
             </form>
         </div>
     </section>
-    <!-- Se activa al seleccionar las opcion de actividades diurnas -->
-    <section class="lista-actividades" aria-label="actividades para hacer durante el dia" id="actividad-diurna"> <!-- Orden horizontal, pequeño margen entre elementos -->
+
+    <!-- JS: Se activa al seleccionar las opcion de actividades diurnas -->
+    <section class="lista-actividades" aria-label="actividades para hacer durante el dia" id="actividad-diurna">
         <h2>actividades de dia</h2>
 
         <div class="actividades-opciones">
-            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta">
+                <div>
                     <hgroup>
                         <h3>Rosedal de palermo</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -150,10 +156,10 @@
                 <img src="https://i.ibb.co/MyLFyLHq/rosedales.png" alt="foto aerea de los rosedales">
             </article>
 
-            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
+            <article class="tarjeta reversa">
                 
 
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+                <div>
                     <hgroup>
                         <h3>Jardín Botánico de Buenos Aires</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -164,8 +170,8 @@
                 <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
             </article>  
 
-            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta">
+                <div>
                     <hgroup>
                         <h3>Jardín Japonés de Buenos Aires</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -176,8 +182,8 @@
                 <img src="https://i.ibb.co/KzQp375p/japones.png" alt="foto de los jardines japones">
             </article>  
 
-            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta reversa">
+                <div>
                     <hgroup>
                         <h3>barrio de La Boca</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -192,13 +198,13 @@
     </section>
 
 
-    <!-- Se activa al seleccionar las opcion de actividades nocturnas -->
+    <!-- JS: Se activa al seleccionar las opcion de actividades nocturnas -->
     <section class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
         <h2>actividades de noche</h2>
 
         <div class="actividades-opciones">
-            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta">
+                <div>
                     <hgroup>
                         <h3>Rey de Copas Bar</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -210,8 +216,8 @@
                 <img src="https://i.ibb.co/HpHg41Wq/bar.png" alt="interior del bar rey de copas">
             </article>
 
-            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta reversa">
+                <div>
                     <hgroup>
                         <h3>Tango Porteño</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -222,8 +228,8 @@
                 <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño">
             </article>  
 
-            <article class="tarjeta"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta">
+                <div>
                     <hgroup>
                         <h3>El casino flotante</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -234,8 +240,8 @@
                 <img src="https://i.ibb.co/8gxbT1Lf/flotante.png" alt="foto del casino flotante">
             </article>  
 
-            <article class="tarjeta reversa"> <!-- Centrado, Orden horizontal, un elemento a cada lado, -->
-                <div> <!-- Orden vertical, alineacion opuesta a la posicion de la imagen-->
+            <article class="tarjeta reversa">
+                <div>
                     <hgroup>
                         <h3>Puerto Madero</h3>
                         <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
@@ -246,6 +252,10 @@
                 <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
             </article> 
         </div>
+    </section>
+
+    <section aria-label="Area de resultados de busqueda" class="resultados-busqueda">
+        <!-- JS: En esta parte va el resultado de la busqueda en el formulario -->
     </section>
     
     <footer>
