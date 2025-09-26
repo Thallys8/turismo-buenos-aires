@@ -9,6 +9,8 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ### Added  
 
 ### Changed 
+- [backport/release-actividad-obligatoria-1] Se genero el backport release > develop  
+PR: [#27](https://github.com/Thallys8/turismo-buenos-aires/pull/27) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 ### Fixed
 
