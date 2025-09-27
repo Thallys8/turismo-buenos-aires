@@ -21,7 +21,7 @@ Los colores de los botones no coinciden con el del Dibujo UX.
 Los nombres están intercambiados, entre los dos botones.
 <img width="886" height="310" alt="image" src="https://github.com/user-attachments/assets/69c3784b-4217-414e-8ac9-6d2459982147" />
 
-El botón de búsqueda debería estár como “Buscar” y está como “Busquemos”.
+El botón de búsqueda debería está como “Buscar” y está como “Busquemos”.
 <img width="886" height="293" alt="image" src="https://github.com/user-attachments/assets/fcf9dbbd-8094-431a-a887-36f44f8a453d" />
 
 
