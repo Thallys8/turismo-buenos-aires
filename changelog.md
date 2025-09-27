@@ -4,7 +4,7 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 
 ---
 
-## [Release Actividad Obligatoria Nº 1] - 2025-09-26
+## [Release Actividad Obligatoria Nº 2] - 2025-09-26
 
 ### Added  
 - [feature/desarrollador-frontend-estilos-css] Se genero el codigo css para estilos y responsive  
