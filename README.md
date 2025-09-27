@@ -14,6 +14,7 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 ## 📂 Documentacion
 - [Mockup](https://www.figma.com/design/zM85pnRTZeivKJJcz2ikc9/Turismo-Buenos-Aires?node-id=0-1&p=f&t=iUcnCjVoltQsJJyO-0) 
 - [Indice de prompts](./docs/02-prompts/prompts.md)
+- [Indice de Test QA](docs/03-testing/testing-doc.md)
 - [Changelog](changelog.md) 
 
 
