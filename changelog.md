@@ -10,13 +10,13 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 - [feature/desarrollador-frontend-estilos-css] Se genero el codigo css para estilos y responsive  
 PR: [#28](https://github.com/Thallys8/turismo-buenos-aires/pull/28) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
-- [feature/documentador-qa-tester] Se genero lo test qa, se creó el archivo de  indice de test qa
+- [feature/documentador-qa-tester] Se genero lo test qa, se creó el archivo de  indice de test qa.
 PR: [#31](https://github.com/Thallys8/turismo-buenos-aires/pull/31) Thallys8 (Coordinador y DevOps + QA Tester).
 
 ### Changed 
 - [backport/release-actividad-obligatoria-1] Se genero el backport release > develop  
 PR: [#27](https://github.com/Thallys8/turismo-buenos-aires/pull/27) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/documentador-qa-tester] Actualización del diseño el mockup de la home page, para la versión que deberá implementar css
+- [feature/documentador-qa-tester] Actualización del diseño el mockup de la home page, para la versión que deberá implementar css.
 PR: [#31](https://github.com/Thallys8/turismo-buenos-aires/pull/31) Thallys8 (Coordinador y DevOps + QA Tester).
 
 ### Fixed
