@@ -1,10 +1,6 @@
+
+/* Query para dispositivos de menor tamaño (telefonos en vertical) */
 @media only screen and (max-width: 660px) {
-    .burger{
-        display: block;
-    }
-    .links-nav{
-        display: none;
-    }
     .seleccion-dia-noche{
         flex-direction: column;
     }
@@ -35,12 +31,39 @@
         flex-wrap: wrap;
         justify-content: center;
     }
+    .selector-avanzado form label{
+        margin: 0;
+    }
 }
-@media only screen and (min-width: 660px){
+
+
+/* Esconde o muestra los links y el boton burger del menu de navegacion */
+/* (si es mas grange que un telefono muestra links, sino muestra el boton) */
+@media only screen and (max-width: 866px){
+    .burger{
+        display: block;
+    }
+    .links-nav{
+        display: none;
+    }
+
+}
+@media only screen and (min-width: 866px){
     .burger{
         display: none;
     }
+    #id-header-fondo-vertical{
+        display: none;
+    }
+
+    /* este agregado controla cuando se debe ver la imagen de fondo de version horizontal*/
+    #id-header-fondo-horizontal{
+        display: block;
+    }
+    
 }
+
+/* Query para dispositivos de tamaño medio (Tablets, telefonos en horizontal) */
 @media only screen and (max-width: 1080px){
     .seleccion-actividades{
         flex-direction: column;
@@ -68,8 +91,19 @@
     .selector-avanzado select{
         margin: 0;
     }
+
+    .selector-avanzado form .exterior{
+        margin-bottom: 0.5em;
+    }
+    .seleccion-actividades hgroup{
+        margin-bottom: 1em;
+    }
+    .selector-avanzado select {
+        width: 20em;
+    }
 }
 
+/* Query para dispositivos con pantallas de mayor tamaño (computadoras, laptops) */
 @media only screen and (min-width: 1080px) 
 {
     .actividades-opciones{

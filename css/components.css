@@ -21,7 +21,7 @@ button:active{
     border: 1px solid black;
 }
 
-nav .burger{
+.burger{
     width: 2.5em;
     height: 2.5em;
     padding: 0;
@@ -99,11 +99,14 @@ nav .burger img{
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .tarjeta div{ /* contiene el texto de la tarjeta */
-    margin-right: 2em;
-    margin-left: 2em;
-
+    margin: 1em 2em;
+    padding: 0.5em;
     width: 35%;
 }
+.tarjeta div hgroup{
+    font-weight: bold;
+}
+
 .tarjeta img{
     object-fit: cover;
     width: 55%;
@@ -150,13 +153,18 @@ nav .burger img{
 }
 .selector-avanzado form div{
     display: flex;
+    justify-content: space-around;
     align-items: center;
 
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
 }
 .selector-avanzado form label{
     margin-right: 1em;
 }
+
+
+
+
 
 /* estos son las opciones para elejir el momento de la semana*/
 .selector-avanzado form div#id-dias-semana{
@@ -168,7 +176,7 @@ nav .burger img{
     display: inline-block;
 
     flex-direction: row;
-    padding: 0.25em;
+    padding: 0.25em 0.4em;
     background: #CAF1FA;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 0.2em;
@@ -197,4 +205,34 @@ nav .burger img{
     min-width: fit-content;
     width: 20%;
     align-self: center;
+}
+
+#id-dias-semana input[type="checkbox"] {
+    display: none;
+}
+#id-dias-semana label {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    margin-right: 1em;
+    border-radius: 1em;
+    overflow: hidden;
+}
+#id-dias-semana label:last-child {
+    margin: 0;
+}
+#id-dias-semana span {
+    display: inline-block;
+    padding: 10px;
+    background-color: #CAF1FA;
+    border: 2px solid #CAF1FA;
+    
+    color: black;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+#id-dias-semana input[type="checkbox"]:checked + span {
+    background-color: #a2e8f8;
+    border: 2px solid #6de3fd;
+    color: black;
 }
