@@ -1,31 +1,37 @@
-## Prueba en Microsoft Edge
-Fecha 26-09-2025
+# Test Case 2: Testing Responsive Móviles
 
-### Prueba de Elementos
-Vemos en la siguiente imagen que los botones están funcionando correctamente y están esperando por el código Java Script que será integrado posteriormente. 
+## Objetivo
+Verificar la adaptabilidad responsive en dispositivos móviles reales
 
-<img width="422" height="755" alt="image" src="https://github.com/user-attachments/assets/f5f06a61-259b-4685-a7a6-88fb1a6af5bd" />
+## Herramientas Utilizadas
+- BrowserStack Real Device Testing
+- Chrome DevTools Device Simulation
 
+## Dispositivos Probados
+| Dispositivo | Resolución | Navegador | Orientación | Resultado |
+|-------------|------------|-----------|-------------|-----------|
+| iPhone 14 Pro | 393x852 | Safari | Portrait/Landscape | ✅/❌ |
+| Galaxy S23 | 360x780 | Chrome | Portrait/Landscape | ✅/❌ |
+| iPad Air | 820x1180 | Safari | Portrait/Landscape | ✅/❌ |
 
-### Prueba de Responsividad
-En la prueba de Responsividad identificamos que la página está respondiendo adecuadamente a los ajustes de tamaño de página. 
-<img width="684" height="758" alt="image" src="https://github.com/user-attachments/assets/e1889aa3-5a96-48bf-99db-a3b4cbef8427" />
+## Breakpoints Verificados
+- Mobile Portrait:
+  ![Mobile Portrait](../screenshots/device-portrait-mobile-320px.png)
+- Mobile Landscape:
+  ![Mobile Landscape](../screenshots/device-landscape-mobile-320px.png)
+  
+- Tablet Portrait:
+  ![Tablet Portrait](../screenshots/device-portrait-tablet-768px.png)
+- Tablet Landscape:
+  ![Tablet Landscape](../screenshots/device-landscape-tablet-768px.png)
+  
+- Desktop Portrait:
+  ![Desktop Portrait](../screenshots/device-portrait-desktop-1024px.png)
+- Desktop Landscape:
+  ![Desktop Landscape](../screenshots/device-landscape-desktop-1024px.png)
 
+## Capturas por Dispositivo
+[Incluir capturas en portrait y landscape para cada dispositivo]
 
-### Prueba de Network
-En la prueba de Network vemos que está respondiendo rápidamente.
-<img width="490" height="841" alt="image" src="https://github.com/user-attachments/assets/522ca251-956f-494c-b9d9-223de58f77fb" />
-
-
-### Prueba de Diseño
-Los colores de los botones no coinciden con el del Dibujo UX.
-Los nombres están intercambiados, entre los dos botones.
-<img width="886" height="310" alt="image" src="https://github.com/user-attachments/assets/69c3784b-4217-414e-8ac9-6d2459982147" />
-
-El botón de búsqueda debería está como “Buscar” y está como “Busquemos”.
-<img width="886" height="293" alt="image" src="https://github.com/user-attachments/assets/fcf9dbbd-8094-431a-a887-36f44f8a453d" />
-
-
-### Recomendaciones: 
-Corregir los colores y escrita interna de los botones de actividades diurnas y nocturnas.
-Corregir el nombre del botón de búsqueda. 
+## Media Queries Validadas
+[Lista de media queries CSS probadas exitosamente]
