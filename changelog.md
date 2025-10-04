@@ -20,9 +20,9 @@ PR: [#27](https://github.com/Thallys8/turismo-buenos-aires/pull/27) @Tomig02 (De
 ### Fixed
 - [feature/desarrollador-frontend-estilos-css] correcciones al codigo css y comentarios mas correcciones en el html  
 PR: [#29](https://github.com/Thallys8/turismo-buenos-aires/pull/29) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/desarrollador-frontend-estilos-css] ajusto el css al figma y arreglo el diseño responsive del formulario 
+- [feature/desarrollador-frontend-estilos-css] ajusto el css al figma y arreglo el diseño responsive del formulario  
 PR: [#30](https://github.com/Thallys8/turismo-buenos-aires/pull/30) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/documentador-qa-tester] Se corrigió los test case incorrectos y se agrugarón los que faltaban. 
+- [feature/documentador-qa-tester] Se corrigió los test case incorrectos y se agrugarón los que faltaban.  
 PR: [#34](https://github.com/Thallys8/turismo-buenos-aires/pull/34) Thallys8 (Coordinador y DevOps + QA Tester).
 
 ## [Release Actividad Obligatoria Nº 1] - 2025-09-05
