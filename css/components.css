@@ -21,6 +21,15 @@ button:active{
     border: 1px solid black;
 }
 
+button.noche{
+    background-color: #92B4F3;
+    border: 1px solid #92B4F3;
+}
+button.noche:hover{
+    cursor: pointer;
+    background-color: rgb(163, 193, 250);
+}
+
 .burger{
     width: 2.5em;
     height: 2.5em;
