@@ -12,7 +12,7 @@ Verificar la correcta visualización y funcionalidad en navegadores desktop prin
 | Navegador | Versión | OS | Resultado |
 |-----------|---------|----|-----------|
 | Chrome | 140 | Windows 11 | ✅ |
-| Firefox | [143] | Windows 11 | ✅ |
+| Firefox | 143 | Windows 11 | ✅ |
 | Safari | 5.1 | macOS | ✅ |
 | Edge | 140 | Windows 11 | ✅ |
 
@@ -60,9 +60,9 @@ Compatibilidad CSS (por navegador) = (CompatibleProps / TotalProps) * 100
 ### Tabla de Resultados
 | Navegador | TotalProps | CompatibleProps | Compatibilidad CSS |
 |-----------|------------|-----------------|---------------------|
-| Chrome | 32 | 31 | [31/32 * 100]% |
-| Firefox | 32 | 31 | [31/32 * 100]% |
-| Safari | 32 | 31 | [31/32 * 100]% |
-| Edge | 32 | 31 | [31/32 * 100]% |
+| Chrome | 32 | 31 | 96,88% |
+| Firefox | 32 | 31 | 96,88% |
+| Safari | 32 | 31 | 96,88% |
+| Edge | 32 | 31 | 96,88% |
 
 > Nota: Esta métrica es **por navegador**, ya que el soporte de propiedades CSS varía entre ellos.
