@@ -13,7 +13,7 @@ Verificar la correcta visualización y funcionalidad en navegadores desktop prin
 |-----------|---------|----|-----------|
 | Chrome | 140 | Windows 11 | ✅ |
 | Firefox | 143 | Windows 11 | ✅ |
-| Safari | 5.1 | macOS | ✅ |
+| Safari | 26 | macOS | ✅ |
 | Edge | 140 | Windows 11 | ✅ |
 
 ## Capturas de Pantalla
@@ -47,9 +47,9 @@ Compatibilidad CSS (por navegador) = (CompatibleProps / TotalProps) * 100
 
 2. **Capturas de 4 propiedades consultadas en Can I Use** (una por imagen), indicando si están soportadas en cada navegador.  
    - `grid`  
-   - `flexbox`  
+   - `text decoration`  
    - `backdrop-filter`  
-   - `position: sticky`  
+   - `display`  
 
    Ejemplo de evidencia:  
    ![Can I Use - Grid](../screenshots/caniuse-grid.png)  
