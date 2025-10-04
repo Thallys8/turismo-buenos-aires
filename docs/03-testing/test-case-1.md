@@ -30,7 +30,8 @@ Verificar la correcta visualización y funcionalidad en navegadores desktop prin
 ![Edge Desktop](../screenshots/edge-desktop.png)
 
 ## Issues Encontrados
-[Documentar problemas específicos con soluciones implementadas]
+No encontramos problemas em Google Chrome, EDGE, Firefox o en Safari.
+Tuvimos solo 1 minuto para hacer las pruebas en BrowserStack, pero las pruebas realizadas en Chrome y Firefox directamente desde un Windows 11 Pro resulté en problemas encontrados.  
 
 ## Métricas de Compatibilidad (por navegador)
 
