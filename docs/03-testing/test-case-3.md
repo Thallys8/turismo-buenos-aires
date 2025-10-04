@@ -13,24 +13,24 @@ Se deben adjuntar **capturas de pantalla reales** de cada herramienta mostrando 
 
 1. **Google PageSpeed Insights**
    - Captura del puntaje de **Performance**.  
-   - ![Performance](../screenshots/pagespeed-performance.png)  
+     ![Performance](../screenshots/pagespeed-performance.png)  
    - Captura de las métricas **FCP, LCP, CLS, FID**.  
-   - ![Metricas](../screenshots/pagespeed-metricas.png)  
+     ![Metricas](../screenshots/pagespeed-metricas.png)  
 
 2. **GTmetrix**
    - Captura del **GTmetrix Grade**.  
-   - ![GTmetrix Grade](../screenshots/gtmetrix.png)  
+     ![GTmetrix Grade](../screenshots/gtmetrix.png)  
    - Captura de **Performance** y **Structure**.  
    - ![Performance](../screenshots/gtmetrix-performance.png)
-   - ![Structure](../screenshots/gtmetrix-structure.png)  
+     ![Structure](../screenshots/gtmetrix-structure.png)  
    - Captura de **Fully Loaded Time** y **Page Size**.  
    - ![Fully Loaded Time](../screenshots/gtmetrix-fully-loaded-time.png)
-   - ![Page Size](../screenshots/gtmetrix-page-size.png)  
+     ![Page Size](../screenshots/gtmetrix-page-size.png)  
 
 3. **Chrome DevTools Lighthouse**
    - Captura del **report completo**.
    - Google Chrome versión 140
-   - Mostrar claramente las métricas **Core Web Vitals**.
+    ![Chrome DevTools Lighthouse](../screenshots/chrome-lighthouse.png)  
 
 ## Métricas Obtenidas
 Se deben registrar los valores **tal como aparecen en las capturas**, por ejemplo:
