@@ -22,25 +22,28 @@ Verificar la adaptabilidad responsive en dispositivos móviles reales
 ## Capturas por Dispositivo
 
 #### iPhone 14 Pro:  
-- Portrait:
+- Portrait:  
   ![iPhone Portrait](../screenshots/iphone14pro-portrait-1.png)
   ![iPhone Portrait](../screenshots/iphone14pro-portrait-2.png)
-- Landscape:  
+  
+- Landscape:    
   ![iPhone Landscape](../screenshots/iphone14pro-landscape-1.png)
   ![iPhone Landscape](../screenshots/iphone14pro-landscape-2.png)
 
 #### Galaxy S23:  
-- Portrait:
+- Portrait:  
   ![Galaxy Portrait](../screenshots/galaxy-s23-portrait-1.png)
   ![Galaxy Portrait](../screenshots/galaxy-s23-portrait-2.png)
+  
 - Landscape:  
   ![Galaxy Landscape](../screenshots/galaxy-s23-landscape-1.png)
   ![Galaxy Landscape](../screenshots/galaxy-s23-landscape-2.png)
 
 #### iPad Air:  
-- Portrait:
+- Portrait:  
   ![iPad Portrait](../screenshots/ipad-air-portrait-1.png)
   ![iPad Portrait](../screenshots/ipad-air-portrait-2.png)
+  
 - Landscape:  
   ![iPad Landscape](../screenshots/ipad-air-landscape-1.png)
   ![iPad Landscape](../screenshots/ipad-air-landscape-2.png)  
