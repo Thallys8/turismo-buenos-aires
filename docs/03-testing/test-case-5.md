@@ -13,16 +13,18 @@ Verificar compatibilidad cross-platform y validar código CSS/HTML
 ### Windows 11
 | Navegador | Versión | Resultado | Observaciones |
 |-----------|---------|-----------|---------------|
-| Chrome | 140 | ✅/❌ | [notas] |
-| Firefox | 143 | ✅/❌ | [notas] |
-| Edge | [versión] | ✅/❌ | [notas] |
+| Chrome | 140 | ✅ |  El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
+| Firefox | 143 | ✅ |  El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
+| Edge | 141 | ✅ |  El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
 
 ### macOS
 | Navegador | Versión | Resultado | Observaciones |
 |-----------|---------|-----------|---------------|
-| Safari | 26 | ✅ | [notas] |
-| Chrome | 140 | ✅ | [notas] |
-| Firefox | 143 | ✅/❌ | [notas] |
+| Safari | 26 | ✅ | El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
+| Chrome | 140 | ✅ | El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
+| Firefox | 143 | ✅ | El problema de compatibilidad encontrada fue la deformación del imagen de la taba cuando reducimos las dimensiones de la ventana |
+
+
 
 ### Linux (Ubuntu)
 | Navegador | Versión | Resultado | Observaciones |
@@ -43,4 +45,30 @@ Verificar compatibilidad cross-platform y validar código CSS/HTML
 ![HTML Validation](../screenshots/html-validation.png)
 
 ## Compatibilidad CSS Features
-[Tabla con features CSS utilizadas y su soporte por navegador]
+| CSS Features | Chrome | Edge | Firefox | Safari |
+|----------|---------|----------|--------|--------|
+| display: flex | ✅ | ✅ | ✅ | ✅ |
+| display: grid | ✅ | ✅ | ✅ | ✅ |
+| position: relative | ✅ | ✅ | ✅ | ✅ |
+| margin | ✅ | ✅ | ✅ | ✅ |
+| padding | ✅ | ✅ | ✅ | ✅ |
+| width | ✅ | ✅ | ✅ | ✅ |
+| height | ✅ | ✅ | ✅ | ✅ |
+| font-family | ✅ | ✅ | ✅ | ✅ |
+| font-size | ✅ | ✅ | ✅ | ✅ |
+| font-weight | ✅ | ✅ | ✅ | ✅ |
+| line-height | ✅ | ✅ | ✅ | ✅ |
+| text-align | ✅ | ✅ | ✅ | ✅ |
+| color | ✅ | ✅ | ✅ | ✅ |
+| background-image | ✅ | ✅ | ✅ | ✅ |
+| background-size | ✅ | ✅ | ✅ | ✅ |
+| background-position | ✅ | ✅ | ✅ | ✅ |
+| object-fit | ✅ | ✅ | ✅ | ✅ |
+| border | ✅ | ✅ | ✅ | ✅ |
+| border-radius | ✅ | ✅ | ✅ | ✅ |
+| box-shadow | ✅ | ✅ | ✅ | ✅ |
+| opacity | ✅ | ✅ | ✅ | ✅ |
+| transition | ✅ | ✅ | ✅ | ✅ |
+| cursor | ✅ | ✅ | ✅ | ✅ |
+
+
