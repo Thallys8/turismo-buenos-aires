@@ -29,8 +29,8 @@ Verificar compatibilidad cross-platform y validar código CSS/HTML
 ### Linux (Ubuntu)
 | Navegador | Versión | Resultado | Observaciones |
 |-----------|---------|-----------|---------------|
-| Firefox | 143 | ✅/❌ | [notas] |
-| Chrome | 140 | ✅/❌ | [notas] |
+| Firefox | 143 | ❌ | No fue posible hacer la prueba desde lambdatest.com o browserstack.com. No encontramos outra página para realizar esta prueba |
+| Chrome | 140 | ❌ | No fue posible hacer la prueba desde lambdatest.com o browserstack.com. No encontramos outra página para realizar esta prueba |
 
 ## Validación W3C
 
