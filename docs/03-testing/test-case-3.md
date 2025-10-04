@@ -50,7 +50,7 @@ Se deben registrar los valores **tal como aparecen en las capturas**, por ejempl
 - **Page Size:** 1,64 MB
 
 ### Lighthouse Audit
-![Lighthouse Report](../screenshots/lighthouse-report.png)
+![Lighthouse Report]()
 
 ## Optimizaciones Implementadas
 [Lista de mejoras realmente aplicadas para mejorar performance]
