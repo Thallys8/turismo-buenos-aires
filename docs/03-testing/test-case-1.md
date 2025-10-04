@@ -53,7 +53,7 @@ Compatibilidad CSS (por navegador) = (CompatibleProps / TotalProps) * 100
 
    Ejemplo de evidencia:  
    ![Can I Use - Grid](../screenshots/caniuse-grid.png)  
-   ![Can I Use - Text Decoration](../screenshots/caniuse-text-ecoration.png)  
+   ![Can I Use - Text Decoration](../screenshots/caniuse-text-decoration.png)  
    ![Can I Use - Backdrop Filter](../screenshots/caniuse-backdrop-filter.png)  
    ![Can I Use - Display](../screenshots/caniuse-display.png)  
 
