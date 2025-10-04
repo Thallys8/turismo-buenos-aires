@@ -64,7 +64,8 @@ Verificar la adaptabilidad responsive en dispositivos móviles reales
   ![Desktop Landscape](../screenshots/device-landscape-desktop-1024px.png)
 
 
-## Media Queries Validadas
+## Media Queries Validadas  
+![Media Queries](../screenshots/media-queries.png)  
 | Min-Width | Max-Width | 
 |-------------|------------|
 | 400px | 393x852 |
