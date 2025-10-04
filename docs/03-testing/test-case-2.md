@@ -65,4 +65,30 @@ Verificar la adaptabilidad responsive en dispositivos móviles reales
 
 
 ## Media Queries Validadas
-[Lista de media queries CSS probadas exitosamente]
+| Min-Width | Max-Width | 
+|-------------|------------|
+| 400px | 393x852 |
+| 433px | 640px |
+| 460px | 660px |
+| 470px | 768px |
+| 480px | 992px |
+| 500px | 1024px |
+| 560px | 1024px |
+| 600px | 1200px |
+| 640px | 1280px |
+| 660px | 1536px |
+| 767,98px |  |  |
+| 800px |  |
+| 812px |  |
+| 840px |  |
+| 880px |  |
+| 885px |  |
+| 991,98px |  | 
+| 992px |  |
+| 1024px |  |
+| 1080px |  |
+| 1110px |  |
+| 1280px |  |
+| 1300px |  |
+| 1380px |  |
+| 1400px  |  |
