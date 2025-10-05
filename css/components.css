@@ -10,7 +10,6 @@ button{
     border: 1px solid #88EE9E;
 
     text-align: center;
-    text-transform: uppercase;
     font-size: 1em;
 }
 button:hover{
@@ -216,12 +215,18 @@ nav .burger img{
     align-self: center;
 }
 
+#id-dias-semana{
+    display: flex;
+    flex-wrap: wrap;
+}
 #id-dias-semana input[type="checkbox"] {
     display: none;
 }
 #id-dias-semana label {
+    width: 10em;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     margin-right: 1em;
+    margin-bottom: 0.5em;
     border-radius: 1em;
     overflow: hidden;
 }
@@ -229,6 +234,7 @@ nav .burger img{
     margin: 0;
 }
 #id-dias-semana span {
+    width: 100%;
     display: inline-block;
     padding: 10px;
     background-color: #CAF1FA;
@@ -244,4 +250,22 @@ nav .burger img{
     background-color: #a2e8f8;
     border: 2px solid #6de3fd;
     color: black;
+}
+
+footer{
+    background-color: #eeeeee;
+
+    width: 100%;
+    padding: 2em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+footer p {
+    margin: 0;
+}
+footer img{
+    margin-top: 0.5em;
+    width: 55%;
 }

@@ -25,7 +25,7 @@ nav{
 
     padding: 0.5rem 3rem;
 
-    background-color: whitesmoke;
+    background-color: #eeeeee;
 }
 nav button{
     background: none;
@@ -74,5 +74,5 @@ header hgroup, header p{
     text-align: center;
 }
 header hgroup * {
-    margin: 0;
+    margin: auto;
 }
