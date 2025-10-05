@@ -8,7 +8,6 @@ PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Co
 
 ### Changed 
 
-
 ### Fixed
 
 ---
