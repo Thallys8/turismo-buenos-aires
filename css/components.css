@@ -223,7 +223,7 @@ nav .burger img{
 
 #id-dias-semana{
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 #id-dias-semana input[type="checkbox"] {
     display: none;

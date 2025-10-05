@@ -28,7 +28,8 @@
     }
 
     #id-dias-semana label{
-        margin-right: 0;
+        margin-right: 0.35em;
+        margin-bottom: 0;
     }
     #id-dias-semana label span{
         width: 100%;
@@ -48,7 +49,7 @@
 
 @media only screen and (min-width: 481px){
     #id-dias-semana label{
-        margin-right: 1em;
+        margin-right: 0.65em;
         margin-bottom: 0;
     }
 }
