@@ -30,6 +30,8 @@ PR: [#30](https://github.com/Thallys8/turismo-buenos-aires/pull/30) @Tomig02 (De
 PR: [#43](https://github.com/Thallys8/turismo-buenos-aires/pull/43) Thallys8 (Coordinador y DevOps + QA Tester).
 - [feature/correccion-actividad-obligatoria-2] Se corrigio los test cases para que tengan sus issues y comenten lo corregido  
 PR: [#50](https://github.com/Thallys8/turismo-buenos-aires/pull/50) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
+- [feature/correccion-actividad-obligatoria-2] Se agrego a links en test cases y se corrigio el css para arreglar los botones  
+PR: [#51](https://github.com/Thallys8/turismo-buenos-aires/pull/51) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 
 ## [Release Actividad Obligatoria Nº 1] - 2025-09-05
