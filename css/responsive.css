@@ -1,6 +1,6 @@
 
 /* Query para dispositivos de menor tamaño (telefonos en vertical) */
-@media only screen and (max-width: 660px) {
+@media only screen and (max-width: 481px) {
     .seleccion-dia-noche{
         flex-direction: column;
     }
@@ -27,15 +27,31 @@
         width: 80%;
     }
 
-    #id-dias-semana{
-        flex-wrap: wrap;
-        justify-content: center;
+    #id-dias-semana label{
+        margin-right: 0;
+    }
+    #id-dias-semana label span{
+        width: 100%;
     }
     .selector-avanzado form label{
         margin: 0;
     }
+
+    footer img{
+        width: 80%;
+    }
+
+    .selector-avanzado form select {
+        width: 87%;
+    }
 }
 
+@media only screen and (min-width: 481px){
+    #id-dias-semana label{
+        margin-right: 1em;
+        margin-bottom: 0;
+    }
+}
 
 /* Esconde o muestra los links y el boton burger del menu de navegacion */
 /* (si es mas grange que un telefono muestra links, sino muestra el boton) */
@@ -49,6 +65,7 @@
 
 }
 @media only screen and (min-width: 866px){
+
     .burger{
         display: none;
     }
