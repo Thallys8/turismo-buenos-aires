@@ -53,8 +53,8 @@ Se deben registrar los valores **tal como aparecen en las capturas**, por ejempl
 ![Lighthouse Report](../screenshots/lighthouse-report.png)
 
 ## Optimizaciones Implementadas
-Todavía no se ha implementado optimizaciones porque muchos de los problemas con respecto a los botones serán corregidos al implementar Java Script.
-Cuando a los imágenes que se deforman en pantallas chicas, estamos estudiando para remplazarlas. 
+Se optimizo el tamaño de los assets utilizados en nuestro sistema para reducir la entrega de imagenes 
+Issue relacionada: #47
 
 ## Comparativas Antes/Después
 Todavía no se ha implementado optimizaciones.
