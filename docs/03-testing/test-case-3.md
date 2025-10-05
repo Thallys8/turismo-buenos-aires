@@ -57,4 +57,11 @@ Se optimizo el tamaño y resolucion de los assets utilizados en nuestro sistema 
 Issue relacionada: #47
 
 ## Comparativas Antes/Después
-TODO: Agregar imagen
+| Metrica | Antes | Despues |
+|---|---|---|
+| Performance | 70% | 95% |
+| First Contentful Paint | 0.4s | 0.4s |
+| Speed Index | 1.1s | 0.4s |
+| Total Blocking Time | 810ms | 0ms |
+| Largest Contentful Paint | 1.2s | 1.6s |
+| Cumulative Layout Shift | 0.003 | 0.018s |
