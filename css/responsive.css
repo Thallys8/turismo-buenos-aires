@@ -80,6 +80,7 @@
     
 }
 
+
 /* Query para dispositivos de tamaño medio (Tablets, telefonos en horizontal) */
 @media only screen and (max-width: 1080px){
     .seleccion-actividades{
@@ -114,6 +115,7 @@
     }
     .seleccion-actividades hgroup{
         margin-bottom: 1em;
+        width: 80%;
     }
     .selector-avanzado select {
         width: 20em;

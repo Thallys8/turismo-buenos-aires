@@ -53,5 +53,5 @@ La navegación por teclado no está funcionado de manera completa porque los bot
 
 ## Optimizaciones Implementadas
 Se diseño e implemento una barra de navegacion superior que, una vez configurado por js, permitiria la navegacion de la web
-Issue relacionada: #47
+Issue relacionada: [#48](https://github.com/Thallys8/turismo-buenos-aires/issues/48)
 

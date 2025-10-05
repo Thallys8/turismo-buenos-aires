@@ -3,7 +3,7 @@
 /* ----------- DISEÑO PARA LOS ELEMENTOS VARIOS ----------- */
 
 button{
-    padding: 1em;
+    padding: 1em 0.3em;
     background-color: #88EE9E;
 
     border-radius: 0.7em;
@@ -59,7 +59,7 @@ nav .burger img{
 /* ----------- DISEÑO PARA LOS SELECTORES DIA/NOCHE ----------- */
 
 .seleccion-dia-noche{
-    margin: 2em 1em 0em 1em;
+    margin: 2em 1em 1em 1em;
     display: flex;
     justify-content: space-around;
 }
@@ -130,7 +130,7 @@ nav .burger img{
 
 .seleccion-actividades{
     padding: 3em 1em;
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
 
     background-color: #eeeeee;
@@ -141,6 +141,9 @@ nav .burger img{
     justify-content: space-around;
     align-items: center;
     text-align: center;
+}
+.seleccion-actividades hgroup{
+    width: 40%;
 }
 .seleccion-actividades hgroup p{
     justify-self: center;
@@ -168,6 +171,9 @@ nav .burger img{
 }
 .selector-avanzado form label{
     margin-right: 1em;
+}
+.selector-avanzado form span{
+    font-size: 0.8em;
 }
 
 
@@ -223,7 +229,7 @@ nav .burger img{
     display: none;
 }
 #id-dias-semana label {
-    width: 10em;
+    width: 8em;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     margin-right: 1em;
     margin-bottom: 0.5em;

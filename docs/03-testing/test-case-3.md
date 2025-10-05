@@ -53,8 +53,8 @@ Se deben registrar los valores **tal como aparecen en las capturas**, por ejempl
 ![Lighthouse Report](../screenshots/lighthouse-report.png)
 
 ## Optimizaciones Implementadas
-Se optimizo el tamaño y resolucion de los assets utilizados en nuestro sistema para reducir los problemas durante la entrega de imagenes
-Issue relacionada: #47
+Se optimizo el tamaño y resolucion de los assets utilizados en nuestro sistema para reducir los problemas durante la entrega de imagenes  
+Issue relacionada: [#47](https://github.com/Thallys8/turismo-buenos-aires/issues/47)
 
 ## Comparativas Antes/Después
 | Metrica | Antes | Despues |
