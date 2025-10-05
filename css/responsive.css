@@ -38,7 +38,7 @@
     }
 
     footer img{
-        width: 80%;
+        width: 75%;
     }
 
     .selector-avanzado form select {
@@ -132,5 +132,9 @@
         width: 45%;
         margin: auto;
         margin-bottom: 2em;
+    }
+
+    footer img {
+        width: 30%;
     }
 }

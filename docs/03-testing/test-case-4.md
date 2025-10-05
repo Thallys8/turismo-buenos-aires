@@ -51,3 +51,7 @@ Identificamos que algunas imágenes están con tiempo alto para cargar en pantal
 #### Tests Manuales
 La navegación por teclado no está funcionado de manera completa porque los botones dependen de la implementación futura de Java Script. 
 
+## Optimizaciones Implementadas
+Se diseño e implemento una barra de navegacion superior que, una vez configurado por js, permitiria la navegacion de la web
+Issue relacionada: #47
+

@@ -38,7 +38,7 @@ button.noche:hover{
     border: none;
 
     margin-left: auto;
-    margin-right: none;
+    margin-right: 0;
 
     display: flex;
     align-items: center;
@@ -246,6 +246,9 @@ nav .burger img{
     user-select: none;
 }
 
+#id-dias-semana input[type="checkbox"]:focus + label{
+    border:2px solid black;
+}
 #id-dias-semana input[type="checkbox"]:checked + span {
     background-color: #a2e8f8;
     border: 2px solid #6de3fd;

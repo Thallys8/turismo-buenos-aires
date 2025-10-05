@@ -71,4 +71,6 @@ Verificar compatibilidad cross-platform y validar código CSS/HTML
 | transition | ✅ | ✅ | ✅ | ✅ |
 | cursor | ✅ | ✅ | ✅ | ✅ |
 
-
+## Optimizaciones Implementadas
+Se corrigieron los errores en HTML y CSS presentes, como hrefs obsoletos y valores errones
+Issue relacionada: #49
