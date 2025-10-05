@@ -14,12 +14,12 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 ## 📂 Documentacion
 - [Mockup](https://www.figma.com/design/zM85pnRTZeivKJJcz2ikc9/Turismo-Buenos-Aires?node-id=0-1&p=f&t=iUcnCjVoltQsJJyO-0) 
 - [Indice de prompts](./docs/02-prompts/prompts.md)
+- [Indice de Test QA](docs/03-testing/testing-doc.md)
 - [Changelog](changelog.md) 
 
 
 ## 👥 Integrantes
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
-| Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Documentador / Diseñador UX | 
-| Guardo Tomas Agostino  | 153835  | Tomig02  | Desarrollador Frontend +  Especialista en IA y Prompt Engineering  | 
-
+| Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Documentador / QA Tester | 
+| Guardo Tomas Agostino  | 153835  | Tomig02  | Desarrollador Frontend / CSS + Especialista en Responsive Design  | 

@@ -1,0 +1,143 @@
+
+/* Query para dispositivos de menor tamaño (telefonos en vertical) */
+@media only screen and (max-width: 481px) {
+    .seleccion-dia-noche{
+        flex-direction: column;
+    }
+    .seleccion-dia-noche div{
+        width: 80%;
+
+        margin: auto;
+        margin-bottom: 2em;
+    }
+
+    .tarjeta{
+        flex-direction: column;
+    }
+    .tarjeta div{
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
+    .tarjeta img{
+        width: 100%;
+    }
+
+    header p{
+        width: 80%;
+    }
+
+    #id-dias-semana label{
+        margin-right: 0.35em;
+        margin-bottom: 0;
+    }
+    #id-dias-semana label span{
+        width: 100%;
+    }
+    .selector-avanzado form label{
+        margin: 0;
+    }
+
+    footer img{
+        width: 75%;
+    }
+
+    .selector-avanzado form select {
+        width: 87%;
+    }
+}
+
+@media only screen and (min-width: 481px){
+    #id-dias-semana label{
+        margin-right: 0.65em;
+        margin-bottom: 0;
+    }
+}
+
+/* Esconde o muestra los links y el boton burger del menu de navegacion */
+/* (si es mas grange que un telefono muestra links, sino muestra el boton) */
+@media only screen and (max-width: 866px){
+    .burger{
+        display: block;
+    }
+    .links-nav{
+        display: none;
+    }
+
+}
+@media only screen and (min-width: 866px){
+
+    .burger{
+        display: none;
+    }
+    #id-header-fondo-vertical{
+        display: none;
+    }
+
+    /* este agregado controla cuando se debe ver la imagen de fondo de version horizontal*/
+    #id-header-fondo-horizontal{
+        display: block;
+    }
+    
+}
+
+
+/* Query para dispositivos de tamaño medio (Tablets, telefonos en horizontal) */
+@media only screen and (max-width: 1080px){
+    .seleccion-actividades{
+        flex-direction: column;
+    }
+    
+    .seleccion-actividades hgroup p{
+        width: 100%;
+    }
+    .selector-avanzado{
+        width: 95%;
+    }
+    .selector-avanzado form{
+        width: 100%;
+    }
+    .selector-avanzado form div{
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+    }
+    #id-dias-semana .check-dia{
+        margin: 0.1em;
+        flex-direction: row;
+    }
+
+    .selector-avanzado select{
+        margin: 0;
+    }
+
+    .selector-avanzado form .exterior{
+        margin-bottom: 0.5em;
+    }
+    .seleccion-actividades hgroup{
+        margin-bottom: 1em;
+        width: 80%;
+    }
+    .selector-avanzado select {
+        width: 20em;
+    }
+}
+
+/* Query para dispositivos con pantallas de mayor tamaño (computadoras, laptops) */
+@media only screen and (min-width: 1080px) 
+{
+    .actividades-opciones{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .tarjeta{
+        width: 45%;
+        margin: auto;
+        margin-bottom: 2em;
+    }
+
+    footer img {
+        width: 30%;
+    }
+}

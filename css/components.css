@@ -1,0 +1,280 @@
+
+
+/* ----------- DISEÑO PARA LOS ELEMENTOS VARIOS ----------- */
+
+button{
+    padding: 1em 0.3em;
+    background-color: #88EE9E;
+
+    border-radius: 0.7em;
+    border: 1px solid #88EE9E;
+
+    text-align: center;
+    font-size: 1em;
+}
+button:hover{
+    cursor: pointer;
+    background-color: #92faa9;
+}
+button:active{
+    border: 1px solid black;
+}
+
+button.noche{
+    background-color: #92B4F3;
+    border: 1px solid #92B4F3;
+}
+button.noche:hover{
+    cursor: pointer;
+    background-color: rgb(163, 193, 250);
+}
+
+.burger{
+    width: 2.5em;
+    height: 2.5em;
+    padding: 0;
+
+    background-color: transparent;
+    border: none;
+
+    margin-left: auto;
+    margin-right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav .burger:hover{
+    cursor: pointer;
+    background-color: #0000000c;
+}
+nav .burger img{
+    margin: auto;
+    width: 100%;
+    height: 80%;
+}
+
+
+
+/* ----------- DISEÑO PARA LOS SELECTORES DIA/NOCHE ----------- */
+
+.seleccion-dia-noche{
+    margin: 2em 1em 1em 1em;
+    display: flex;
+    justify-content: space-around;
+}
+.seleccion-dia-noche img{
+    align-self: center;
+    width: 80%;
+    height: 60%;
+    margin-bottom: 0.5em;
+
+    object-fit: cover;
+}
+.seleccion-dia-noche div{
+    display: flex;
+    flex-direction: column;
+}
+.seleccion-dia-noche button{
+    align-self: center;
+    width: 88%;
+}
+
+
+
+/* ----------- DISEÑO PARA LAS TARJETAS DE PRESENTACION PARA ACTIVIDADES ----------- */
+
+.lista-actividades h2{ /* este es el contenedor de las tarjetas */
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 2em;
+    margin-top: 4em;
+
+    text-transform: uppercase;
+}
+.tarjeta{
+    justify-self: center;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+
+    width: 90%;
+
+    margin-bottom: 3em;
+
+    overflow: hidden;
+    border-radius: 2em;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.tarjeta div{ /* contiene el texto de la tarjeta */
+    margin: 1em 2em;
+    padding: 0.5em;
+    width: 35%;
+}
+.tarjeta div hgroup{
+    font-weight: bold;
+}
+
+.tarjeta img{
+    object-fit: cover;
+    width: 55%;
+    height: 38vh;
+}
+.reversa{ /*  */
+    flex-direction: row-reverse;
+}
+
+
+
+/* ----------- DISEÑO PARA SISTEMA SELECTOR DE ACTIVIDADES ----------- */
+
+.seleccion-actividades{
+    padding: 3em 1em;
+    width: 85%;
+    margin: 0 auto;
+
+    background-color: #eeeeee;
+    border-radius: 0.1em;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+.seleccion-actividades hgroup{
+    width: 40%;
+}
+.seleccion-actividades hgroup p{
+    justify-self: center;
+    width: 50%;
+}
+.selector-avanzado{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65%;
+}
+.selector-avanzado form{
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.selector-avanzado form div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-bottom: 1.5em;
+}
+.selector-avanzado form label{
+    margin-right: 1em;
+}
+.selector-avanzado form span{
+    font-size: 0.8em;
+}
+
+
+
+
+
+/* estos son las opciones para elejir el momento de la semana*/
+.selector-avanzado form div#id-dias-semana{
+    flex-direction: row;
+    margin-bottom: 0;
+}
+.selector-avanzado .check-dia{
+    width: auto;
+    display: inline-block;
+
+    flex-direction: row;
+    padding: 0.25em 0.4em;
+    background: #CAF1FA;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 0.2em;
+    margin-right: 0.15em;
+    margin-bottom: 0;
+}
+.selector-avanzado .check-dia input{
+    margin-right: 0.4em;
+}
+
+/* demas selects y el boton de submit */
+.selector-avanzado select{
+    width: 15em;
+
+    padding: 0.5em;
+    text-align: center;
+    
+    margin-left: auto;
+
+    border-radius: 1em;
+    background-color: #CAF1FA;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border: none;
+}
+.selector-avanzado button{
+    min-width: fit-content;
+    width: 20%;
+    align-self: center;
+}
+
+#id-dias-semana{
+    display: flex;
+    flex-wrap: nowrap;
+}
+#id-dias-semana input[type="checkbox"] {
+    display: none;
+}
+#id-dias-semana label {
+    width: 8em;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    margin-right: 1em;
+    margin-bottom: 0.5em;
+    border-radius: 1em;
+    overflow: hidden;
+}
+#id-dias-semana label:last-child {
+    margin: 0;
+}
+#id-dias-semana span {
+    width: 100%;
+    display: inline-block;
+    padding: 10px;
+    background-color: #CAF1FA;
+    border: 2px solid #CAF1FA;
+    
+    color: black;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+#id-dias-semana input[type="checkbox"]:focus + label{
+    border:2px solid black;
+}
+#id-dias-semana input[type="checkbox"]:checked + span {
+    background-color: #a2e8f8;
+    border: 2px solid #6de3fd;
+    color: black;
+}
+
+footer{
+    background-color: #eeeeee;
+
+    width: 100%;
+    padding: 2em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+footer p {
+    margin: 0;
+}
+footer img{
+    margin-top: 0.5em;
+    width: 55%;
+}
