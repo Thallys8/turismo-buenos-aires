@@ -73,4 +73,4 @@ Verificar compatibilidad cross-platform y validar código CSS/HTML
 
 ## Optimizaciones Implementadas
 Se corrigieron los errores en HTML y CSS presentes, como hrefs obsoletos y valores errones
-Issue relacionada: #49
+Issue relacionada: [#49](https://github.com/Thallys8/turismo-buenos-aires/issues/49)
