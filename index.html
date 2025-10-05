@@ -11,23 +11,24 @@
 </head>
 <body>
     <nav style="display: flex;">
-        <a href="" aria-label="Logo, volver a la pagina principal"> <img src="https://i.ibb.co/N24JzynZ/buenos-aires-ciudad-seeklogo.png" alt="buenos-aires-ciudad-seeklogo" class="logo"> </a>
+        <a href="" aria-label="Logo, volver a la pagina principal"> <img src="./assets/buenos-aires-ciudad-seeklogo.png" alt="buenos-aires-ciudad-seeklogo" class="logo"> </a>
 
         <ul class="links-nav"> <!-- JS: activarian un menu de opciones en focus/hover, por ej. Que hacer >>> actividades diurnas, actividades nocturnas, etc. -->
-            <li> <button href="" aria-label="Que hacer, actividades en la ciudad">Que hacer</button> </li>
-            <li> <button href="" aria-label="Consejos, para una mejor estadia">Consejos</button> </li>
-            <li> <button href="" aria-label="Conoce mas sobre la ciudad">Informacion</button> </li>
-            <li> <button href="" aria-label="Contactos utiles">Contacto</button> </li>
+            <li> <button aria-label="Que hacer, actividades en la ciudad">Que hacer</button> </li>
+            <li> <button aria-label="Consejos, para una mejor estadia">Consejos</button> </li>
+            <li> <button aria-label="Conoce mas sobre la ciudad">Informacion</button> </li>
+            <li> <button aria-label="Contactos utiles">Contacto</button> </li>
         </ul>
 
         <button aria-label="menu de opciones para telefonos" class="burger">
-            <img src="https://i.ibb.co/wrdJJtDb/bars-solid-full.png" alt="bars-solid-full">
+            <img src="./assets/bars-solid-full.png" alt="bars-solid-full">
         </button>
     </nav>
 
     <header>
-        <img src="https://i.ibb.co/fdngNVrw/fotoprincipal.png" alt="imagen de buenos aires como fondo promocional">
-
+        <img id="id-header-fondo-horizontal" src="./assets/header-horizontal.jpg" alt="imagen de buenos aires como fondo promocional">
+        <img id="id-header-fondo-vertical" src="./assets/header-vertical.jpg" alt="imagen de buenos aires como fondo promocional">
+        
         <hgroup>
             <h1>¿Porque visitar Buenos Aires?</h1>
             <p>La famosa ciudad que nunca duerme</p>
@@ -45,13 +46,13 @@
         <!-- JS: Al hacer click en una de estas opciones, cambiaria el diseño/color segun corresponda (dia/noche)-->
 
         <div>
-            <img src="https://i.ibb.co/6RvN1WXx/foto-dia.png" alt="foto-dia">
-            <button>Actividades nocturnas</button>
+            <img src="./assets/fotodia.png" alt="foto-dia">
+            <button>Actividades diurnas</button>
         </div>
         
         <div>
-            <img src="https://i.ibb.co/7JvQ6wMw/foto-noche.png" alt="foto-noche">
-            <button>Actividades diurnas</button>
+            <img src="./assets/fotonoche.png" alt="foto-noche">
+            <button class="noche">Actividades nocturnas</button>
         </div>
     </section>
 
@@ -67,22 +68,16 @@
         <div class="selector-avanzado">
             <form action="">
                 <div>
-                    <label for="id-dias-semana">¿que dia?</label> <br/>
+                    <label class="exterior" for="id-dias-semana">¿En que momento de la semana?</label>
                     
                     <div id="id-dias-semana">
-                        <div class="check-dia">
-                            <input type="checkbox" id="semana" />
-                            <label for="lunes">Dia de semana</label>
-                        </div>
-                        <div class="check-dia">
-                            <input type="checkbox" id="finde" />
-                            <label for="martes">Fin de semana</label>
-                        </div>
+                        <label> <input type="checkbox" name="semana" value="1" /> <span>Dia de semana</span></label>
+                        <label> <input type="checkbox" name="finde" value="2" /> <span>Fin de semana</span></label>
                     </div>
                 </div>
 
                 <div>
-                    <label for="id-horario">¿Cuando te gusta salir?</label> <br/>
+                    <label class="exterior" for="id-horario">¿Cuando te gusta salir?</label>
 
                     <select name="horario" id="id-horario"> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
                         <option value="1">Me gusta salir de noche</option>
@@ -91,7 +86,7 @@
                 </div>
 
                 <div>
-                    <label for="id-tipo-actividad">¿Que te gusta hacer?</label> <br/>
+                    <label class="exterior" for="id-tipo-actividad">¿Que te gusta hacer?</label>
 
                     <select name="tipo-actividad" id="id-tipo-actividad">
                         <option value="1">Deporte</option>
@@ -103,7 +98,7 @@
                 </div>
 
                 <div>
-                    <label for="id-tipo-grupo">¿Con quienes?</label> <br/>
+                    <label class="exterior" for="id-tipo-grupo">¿Con quienes?</label>
 
                     <select name="tipo-grupo" id="id-tipo-grupo">
                         <option value="1">Familia</option>
@@ -133,7 +128,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
                 
-                <img src="https://i.ibb.co/MyLFyLHq/rosedales.png" alt="foto aerea de los rosedales">
+                <img src="./assets/rosedales.png" alt="foto aerea de los rosedales">
             </article>
 
             <article class="tarjeta reversa">
@@ -147,7 +142,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
                 
-                <img src="https://i.ibb.co/KjmqyBD6/botanico.png" alt="exterior del jardin botanico">
+                <img src="./assets/botanico.png" alt="exterior del jardin botanico">
             </article>  
 
             <article class="tarjeta">
@@ -159,7 +154,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
                 
-                <img src="https://i.ibb.co/KzQp375p/japones.png" alt="foto de los jardines japones">
+                <img src="./assets/japones.png" alt="foto de los jardines japones">
             </article>  
 
             <article class="tarjeta reversa">
@@ -171,7 +166,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
 
-                <img src="https://i.ibb.co/TMKYL4VY/laboca.png" alt="barrio de la boca">
+                <img src="./assets/laboca.png" alt="barrio de la boca">
             </article>  
         </div>
             
@@ -193,7 +188,7 @@
                 </div>
                 
                 
-                <img src="https://i.ibb.co/HpHg41Wq/bar.png" alt="interior del bar rey de copas">
+                <img src="./assets/bar.png" alt="interior del bar rey de copas">
             </article>
 
             <article class="tarjeta reversa">
@@ -205,7 +200,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
                 
-                <img src="https://i.ibb.co/DgfswwJw/tango.png" alt="foto del tango porteño">
+                <img src="./assets/tango.png" alt="foto del tango porteño">
             </article>  
 
             <article class="tarjeta">
@@ -217,7 +212,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
 
-                <img src="https://i.ibb.co/8gxbT1Lf/flotante.png" alt="foto del casino flotante">
+                <img src="./assets/flotante.png" alt="foto del casino flotante">
             </article>  
 
             <article class="tarjeta reversa">
@@ -229,7 +224,7 @@
                     <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                 </div>
 
-                <img src="https://i.ibb.co/DHz73hSz/madero.png" alt="foto aerea de puerto madero">
+                <img src="./assets/madero.png" alt="foto aerea de puerto madero">
             </article> 
         </div>
     </section>
@@ -239,7 +234,9 @@
     </section>
     
     <footer>
-
+        <p>UCES - Programacion Web I - Grupo 3</p>
+        <p>Turismo Buenos Aires</p>
+        <img src="./assets/logo-ciudad-footer.png" alt="logo de buenos aires ciudad">
     </footer>
 </body>
 </html>

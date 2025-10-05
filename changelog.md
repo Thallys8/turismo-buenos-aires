@@ -2,6 +2,15 @@
 
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
+### Added  
+- [backport/release-actividad-obligatoria-2] backport de la release numero 2
+PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+
+### Changed 
+
+
+### Fixed
+
 ---
 
 ## [Release Actividad Obligatoria Nº 2] - 2025-09-26
@@ -10,22 +19,29 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 - [feature/desarrollador-frontend-estilos-css] Se genero el codigo css para estilos y responsive  
 PR: [#28](https://github.com/Thallys8/turismo-buenos-aires/pull/28) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
-- [feature/documentador-qa-tester] Se genero lo test qa, se creó el archivo de  indice de test qa.  
+- [feature/documentador-qa-tester] Se genero lo test qa, se creó el archivo de  indice de test qa. Actualización del diseño el mockup de la home page, para la versión que deberá implementar css. Se actualizó el Readme con las informaciones de los roles para la segunda entreaga.  
 PR: [#31](https://github.com/Thallys8/turismo-buenos-aires/pull/31) Thallys8 (Coordinador y DevOps + QA Tester).
 
 ### Changed 
 - [backport/release-actividad-obligatoria-1] Se genero el backport release > develop  
 PR: [#27](https://github.com/Thallys8/turismo-buenos-aires/pull/27) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/documentador-qa-tester] Actualización del diseño el mockup de la home page, para la versión que deberá implementar css.  
-PR: [#31](https://github.com/Thallys8/turismo-buenos-aires/pull/31) Thallys8 (Coordinador y DevOps + QA Tester).
+- [feature/correccion-actividad-obligatoria-2] Se cambio el diseño del mockup para que refleje el diseño actualizado  
+PR: [#44](https://github.com/Thallys8/turismo-buenos-aires/pull/44) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
+- [feature/correccion-actividad-obligatoria-2] Se cambio el diseño del mockup para aplicar las correcciones y nuevos elementos  
+PR: [#46](https://github.com/Thallys8/turismo-buenos-aires/pull/46) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
 
 ### Fixed
 - [feature/desarrollador-frontend-estilos-css] correcciones al codigo css y comentarios mas correcciones en el html  
 PR: [#29](https://github.com/Thallys8/turismo-buenos-aires/pull/29) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/desarrollador-frontend-estilos-css] ajusto el css al figma y arreglo el diseño responsive del formulario 
+- [feature/desarrollador-frontend-estilos-css] ajusto el css al figma y arreglo el diseño responsive del formulario  
 PR: [#30](https://github.com/Thallys8/turismo-buenos-aires/pull/30) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
-- [feature/documentador-qa-tester] Se actualizó el Readme con las informaciones de los roles para la segunda entreaga.  
-PR: [#31](https://github.com/Thallys8/turismo-buenos-aires/pull/31) Thallys8 (Coordinador y DevOps + QA Tester).
+- [feature/documentador-qa-tester] Se corrigió los test case incorrectos y se agrugarón los que faltaban.  
+PR: [#43](https://github.com/Thallys8/turismo-buenos-aires/pull/43) Thallys8 (Coordinador y DevOps + QA Tester).
+- [feature/correccion-actividad-obligatoria-2] Se corrigio los test cases para que tengan sus issues y comenten lo corregido  
+PR: [#50](https://github.com/Thallys8/turismo-buenos-aires/pull/50) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
+- [feature/correccion-actividad-obligatoria-2] Se agrego a links en test cases y se corrigio el css para arreglar los botones  
+PR: [#51](https://github.com/Thallys8/turismo-buenos-aires/pull/51) @Tomig02 (Desarrollador Frontend CSS + Desarrollador Responsive)
+
 
 ## [Release Actividad Obligatoria Nº 1] - 2025-09-05
 ### Added 
