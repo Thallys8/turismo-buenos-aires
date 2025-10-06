@@ -1,4 +1,4 @@
-# Test Case 9: Responsive – Implementación de Componente Avanzado HTML (1)
+# Test Case 9: Responsive – Implementación de Componente Avanzado HTML (2)
 
 ## Objetivo
 Validar la integración, compatibilidad y comportamiento responsive del primer componente avanzado HTML implementado que es un mapa con la localizacion registrada de la atraccion turista en diferentes dispositivos y navegadores.  

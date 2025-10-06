@@ -5,3 +5,5 @@
 - [Test case 3 - Performance y Velocidad de Carga](test-case-3.md)
 - [Test case 4 - Accesibilidad Web (WCAG 2.1)](test-case-4.md)
 - [Test case 5 - Cross-Platform y Validación CSS/HTML](test-case-5.md)
+- [Test case 9 – Implementación de Componente Avanzado HTML (1)](test-case-9.md)
+- [Test case 10 – Implementación de Componente Avanzado HTML (2)](test-case-10.md)
