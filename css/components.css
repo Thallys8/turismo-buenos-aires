@@ -102,7 +102,6 @@ nav .burger img{
     justify-self: center;
     display: flex;
     justify-content: space-between;
-    margin: auto;
 
     width: 90%;
 
@@ -124,10 +123,15 @@ nav .burger img{
 .tarjeta img{
     object-fit: cover;
     width: 55%;
-    height: 38vh;
 }
 .reversa{ /*  */
     flex-direction: row-reverse;
+}
+.tarjeta .direccion-label{
+    font-weight: bold;
+}
+.tarjeta details{
+    margin-bottom: 0.5em;
 }
 
 
