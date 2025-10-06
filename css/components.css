@@ -20,10 +20,16 @@ button:active{
     border: 1px solid black;
 }
 
+button.dia{
+    background-color: #98EBEE;
+    border: 1px solid #98EBEE;
+}
+
 button.noche{
     background-color: #92B4F3;
     border: 1px solid #92B4F3;
 }
+
 button.noche:hover{
     cursor: pointer;
     background-color: rgb(163, 193, 250);
@@ -123,6 +129,7 @@ nav .burger img{
 .reversa{ /*  */
     flex-direction: row-reverse;
 }
+
 
 
 
