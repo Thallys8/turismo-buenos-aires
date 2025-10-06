@@ -1,7 +1,7 @@
 # Test Case 9: Responsive – Implementación de Componente Avanzado HTML (1)
 
 ## Objetivo
-Validar la integración, compatibilidad y comportamiento responsive del primer componente avanzado HTML implementado (ejemplo: **iframe de YouTube/Google Maps** o **elemento `<video>` con subtítulos track**) en diferentes dispositivos y navegadores.  
+Validar la integración, compatibilidad y comportamiento responsive del primer componente avanzado HTML implementado un elemento detail con los horarios de los establecimientos en diferentes dispositivos y navegadores.  
 
 ## Herramientas Utilizadas
 - BrowserStack Mobile Testing  
@@ -25,7 +25,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Validaciones específicas
+## Validaciones específicas @TODO
 - Confirmar que el componente HTML se adapte a diferentes resoluciones de pantalla.  
 - Verificar que **no genere scroll horizontal indeseado**.  
 - Validar compatibilidad de controles (play, pause, zoom, interacción táctil).  
@@ -34,7 +34,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Uso de herramientas de compatibilidad y validación
+## Uso de herramientas de compatibilidad y validación @TODO
 - **Can I Use:** Verificar compatibilidad del componente HTML con navegadores principales (ej: Safari iOS, Chrome Android, Edge, Firefox).  
   **Capturas necesarias:**  
   1. Pantalla de resultados de [caniuse.com](https://caniuse.com) mostrando la tabla de soporte del componente.  
@@ -47,7 +47,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Performance en Mobile
+## Performance en Mobile @TODO
 - Medir el impacto del componente en la **performance total de la página** con PageSpeed.  
   **Capturas necesarias:**  
   1. Resultados del test de Google PageSpeed para **mobile**.  
@@ -60,7 +60,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Capturas esperadas
+## Capturas esperadas @TODO
 1. **Mobile (iPhone 14 Pro y Galaxy S23)** mostrando el componente adaptado en portrait y landscape.  
 2. **Tablet (iPad Air)** verificando correcta visualización e interacción.  
 3. **Desktop** confirmando la visualización completa y sin pérdida de funcionalidades.  
@@ -70,7 +70,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Resultado Esperado
+## Resultado Esperado @TODO
 - El componente HTML se adapta y funciona correctamente en todos los dispositivos probados.  
 - Mantiene la coherencia del diseño e integración con Bootstrap.  
 - No afecta de forma crítica la performance en mobile.  
@@ -78,7 +78,7 @@ Validar la integración, compatibilidad y comportamiento responsive del primer c
 
 ---
 
-## Issues encontrados
+## Issues encontrados @TODO
 Registrar aquí los problemas detectados y su correspondiente issue en el repositorio:  
 
 | IssueID | Descripción 
