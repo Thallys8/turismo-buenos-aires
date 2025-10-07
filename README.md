@@ -8,7 +8,13 @@
 ## 📣 Descripcion
 Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos
 
-## 🎯 Objetivo del entregable
+## 🎯 Objetivo del entregable - entrega 3 parcial 1
+En esta entrega se busca completar la migracion de lo creado y diseñado hacia la libreria bootstrap, junto a la implementacion de nuevos elementos que provee tanto bootstrap como el html mas avanzado
+
+## 🎯 Objetivo del entregable - entrega 2 (Finalizada)
+En esta entrega se busca completar la implementacion de los estilos css y un diseño responsive que se adecue a los diferentes tipos de dispositivos, tambien documentar el funcionamiento del sistema y corregir cualquier problema que se descubran en el proceso   
+
+## 🎯 Objetivo del entregable - entrega 1 (Finalizada)
 En esta entrega se busca completar la estructuracion del git y index.html inicial, preparar un mockup inicial del diseño, Registrar al menos 5 prompts de IA y lograr un README y CHANGELOG que detallen nuestro trabajo
 
 ## 📂 Documentacion
@@ -21,5 +27,5 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 ## 👥 Integrantes
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
-| Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Documentador / QA Tester | 
-| Guardo Tomas Agostino  | 153835  | Tomig02  | Desarrollador Frontend / CSS + Especialista en Responsive Design  | 
+| Thallys Gomes Leandro  | 145287  | Thallys8  | Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap | 
+| Guardo Tomas Agostino  | 153835  | Tomig02  | Coordinador / DevOps + Desarrollador de Componentes HTML Avanzados  | 
