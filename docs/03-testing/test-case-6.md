@@ -58,21 +58,6 @@ Verificar la adaptabilidad responsive en dispositivos móviles, tablets y deskto
  
 - Otras media queries personalizadas presentes en `responsive.css`.  
 
-- Mobile Portrait:  
-  ![Mobile Portrait](../screenshots/device-portrait-mobile-320px.png)
-- Mobile Landscape:  
-  ![Mobile Landscape](../screenshots/device-landscape-mobile-320px.png)
-  
-- Tablet Portrait:  
-  ![Tablet Portrait](../screenshots/device-portrait-tablet-768px.png)
-- Tablet Landscape:  
-  ![Tablet Landscape](../screenshots/device-landscape-tablet-768px.png)
-  
-- Desktop Portrait:  
-  ![Desktop Portrait](../screenshots/device-portrait-desktop-1024px.png)
-- Desktop Landscape:  
-  ![Desktop Landscape](../screenshots/device-landscape-desktop-1024px.png)
-
 ---
 
 ## Sistema de Grillas de Bootstrap
