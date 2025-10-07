@@ -7,6 +7,8 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/dev-frontend-bootstrap-update-migration] Se generó el código Boosttrap y se incorporó al index.html, creamos componentes necesarios para esa integración.  
 PR: [#56](https://github.com/Thallys8/turismo-buenos-aires/pull/56) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
+- [feature/dev-frontend-bootstrap-update-migration] Se agregó los test case 6, 7 y.   
+PR: [#65](https://github.com/Thallys8/turismo-buenos-aires/pull/63) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño
 PR: [#57](https://github.com/Thallys8/turismo-buenos-aires/pull/57) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron dos nuevos tests de html y se agregaron screenshots
