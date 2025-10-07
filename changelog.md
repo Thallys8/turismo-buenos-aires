@@ -13,6 +13,8 @@ PR: [#57](https://github.com/Thallys8/turismo-buenos-aires/pull/57) @Tomig02 (Co
 ### Changed 
 
 ### Fixed
+- [backport/correccion-de-backport] correccion de backport por commit faltante
+PR: [#55](https://github.com/Thallys8/turismo-buenos-aires/pull/55) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 ---
 
