@@ -48,12 +48,22 @@ Verificar la adaptabilidad responsive en dispositivos móviles, tablets y deskto
 
   
 ## Media Queries Validadas
--
+  -320px:  
   ![min-width: 320px](../screenshots/t6-media-querie-320px.png)  
+  
+  -481px:  
   ![min-width: 481px](../screenshots/t6-media-querie-481px.png)  
+  
+  -768px:  
   ![min-width: 768px](../screenshots/t6-media-querie-768px.png)  
+  
+  -866px:  
   ![min-width: 866px](../screenshots/t6-media-querie-866px.png) 
+  
+  -1024px:  
   ![min-width: 1024px](../screenshots/t6-media-querie-1024px.png)  
+  
+  -1080px:  
   ![min-width: 1080px](../screenshots/t6-media-querie-1080px.png)    
  
 - Otras media queries personalizadas presentes en `responsive.css`.  
