@@ -76,3 +76,7 @@ header hgroup, header p{
 header hgroup * {
     margin: auto;
 }
+
+.google-maps{
+    width: 100%;
+}

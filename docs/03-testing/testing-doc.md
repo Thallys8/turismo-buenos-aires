@@ -8,3 +8,5 @@
 - [Test case 6 - Responsive – Migración a Bootstrap](test-case-6.md)
 - [Test case 7 - Responsive – Implementación de Componente Avanzado Bootstrap](test-case-7.md)
 - [Test case 8 - Responsive – Implementación de Componente Avanzado Bootstrap](test-case-8.md)
+- [Test case 9 – Implementación de Componente Avanzado HTML (1)](test-case-9.md)
+- [Test case 10 – Implementación de Componente Avanzado HTML (2)](test-case-10.md)

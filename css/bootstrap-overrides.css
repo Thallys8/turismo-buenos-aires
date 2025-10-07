@@ -13,3 +13,9 @@
 .navbar-nav .nav-link:hover {
   color: #0056b3 !important;
 }
+
+.tarjeta {
+  padding-right: 0;
+  padding-left: 0; 
+}
+
