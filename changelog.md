@@ -11,6 +11,8 @@ PR: [#56](https://github.com/Thallys8/turismo-buenos-aires/pull/56) @Thallys8 (D
 PR: [#57](https://github.com/Thallys8/turismo-buenos-aires/pull/57) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 ### Changed 
+- [feature/devops-documentacion-readme-changelog] correcciones en changelog y readme mas mockup faltante
+PR: [#62](https://github.com/Thallys8/turismo-buenos-aires/pull/62) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 ### Fixed
 - [backport/correccion-de-backport] correccion de backport por commit faltante
