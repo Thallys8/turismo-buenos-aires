@@ -1,4 +1,4 @@
-# Test Case 7: Responsive – Implementación de Componente Avanzado Bootstrap (1)
+# Test Case 7: Responsive – Implementación de Componente Avanzado Bootstrap (Botón)
 
 ## Objetivo
 Verificar la correcta integración, personalización y comportamiento responsive del primer componente avanzado de Bootstrap seleccionado (ejemplo: **Navbar con menú desplegable** o **Accordion interactivo**) en diferentes dispositivos y navegadores.  
