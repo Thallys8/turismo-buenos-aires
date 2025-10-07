@@ -37,13 +37,13 @@ Verificar la correcta integración, personalización y comportamiento responsive
 3. **Desktop** confirmando el comportamiento esperado con todas las funcionalidades activas.  
 4. **DevTools → Performance & Network** mostrando que la integración del componente no afectó la performance ni cargó CSS/JS extra innecesario.
 
-   - Mobile:
+   - Mobile:  
      ![Mobile](../screenshots/t7-mobile-comp-boton.png)
      
-   - Tablet:
+   - Tablet:  
      ![Tablet](../screenshots/t7-tablet-comp-boton.png)
      
-   - Desktop:
+   - Desktop:  
      ![Desktop](../screenshots/t7-desktop-comp-boton.png)
      
    - Performance & Networ:  
