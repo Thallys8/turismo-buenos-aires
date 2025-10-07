@@ -9,6 +9,8 @@ PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Co
 PR: [#56](https://github.com/Thallys8/turismo-buenos-aires/pull/56) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño
 PR: [#57](https://github.com/Thallys8/turismo-buenos-aires/pull/57) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/dev-html-avanzado-implementacion-elementos] Se implementaron dos nuevos tests de html y se agregaron screenshots
+PR: [#61](https://github.com/Thallys8/turismo-buenos-aires/pull/61) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 ### Changed 
 
