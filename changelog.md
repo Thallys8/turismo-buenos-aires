@@ -3,6 +3,17 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+
+
+### Changed 
+
+### Fixed
+
+---
+
+## [Release Parcial Nº 1] - 2025-10-06
+
+### Added  
 - [backport/release-actividad-obligatoria-2] backport de la release numero 2
 PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/dev-frontend-bootstrap-update-migration] Se generó el código Boosttrap y se incorporó al index.html, creamos componentes necesarios para esa integración.  
@@ -21,8 +32,9 @@ PR: [#62](https://github.com/Thallys8/turismo-buenos-aires/pull/62) @Tomig02 (Co
 ### Fixed
 - [backport/correccion-de-backport] correccion de backport por commit faltante
 PR: [#55](https://github.com/Thallys8/turismo-buenos-aires/pull/55) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [release/correccion-html-release] correccion de html por review w3c y arreglo el changelog
+PR: [#66](https://github.com/Thallys8/turismo-buenos-aires/pull/66) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
----
 
 ## [Release Actividad Obligatoria Nº 2] - 2025-09-26
 
