@@ -32,7 +32,7 @@ PR: [#62](https://github.com/Thallys8/turismo-buenos-aires/pull/62) @Tomig02 (Co
 ### Fixed
 - [backport/correccion-de-backport] correccion de backport por commit faltante
 PR: [#55](https://github.com/Thallys8/turismo-buenos-aires/pull/55) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
-- [release/correccion-html-release] correccion de html por review w3c y arreglo el changelog
+- [release/correccion-html-release-w3c] correccion de html por review w3c y arreglo el changelog
 PR: [#66](https://github.com/Thallys8/turismo-buenos-aires/pull/66) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 
