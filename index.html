@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoBaires</title>
+    
+    <link rel="preload" as="image" href="/assets/header-vertical.webp"/>
+    <link rel="preload" as="image" href="/assets/header-horizontal.webp"/>
+    <link rel="preload" as="font" href="/assets/Inter-VariableFont.ttf" crossorigin="anonymous" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-   
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+    
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/components.css">
     <link rel="stylesheet" href="./css/responsive.css">
-    <title>InfoBaires</title>
-    <link href="css/bootstrap-overrides.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/bootstrap-overrides.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #EEEEEE;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="./assets/buenos-aires-ciudad-seeklogo.png" alt="Buenos Aires Logo" width="140" height="50" class="me-2">
+            <img src="./assets/buenos-aires-ciudad-seeklogo.webp" alt="Buenos Aires Logo" width="140" height="50" class="me-2">
             <span>InfoBaires</span>
             </a>
 
@@ -41,8 +44,9 @@
 
 
     <header>
-        <img id="id-header-fondo-horizontal" src="./assets/header-horizontal.jpg" alt="imagen de buenos aires como fondo promocional">
-        <img id="id-header-fondo-vertical" src="./assets/header-vertical.jpg" alt="imagen de buenos aires como fondo promocional">
+        <img fetchpriority=high id="id-header-fondo-vertical" src="./assets/header-vertical.webp" alt="imagen de buenos aires como fondo promocional">
+        <img fetchpriority=high id="id-header-fondo-horizontal" src="./assets/header-horizontal.webp" alt="imagen de buenos aires como fondo promocional">
+        
         
         <hgroup>
             <h1>¿Porque visitar Buenos Aires?</h1>
@@ -62,12 +66,12 @@
 
         <!-- Implementando botones Bootstrap -->
         <div>
-            <img src="./assets/fotodia.png" alt="foto-dia">
+            <img src="./assets/fotodia.webp" alt="foto-dia" loading="lazy">
             <button type="button" class="btn dia">Actividades diurnas</button>
         </div>
         
         <div>
-            <img src="./assets/fotonoche.png" alt="foto-noche">
+            <img src="./assets/fotonoche.webp" alt="foto-noche" loading="lazy">
             <button type="button" class="btn noche">Actividades nocturnas</button>
         </div>
     </section>
@@ -164,7 +168,7 @@
                             </iframe>
                         </div>                            
 
-                        <img src="./assets/rosedales.png" alt="foto aerea de los rosedales">
+                        <img src="./assets/rosedales.webp" alt="foto aerea de los rosedales" loading="lazy">
                     </article>
 
                     <article class="tarjeta reversa col-6"> 
@@ -192,7 +196,7 @@
                             </iframe>
                         </div>
                             
-                        <img src="./assets/botanico.png" alt="exterior del jardin botanico">
+                        <img src="./assets/botanico.webp" alt="exterior del jardin botanico" loading="lazy">
                     </article>      
                 </div>
                     
@@ -225,7 +229,7 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/japones.png" alt="foto de los jardines japones">
+                        <img src="./assets/japones.webp" alt="foto de los jardines japones" loading="lazy">
                     </article>  
 
                     <article class="tarjeta reversa col-6">
@@ -253,7 +257,7 @@
                         </div>
                         
                         
-                        <img src="./assets/laboca.png" alt="barrio de la boca">
+                        <img src="./assets/laboca.webp" alt="barrio de la boca" loading="lazy">
                     </article>                     
                 </div>
             </div>
@@ -291,7 +295,7 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/bar.png" alt="interior del bar rey de copas">
+                        <img src="./assets/bar.webp" alt="interior del bar rey de copas" loading="lazy">
                     </article>
 
                     <article class="tarjeta reversa col-6 col-lg-12">
@@ -319,7 +323,7 @@
                             </iframe>
                         </div>
                         
-                        <img src="./assets/tango.png" alt="foto del tango porteño">
+                        <img src="./assets/tango.webp" alt="foto del tango porteño" loading="lazy">
                     </article>  
 
                     <article class="tarjeta col-6 col-lg-12">
@@ -347,7 +351,7 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/flotante.png" alt="foto del casino flotante">
+                        <img src="./assets/flotante.webp" alt="foto del casino flotante" loading="lazy">
                     </article>  
 
                     <article class="tarjeta reversa col-6 col-lg-12">
@@ -375,7 +379,7 @@
                             </iframe>
                         </div>
                         
-                        <img src="./assets/madero.png" alt="foto aerea de puerto madero">
+                        <img src="./assets/madero.webp" alt="foto aerea de puerto madero" loading="lazy">
                     </article> 
                 </div>
             </div>       
@@ -389,9 +393,9 @@
     <footer>
         <p>UCES - Programacion Web I - Grupo 3</p>
         <p>Turismo Buenos Aires</p>
-        <img src="./assets/logo-ciudad-footer.png" alt="logo de buenos aires ciudad">
+        <img src="./assets/logo-ciudad-footer.webp" alt="logo de buenos aires ciudad">
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-5CMc7f1ZfFtJZmDiy7Hz0GnYkIfP+T7ijKqKnPiMf4S06QZMy9nqlv9dMkFocx9m" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
