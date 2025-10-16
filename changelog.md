@@ -34,6 +34,8 @@ PR: [#62](https://github.com/Thallys8/turismo-buenos-aires/pull/62) @Tomig02 (Co
 PR: [#55](https://github.com/Thallys8/turismo-buenos-aires/pull/55) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [release/correccion-html-release-w3c] correccion de html por review w3c y arreglo el changelog
 PR: [#66](https://github.com/Thallys8/turismo-buenos-aires/pull/66) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/correcciones-primer-parcial] correcciones de rendimiento, cambio de jpeg a webp y ttf a woff2, agrego lazyload y preload de archivos
+PR: [#67](https://github.com/Thallys8/turismo-buenos-aires/pull/67) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 
 
 ## [Release Actividad Obligatoria Nº 2] - 2025-09-26
