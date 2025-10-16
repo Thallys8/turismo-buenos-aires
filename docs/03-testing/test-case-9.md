@@ -1,7 +1,7 @@
 # Test Case 9: Responsive – Implementación de Componente Avanzado HTML (1)
 
 ## Objetivo
-Validar la integración, compatibilidad y comportamiento responsive del primer componente avanzado HTML implementado un elemento detail con los horarios de los establecimientos en diferentes dispositivos y navegadores.  
+Validar la integración, compatibilidad y comportamiento responsive del primer componente avanzado HTML implementado un elemento detail + summary con los horarios de los establecimientos en diferentes dispositivos y navegadores.  
 
 ## Herramientas Utilizadas
 - BrowserStack Mobile Testing  
@@ -124,10 +124,11 @@ TODO: Pendiente por falta de segundos en plan gratuito
 - Movimientos: No posee grandes movimientos, pero se expande y mueve otros elementos (aunque no daña el diseño)
 
 5. **Reporte Lighthouse/PageSpeed** confirmando que no hubo degradación significativa de performance.  
-![alt text](../screenshots/html-test-lighthouse-velocidad.png)
+![alt text](../screenshots/html-test-rendimiento-mejor.png)
 
 6. **Reporte W3C Validator** mostrando documento validado sin errores críticos.  
-![alt text](html-test-w3c.png)
+![alt text](html-test-w3c-mejor.png)
+
 ---
 
 ## Resultado Esperado
@@ -144,3 +145,4 @@ No se encontraron problemas relacionados a este elemento en especifico
 | IssueID | Descripción 
 |----|-------------|
 | [#60](https://github.com/Thallys8/turismo-buenos-aires/issues/60)  | Se detectaron errores de implementacion en el HTML |
+| [#58](https://github.com/Thallys8/turismo-buenos-aires/issues/58)  | Se detectaron errores de rendimiento (informados primero por test 6) |
