@@ -126,7 +126,7 @@ TODO: Pendiente por falta de segundos en plan gratuito
 - Movimientos: No es una funcionalidad prestada por la API de google maps embed
 
 5. **Reporte Lighthouse/PageSpeed** confirmando que no hubo degradación significativa de performance.  
-![alt text](../screenshots/html-test-lighthouse-velocidad.png)
+![alt text](../screenshots/html-test-rendimiento-mejor.png)
 
 6. **Reporte W3C Validator** mostrando documento validado sin errores críticos.  
 ![alt text](html-test-w3c.png)
@@ -145,4 +145,5 @@ TODO: Pendiente por falta de segundos en plan gratuito
 | IssueID | Descripción 
 |----|-------------|
 | [#60](https://github.com/Thallys8/turismo-buenos-aires/issues/60)  | Se detectaron errores de implementacion en el HTML |
+| [#58](https://github.com/Thallys8/turismo-buenos-aires/issues/58)  | Se detectaron errores de rendimiento (informados primero por test 6) |
 | [#59](https://github.com/Thallys8/turismo-buenos-aires/issues/59)  | Se detecto un problema critico, que seria que la API de google bloque a los usuarios de IOS que predominantemente usan safari |

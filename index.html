@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InfoBaires</title>
     
-    <link fetchpriority=high should be applied rel="preload" as="image" href="./assets/buenos-aires-ciudad-seeklogo.webp"/>
-    <link fetchpriority=high should be applied rel="preload" as="image" href="./assets/header-vertical.webp"/>
-    <link fetchpriority=high should be applied rel="preload" as="image" href="./assets/header-horizontal.webp"/>
-    <link fetchpriority=high should be applied rel="preload" as="font" href="./assets/Inter-VariableFont.woff2" crossorigin="anonymous" />
+    <link fetchpriority=high rel="preload" as="image" href="./assets/buenos-aires-ciudad-seeklogo.webp">
+    <link fetchpriority=high rel="preload" as="image" href="./assets/header-vertical.webp">
+    <link fetchpriority=high rel="preload" as="image" href="./assets/header-horizontal.webp">
+    <link fetchpriority=high rel="preload" as="font" href="./assets/Inter-VariableFont.woff2" crossorigin="anonymous">
 
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="./css/styles.css" as="style" onload="this.rel='stylesheet'">
@@ -26,9 +26,9 @@
     </noscript>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #EEEEEE;">
+    <nav class="navbar navbar-expand-lg navbar-light nav-bg-color">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="./assets/buenos-aires-ciudad-seeklogo.webp" alt="Buenos Aires Logo" width="140" height="50" class="me-2">
             <span>InfoBaires</span>
             </a>
@@ -39,8 +39,8 @@
             </button>
 
             <!-- Implementando comonente nav Link Bootstrap -->
-            <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse w-100 nav-bg-color rounded-bottom" id="navbarMenu">
+            <ul class="navbar-nav ms-md-auto mb-2 mb-lg-0  p-3 p-md-1 col-12 col-lg-8 text-center ">
                 <li class="nav-item"><a class="nav-link active" href="#">Qué hacer</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Consejos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Información</a></li>
@@ -52,22 +52,27 @@
 
 
 
-    <header>
-        <img width="100vw" id="id-header-fondo-vertical" src="./assets/header-vertical.webp" alt="imagen de buenos aires como fondo promocional">
-        <img width="100vw" id="id-header-fondo-horizontal" src="./assets/header-horizontal.webp" alt="imagen de buenos aires como fondo promocional">
+    <header class="m-0 container-fluid g-0">
+        <div class="w-100 h-100 row">
+            <div class="col-12 h-75 w-100 p-0">
+                <picture class="w-100 h-100 g-0">
+                    <source srcset="./assets/header-horizontal.webp" type="image/webp" media="(min-width: 600px)">
+                    <img class="object-fit-cover h-100 w-100 g-0" src="./assets/header-vertical.webp" alt="imagen de buenos aires como fondo promocional" >
+                </picture>
+            </div>
+            <div class="col-12 h-25 w-100 p-2">
+                <hgroup>
+                    <h1>¿Porque visitar Buenos Aires?</h1>
+                    <p>La famosa ciudad que nunca duerme</p>
+                </hgroup>
+                <p>
+                    Animate a visitar una ciudad vibrante que siempre propone algo para hacer <br>
+                    Un museo a cielo abierto donde se respira arte, con la mirada puesta en el futuro <br>
+                    ¿Existe un mejor lugar para encontrarse?
+                </p>
+            </div>
+        </div>
         
-        
-        <hgroup>
-            <h1>¿Porque visitar Buenos Aires?</h1>
-            <p>La famosa ciudad que nunca duerme</p>
-        </hgroup>
-        <p>
-            Animate a visitar una ciudad vibrante que siempre propone algo para hacer <br>
-            Un museo a cielo abierto donde se respira arte, con la mirada puesta en el futuro <br>
-            ¿Existe un mejor lugar para encontrarse?
-        </p>
-
-        <span>V Descubrilo V</span>
     </header>
 
     <section aria-label="selector de actividades diurnas o nocturnas" class="seleccion-dia-noche">
@@ -75,12 +80,12 @@
 
         <!-- Implementando botones Bootstrap -->
         <div>
-            <img src="./assets/fotodia.webp" alt="foto-dia" loading="lazy">
+            <img loading="lazy" src="./assets/fotodia.webp" alt="foto-dia" >
             <button type="button" class="btn dia">Actividades diurnas</button>
         </div>
         
         <div>
-            <img src="./assets/fotonoche.webp" alt="foto-noche" loading="lazy">
+            <img loading="lazy" src="./assets/fotonoche.webp" alt="foto-noche" >
             <button type="button" class="btn noche">Actividades nocturnas</button>
         </div>
     </section>
@@ -138,7 +143,8 @@
                     </select>
                 </div>
 
-                <button type="submit">Busquemos</button>
+                
+                <button type="button" class="btn">Busquemos</button>
             </form>
         </div>
     </section>
@@ -153,20 +159,20 @@
                 <!-- Implementando Fila Bootstrap -->
                 <div class="row justify-content-evenly">
                     <!-- Implementando Columna Bootstrap -->
-                    <article class="tarjeta col-6">
-                        <div>
-                            <hgroup>
+                    <article class="tarjeta col-6 container">
+                        <div class="row h-md-100">
+                            <hgroup class="col-12">
                                 <h3>Rosedal de palermo</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
 
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-rosedal"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col" id="id-mapa-rosedal"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -177,24 +183,24 @@
                             </iframe>
                         </div>                            
 
-                        <img src="./assets/rosedales.webp" alt="foto aerea de los rosedales" loading="lazy">
+                        <img loading="lazy" src="./assets/rosedales.webp" alt="foto aerea de los rosedales" >
                     </article>
 
-                    <article class="tarjeta reversa col-6"> 
-                        <div>
-                            <hgroup>
-                                <h3>Jardín Botánico de Buenos Aires</h3>
+                    <article class="tarjeta reversa col-6 container"> 
+                        <div class="row h-md-100">
+                            <hgroup class="col-12">
+                                <h3>Jardín Botánico</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
 
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
 
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-botanico"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-botanico"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -214,20 +220,20 @@
 
                 <div class="row justify-content-evenly">
 
-                    <article class="tarjeta col-6">
-                        <div>
-                            <hgroup>
-                                <h3>Jardín Japonés de Buenos Aires</h3>
+                    <article class="tarjeta col-6 container">
+                        <div class="row h-md-100">
+                            <hgroup class="col-12">
+                                <h3>Jardín Japonés</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
 
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-japones"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-japones"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -238,23 +244,23 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/japones.webp" alt="foto de los jardines japones" loading="lazy">
+                        <img loading="lazy" src="./assets/japones.webp" alt="foto de los jardines japones" >
                     </article>  
 
-                    <article class="tarjeta reversa col-6">
-                        <div>
-                            <hgroup>
-                                <h3>barrio de La Boca</h3>
+                    <article class="tarjeta reversa col-6 container">
+                        <div class="row h-md-100">
+                            <hgroup class="col-12">
+                                <h3>Barrio de La Boca</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                         
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-boca"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-boca"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -280,20 +286,20 @@
         <div class="actividades-opciones">
             <div class="container-fluid">
                 <div class="row justify-content-evenly">
-                    <article class="tarjeta col-6 col-lg-12">
-                        <div>
-                            <hgroup>
+                    <article class="tarjeta col-6 col-lg-12 container">
+                        <div class="row">
+                            <hgroup class="col-12">
                                 <h3>Rey de Copas Bar</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
 
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
                                 <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-bar"
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-bar"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -304,24 +310,24 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/bar.webp" alt="interior del bar rey de copas" loading="lazy">
+                        <img loading="lazy" src="./assets/bar.webp" alt="interior del bar rey de copas" >
                     </article>
 
-                    <article class="tarjeta reversa col-6 col-lg-12">
-                        <div>
-                            <hgroup>
+                    <article class="tarjeta reversa col-6 col-lg-12 container">
+                        <div class="row">
+                            <hgroup class="col-12">
                                 <h3>Tango Porteño</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
                             <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
 
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
                         
-                            <label class="direccion-label" >Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-tango"
+                            <label class="direccion-label col-12" >Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-tango"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -332,24 +338,24 @@
                             </iframe>
                         </div>
                         
-                        <img src="./assets/tango.webp" alt="foto del tango porteño" loading="lazy">
+                        <img loading="lazy" src="./assets/tango.webp" alt="foto del tango porteño" >
                     </article>  
 
-                    <article class="tarjeta col-6 col-lg-12">
-                        <div>
-                            <hgroup>
+                    <article class="tarjeta col-6 col-lg-12 container">
+                        <div class="row">
+                            <hgroup class="col-12">
                                 <h3>El casino flotante</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                         
-                            <details>
+                            <details class="col-12">
                             <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
                         
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-casino"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-casino"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -360,24 +366,24 @@
                             </iframe>
                         </div>
 
-                        <img src="./assets/flotante.webp" alt="foto del casino flotante" loading="lazy">
+                        <img loading="lazy" src="./assets/flotante.webp" alt="foto del casino flotante" >
                     </article>  
 
-                    <article class="tarjeta reversa col-6 col-lg-12">
-                        <div>
-                            <hgroup>
+                    <article class="tarjeta reversa col-6 col-lg-12 container">
+                        <div class="row">
+                            <hgroup class="col-12">
                                 <h3>Puerto Madero</h3>
                                 <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
                             </hgroup>
                             <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
                         
-                            <details>
+                            <details class="col-12">
                                 <summary>Horarios</summary>
                                 <p>*Horarios comerciales del lugar*</p>
                             </details>
                             
-                            <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9" id="id-mapa-puerto"
+                            <label class="direccion-label col-12">Direccion</label> <br>
+                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-puerto"
                                 width="180"
                                 height="150"
                                 style="border:0"
@@ -388,7 +394,7 @@
                             </iframe>
                         </div>
                         
-                        <img src="./assets/madero.webp" alt="foto aerea de puerto madero" loading="lazy">
+                        <img loading="lazy" src="./assets/madero.webp" alt="foto aerea de puerto madero" >
                     </article> 
                 </div>
             </div>       
@@ -402,7 +408,7 @@
     <footer>
         <p>UCES - Programacion Web I - Grupo 3</p>
         <p>Turismo Buenos Aires</p>
-        <img src="./assets/logo-ciudad-footer.webp" alt="logo de buenos aires ciudad">
+        <img loading="lazy" src="./assets/logo-ciudad-footer.webp" alt="logo de buenos aires ciudad">
     </footer>
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
