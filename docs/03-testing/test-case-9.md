@@ -105,7 +105,8 @@ La carga de diferentes recursos se encuentra bloqueando la renderizacion:
 ## Capturas esperadas @TODO
 1. **Mobile (iPhone 14 Pro y Galaxy S23)**
 **Landscape**
-TODO: Pendiente por falta de segundos en plan gratuito
+![alt text](../screenshots/html-test-iphone-14-land.png)
+![alt text](../screenshots/html-test-samsung-s23-land.png)
 
 **Portrait**
 ![alt text](../screenshots/html-test-samsung-s24-port.png)
