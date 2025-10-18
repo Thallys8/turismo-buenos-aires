@@ -108,9 +108,10 @@ La carga de diferentes recursos se encuentra bloqueando la renderizacion:
 
 **Landscape**
 TODO: Pendiente por falta de segundos en plan gratuito
-
+![alt text](../screenshots/html-test-iphone-14-land.png)
+![alt text](../screenshots/html-test-samsung-s23-land.png)
 **Portrait**
-![alt text](../screenshots/html-test-samsung-s24-port.png)
+![alt text](../screenshots/html-test-samsung-s23-port.png)
 ![alt text](../screenshots/html-test-iphone-14-port.png)
 
 2. **Tablet (iPad Air)** verificando correcta visualización e interacción.  
@@ -129,7 +130,7 @@ TODO: Pendiente por falta de segundos en plan gratuito
 ![alt text](../screenshots/html-test-rendimiento-mejor.png)
 
 6. **Reporte W3C Validator** mostrando documento validado sin errores críticos.  
-![alt text](html-test-w3c.png)
+![alt text](html-test-w3c-mejor.png)
 ---
 
 ## Resultado Esperado
