@@ -1,7 +1,7 @@
 # Test Case 7: Responsive – Implementación de Componente Avanzado Bootstrap (Nav Bar)
 
 ## Objetivo
-Verificar la correcta integración, personalización y comportamiento responsive del primer componente avanzado de Bootstrap seleccionado (ejemplo: **Navbar con menú desplegable** o **Accordion interactivo**) en diferentes dispositivos y navegadores.  
+Verificar la correcta integración, personalización y comportamiento responsive del primer componente avanzado de Bootstrap seleccionado el cual es Bootstrap Navbar en diferentes dispositivos y navegadores.  
 
 ## Herramientas Utilizadas
 - BrowserStack Mobile Testing  
@@ -24,10 +24,10 @@ Verificar la correcta integración, personalización y comportamiento responsive
 ---
 
 ## Validaciones específicas
-- Verificar que el componente se visualice correctamente en **mobile, tablet y desktop**.  
-- Confirmar que **no se produzca scroll horizontal indeseado** en mobile.  
-- Validar que la **interacción (clic/touch)** funcione correctamente en dispositivos táctiles.  
-- Revisar que la personalización aplicada en `css/styles.css`, `css/components.css` y `css/bootstrap-overrides.css` mantenga la **identidad visual del proyecto**.  
+- Verificar que el componente se visualice correctamente en **mobile, tablet y desktop**. ❌ Es dificil de visualizar al abrirlo (✅ Corregido PR [#68](https://github.com/Thallys8/turismo-buenos-aires/pull/68))
+- Confirmar que **no se produzca scroll horizontal indeseado** en mobile. ❌ Produce Scroll Horizontal (✅ Corregido PR [#68](https://github.com/Thallys8/turismo-buenos-aires/pull/68))
+- Validar que la **interacción (clic/touch)** funcione correctamente en dispositivos táctiles. ✅ El componente se adapta y funciona correctamente
+- Revisar que la personalización aplicada en `css/styles.css`, `css/components.css` y `css/bootstrap-overrides.css` mantenga la **identidad visual del proyecto**. ✅ Coherente con el diseño 
 
 ---
 
@@ -46,7 +46,7 @@ Verificar la correcta integración, personalización y comportamiento responsive
    - Desktop:  
      ![Desktop](../screenshots/t8-desktop-comp-navbar.png)
      
-   - Performance & Networ:  
+   - Performance & Network:  
      ![Performance & Networ](../screenshots/t8-componente-css-js.png)  
 ---
 
@@ -57,8 +57,16 @@ Verificar la correcta integración, personalización y comportamiento responsive
 - Comparar resultados *antes y después* de la incorporación del componente Bootstrap.   
 - Confirmar que los recursos cargados no bloquean la renderización.
 
-- Performance Mobile: 
-  [Performance Mobile](../screenshots/t8-mobile-performance.png)  
+- Performance antes: 
+  ![Performance antes](../screenshots/t8-performance-antes.png)  
+
+- Performance despues: 
+  ![Performance despues](../screenshots/t8-performance-despues.png)  
+
+- Comparacion: Aunque inicialmente hubo una baja en performance al cargar los nuevos recursos de bootstrap, la implementacion de preload del cdn y la carga diferida del js le dieron una mejora sustancial. Inicialmente tambien causo layout-shifts al esconder los links en mobile, lo cual se pudo solucionar con las clases de bootstrap
+
+- No se reportan elementos bloqueantes:  
+  ![Reporte sin bloqueos](../screenshots/t8-sin-bloqueo.png)
 
 ---
 
@@ -74,4 +82,5 @@ Registrar aquí los problemas detectados y su correspondiente issue en el reposi
 
 | IssueID | Descripción 
 |----|-------------|
+| [#71](https://github.com/Thallys8/turismo-buenos-aires/issues/71) | El navbar genera un layout-shift durante FCP |
 | [#58](https://github.com/Thallys8/turismo-buenos-aires/issues/58) | Problemas de performance causador por el cargamento de las imágenes en dispositivos mobile |
