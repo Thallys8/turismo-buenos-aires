@@ -40,7 +40,8 @@ PR: [#67](https://github.com/Thallys8/turismo-buenos-aires/pull/67) @Tomig02 (Co
 PR: [#68](https://github.com/Thallys8/turismo-buenos-aires/pull/68) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/correcciones-primer-parcial] correcciones de los tests y agrego fotos faltantes
 PR: [#69](https://github.com/Thallys8/turismo-buenos-aires/pull/69) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
-
+- [feature/dev-frontend-bootstrap-update-migration] Edición de la captura de pantalla de performance en Mobile en test case 6.   
+PR: [#70](https://github.com/Thallys8/turismo-buenos-aires/pull/70) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
 
 ## [Release Actividad Obligatoria Nº 2] - 2025-09-26
 
