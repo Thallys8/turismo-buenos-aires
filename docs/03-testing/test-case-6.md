@@ -114,7 +114,7 @@ Verificar la adaptabilidad responsive en dispositivos móviles, tablets y deskto
    - Comparar resultados *antes y después* de la migración a Bootstrap.
      
    - Performance Mobile:  
-     ![Performance Mobile](../screenshots/t6-mobile-performance.png)
+     ![Performance Mobile](../screenshots/t6-mobile-performance-2.png)
 
    - Performance Desktop:  
    ![Performance Desktop](../screenshots/t6-desktop-performance.png)
