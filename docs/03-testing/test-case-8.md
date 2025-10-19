@@ -1,7 +1,7 @@
 # Test Case 7: Responsive – Implementación de Componente Avanzado Bootstrap (Nav Bar)
 
 ## Objetivo
-Verificar la correcta integración, personalización y comportamiento responsive del primer componente avanzado de Bootstrap seleccionado el cual es Bootstrap Navbar en diferentes dispositivos y navegadores.  
+Verificar la correcta integración, personalización y comportamiento responsive del segundo componente avanzado de Bootstrap seleccionado el cual es Bootstrap Navbar en diferentes dispositivos y navegadores.  
 
 ## Herramientas Utilizadas
 - BrowserStack Mobile Testing  
@@ -37,17 +37,19 @@ Verificar la correcta integración, personalización y comportamiento responsive
 3. **Desktop** confirmando el comportamiento esperado con todas las funcionalidades activas.  
 4. **DevTools → Performance & Network** mostrando que la integración del componente no afectó la performance ni cargó CSS/JS extra innecesario.
 
-   - Mobile:  
-     ![Mobile](../screenshots/t8-mobile-comp-navbar.png)
+- Mobile:  
+![portrait iphone](../screenshots/t8-iphone-portrait.jpg)
+![landscape iphone](../screenshots/t8-iphone-landscape.jpg)
      
-   - Tablet:  
-     ![Tablet](../screenshots/t8-tablet-comp-navbar.png)
+- Tablet:  
+![portrait ipad](../screenshots/t8-ipad-portrait.jpg)
+![landscape ipad](../screenshots/t8-ipad-landscape.png)
      
-   - Desktop:  
-     ![Desktop](../screenshots/t8-desktop-comp-navbar.png)
+- Desktop:  
+![desktop](../screenshots/t8-desktop.png)
      
-   - Performance & Network:  
-     ![Performance & Networ](../screenshots/t8-componente-css-js.png)  
+- Performance & Network:  
+![Performance & Networ](../screenshots/t8-componente-css-js.png)  
 ---
 
 ## Performance en Mobile
@@ -57,7 +59,7 @@ Verificar la correcta integración, personalización y comportamiento responsive
 - Comparar resultados *antes y después* de la incorporación del componente Bootstrap.   
 - Confirmar que los recursos cargados no bloquean la renderización.
 
-- Performance antes: 
+- Performance antes:  
   ![Performance antes](../screenshots/t8-performance-antes.png)  
 
 - Performance despues: 
