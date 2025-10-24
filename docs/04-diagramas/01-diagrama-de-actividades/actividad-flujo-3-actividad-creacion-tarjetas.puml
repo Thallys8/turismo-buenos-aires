@@ -1,6 +1,9 @@
 @startuml actividad-creacion-tarjetas
-|Sistema|
+|Usuario|
 start
+:Seleciona la atración;
+
+|Sistema|
 :Solicita al Backend la disponibilidad;
 
 |Backend|
@@ -22,3 +25,4 @@ start
 
 stop
 @enduml
+
