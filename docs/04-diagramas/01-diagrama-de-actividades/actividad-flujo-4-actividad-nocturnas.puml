@@ -1,18 +1,16 @@
-@startuml actividades-nocturnas
+@startuml actividades-creacion-itinerarios
 |Usuario|
 start 
-:Seleccioar actividades nocturnas;
+:Seleccioar crear un itinerario;
 
 |Sistema|
-:Direcionar para el listado de actividades nocturnas;
+:Crea el objeto itinerario en Backend;
 
 |Usuario|
-if (Hace clic en el mapa)then(si)
+:Informa los datos del itinerario;
 
 |Sistema|
-:Redirecionar a la pagina de Google Maps;
+:Registra en el itinerario;
 
-else(no)
-endif
 stop
 @enduml
