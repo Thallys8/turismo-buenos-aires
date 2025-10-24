@@ -30,5 +30,5 @@ El usuario selecciona en el menú la combinación:
 
 #### Flujo 4: Actividades nocturnas: 
 En la página inicial está un botón para direccionar el usuario directamente para la lista con todas las actividades nocturnas.
-En las actividades está la opción de hacer un clic para direccionar a la página de Google Maps del punto turístico en específico. 
+En las actividades está la opción de hacer un clic para direccionar a la página de Google Maps del punto turístico en específico.  
 [Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-4-actividad-nocturnas.png)   
