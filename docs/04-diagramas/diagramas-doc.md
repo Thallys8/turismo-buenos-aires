@@ -7,7 +7,7 @@
 ### Descripción:
 #### Flujo 1: Actividades diurnas: 
 En la página inicial está un botón para direccionar el usuario directamente para la lista con todas las actividades diurnas.
-En las actividades está la opción de hacer un clic para direccionar a la página de Google Maps del punto turístico en específico. 
+En las actividades está la opción de hacer un clic para direccionar a la página de Google Maps del punto turístico en específico.  
 [Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-1-actividades-diurnas.png)  
 
 
