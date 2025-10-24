@@ -5,6 +5,8 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ### Added  
 - [backport/release-primer-parcial] Se genero el backport de master a develop y se actualizo el readme
 PR: [#77](https://github.com/Thallys8/turismo-buenos-aires/pull/77) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/devjs-implementacion-flujos-javascript] Se implemento los cuatro flujos en javascript 
+PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed 
 
