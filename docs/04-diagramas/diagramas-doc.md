@@ -17,7 +17,7 @@ Pasos para la suscripción en newsletter:
 - El sistema valida si el formato del correo es válido.
 - Usuario informa su nombre
 - Usuario selecciona sus intereses
-- El sistema exhibe la información ingresada por el usuario en la creación. 
+- El sistema exhibe la información ingresada por el usuario en la creación.  
 [Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-2-actividad-subscripcion-newsletter.png)    
 
 
