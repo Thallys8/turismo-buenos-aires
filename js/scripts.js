@@ -7,7 +7,8 @@ const AtraccionTuristica = [
         momento: "",
         horario: "",
         actividad: "",
-        grupo: ""
+        grupo: "",
+        precio: 10000
     },
     {
         nombre: "atraccion 2",
@@ -16,16 +17,33 @@ const AtraccionTuristica = [
         momento: "",
         horario: "",
         actividad: "",
-        grupo: ""
+        grupo: "",
+        precio: 7000
     }
 ];
 
-function PromptBusqueda(promptTxt, opciones){
+function PromptSeleccionUnica(promptTxt, opciones){
+    let elegido = "";
+
+    while(true){
+        let respuesta = prompt(promptTxt);
+
+        console.log("re:" + respuesta);
+        
+        if(respuesta.length = 1){
+            elegido = respuesta
+            break;
+        } else alert("Ingrese una sola opcion");
+    }
+
+    return elegido;
+}
+function PromptSeleccionMultiple(promptTxt, opciones){
     let elegido = [];
 
     while(true){
         let respuesta = prompt(promptTxt);
-        console.log(respuesta);
+
         if(respuesta)
             elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
 
@@ -40,8 +58,21 @@ function PromptBusqueda(promptTxt, opciones){
 
     return elegido;
 }
+function PromptCorreoElectronico(){
+    while(true){
+        let respuesta = prompt("Ingresa tu correo electronico");
 
-// ---- Flujo 1: Validacion de datos ingresados en formulario ----
+        // REGEX: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
+        let esEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(respuesta)
+        if(!esEmail){
+            alert("El formato del email no es correcto");
+        } 
+        else return respuesta;
+    }
+    
+}
+
+// ---- Flujo 1: Buscar atracciones segun informacion ingresada en el formulario ----
 
 function BuscarAtracciones(momento, horario, actividad, grupo){
     Solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
@@ -79,29 +110,16 @@ function GenerarBusqueda(){
         3 - parejas\n
         4 - desconocidos
     `;
-    const respuestaMomento = PromptBusqueda(promptMomento, opcionesMomento);
-    const respuestaHorario = PromptBusqueda(promptHorario, opcionesHorario);
-    const respuestaActividad = PromptBusqueda(promptActividad, opcionesActividad);
-    const respuestaGrupo = PromptBusqueda(promptGrupo, opcionesGrupo);
+    const respuestaMomento = PromptSeleccionMultiple(promptMomento, opcionesMomento);
+    const respuestaHorario = PromptSeleccionMultiple(promptHorario, opcionesHorario);
+    const respuestaActividad = PromptSeleccionMultiple(promptActividad, opcionesActividad);
+    const respuestaGrupo = PromptSeleccionMultiple(promptGrupo, opcionesGrupo);
     
     BuscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo)
 }
 
 
 // ---- Flujo 2: Subscripcion a newsletter ----
-function PromptCorreoElectronico(){
-    while(true){
-        let respuesta = prompt("Ingresa tu correo electronico");
-
-        // REGEX: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
-        let esEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(respuesta)
-        if(!esEmail){
-            alert("El formato del email no es correcto");
-        } 
-        else return respuesta;
-    }
-    
-}
 function FinalizarSubscripcion(nombreCompleto, intereses, email){
     Solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
 
@@ -118,7 +136,7 @@ function SubscribirNewsletter(){
         2 - eventos\n
         3 - ofertas
     `;
-    let intereses = PromptBusqueda(promptIntereses, opcionesIntereses); 
+    let intereses = PromptSeleccionMultiple(promptIntereses, opcionesIntereses); 
     
     let correoElectronico = PromptCorreoElectronico();
 
@@ -129,6 +147,16 @@ function SubscribirNewsletter(){
 // ---- Flujo 3: Creacion de tarjetas y carga de la informacion en web ----
 function SolicitarDisponibilidad(){
 
+    console.log("Solicitando disponibilidad de la atraccion al backend...");
+
+    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+    
+    let disponibilidad = [];
+    listaDias.forEach(dia => { 
+        if(Math.random() < 0.5) { disponibilidad.push(dia); } 
+    });
+
+    return disponibilidad;
 }
 function SolicitarAtracciones(){
 
@@ -162,36 +190,47 @@ function CrearUnaReserva()
 
     for(let i = 0; i < atracciones.length; i++){
         opciones.push("" + (i + 1));
-        promptOpciones.concat( `${i + 1} - ${atracciones.nombre}`);
+        promptOpciones = promptOpciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
     }
     
-    let respuestaAtraccion = prompt(promptOpciones); //TODO: PromptSeleccionUnica
+    let respuestaAtraccion = PromptSeleccionUnica(promptOpciones, opciones)
 
-    let disponibilidad = SolicitarDisponibilidad(); //TODO
-
+    let disponibilidad = SolicitarDisponibilidad();
+    console.log(disponibilidad);
     let dias = [];
-    let prompDias = `
+    let promptDias = `
         Seleccione uno de los dias disponibles para reservar una visita\n
     `;
     for(let i = 0; i < disponibilidad.length; i++){
         dias.push("" + (i + 1));
-        promptDias.concat( `${i + 1} - ${disponibilidad.nombre}`);
+        promptDias = promptDias.concat( `${i + 1} - ${disponibilidad[i]} \n`);
     }
 
-    let respuestaDias = prompt(promptDias);
+    console.log(dias);
+    console.log(promptDias);
+    let respuestaDias = PromptSeleccionMultiple(promptDias, dias);
 
-    let respuestaGrupo = prompt("¿Cuantas personas van a asistir?");
+    let respuestaGrupo
+    while(true){
+        respuestaGrupo = prompt("¿Cuantas personas van a asistir?");
 
-    // chequear si respuestagrupo es numerico
+        const nuevoNumero = parseInt(respuestaGrupo, 10);
+        
+        if(!isNaN(nuevoNumero) && String(nuevoNumero) == respuestaGrupo){
+            break;
+        } alert("El elemento ingresado no es un numero entero");
+    }
 
     let respuestaEmail = PromptCorreoElectronico();
 
-    let precioAtraccion = atracciones[respuestaAtraccion];
+    let precioAtraccion = atracciones[respuestaAtraccion].precio;
     let precio = (precioAtraccion * respuestaDias.length) * respuestaGrupo
 
     let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
     let diasElegidos = "";
-    respuestaDias.forEach(numDia => { diasElegidos.concat(diasEscritos[int(numDia)], " ") });
+    respuestaDias.forEach(numDia => { 
+        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
+    });
     
     alert(`
         Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
@@ -206,7 +245,55 @@ function CrearUnaReserva()
 }
 
 // ---- Flujo 4 Creacion de un itinerario: ----
-function CrearUnItinerario(){}
+function FinalizarItinerario(email, itinerario)
+{
+    const envio = {"email": email, "itinerario": itinerario}
+
+    console.log("Itinerario enviado al backend...");
+    console.log(envio);
+}
+function CrearUnItinerario(){
+    let atracciones = SolicitarAtracciones();
+
+    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
+    let listaOpciones = ["x"];
+    
+    let promptAtracciones = "";
+    for(let i = 0; i < atracciones.length; i++){
+        listaOpciones.push("" + (i + 1));
+        promptAtracciones = promptAtracciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
+    }
+
+
+    const resultado = []
+
+    for(let i = 0; i < listaDias.length; i++){
+        const promptTxt = `
+            Seleccione las atracciones que desea agregar a su itinerario en el dia ${listaDias[i]} (ingrese X si no desea ninguna):\n
+        `.concat(promptAtracciones);
+
+        let respuesta;
+        while(true){
+            respuesta = PromptSeleccionMultiple(promptTxt, listaOpciones);
+            
+            if(respuesta.filter(item => item.toLowerCase() == "x").length != 0 && respuesta.length > 1){
+                alert("La opcion X debe ingresarse sola");
+            } else break;
+        }
+        
+
+        if(!(respuesta[0] == "x")){
+            let comentario = prompt("Escriba un comentario/recordatorio para las actividades del dia (deje vacio si no desea agregarlo)");
+            
+            resultado.push({"dia": listaDias[i], "atracciones": respuesta, "comentario": comentario});
+        }
+    }
+    
+    let correo = PromptCorreoElectronico();
+    alert("Itinerario generado con exito, pronto sera enviado a su correo");
+    
+    FinalizarItinerario(correo, resultado);
+}
 
 
 function menuDeUsuario(){
@@ -242,4 +329,4 @@ function menuDeUsuario(){
     }
 }
 
-menuDeUsuario();
+window.onload = menuDeUsuario();
