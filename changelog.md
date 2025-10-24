@@ -3,10 +3,24 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+- [backport/release-primer-parcial] Se genero el backport de master a develop y se actualizo el readme
+PR: [#77](https://github.com/Thallys8/turismo-buenos-aires/pull/77) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+
+### Changed 
+
+### Fixed
+
+---
+
+## [Release Parcial Nº 1] - 2025-10-06
+
+### Added  
 - [backport/release-actividad-obligatoria-2] backport de la release numero 2
 PR: [#52](https://github.com/Thallys8/turismo-buenos-aires/pull/52) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/dev-frontend-bootstrap-update-migration] Se generó el código Boosttrap y se incorporó al index.html, creamos componentes necesarios para esa integración.  
 PR: [#56](https://github.com/Thallys8/turismo-buenos-aires/pull/56) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
+- [feature/dev-frontend-bootstrap-update-migration] Se agregó los test case 6, 7 y.   
+PR: [#65](https://github.com/Thallys8/turismo-buenos-aires/pull/65) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño
 PR: [#57](https://github.com/Thallys8/turismo-buenos-aires/pull/57) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron dos nuevos tests de html y se agregaron screenshots
@@ -19,8 +33,16 @@ PR: [#62](https://github.com/Thallys8/turismo-buenos-aires/pull/62) @Tomig02 (Co
 ### Fixed
 - [backport/correccion-de-backport] correccion de backport por commit faltante
 PR: [#55](https://github.com/Thallys8/turismo-buenos-aires/pull/55) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
-
----
+- [release/correccion-html-release-w3c] correccion de html por review w3c y arreglo el changelog
+PR: [#66](https://github.com/Thallys8/turismo-buenos-aires/pull/66) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/correcciones-primer-parcial] correcciones de rendimiento, cambio de jpeg a webp y ttf a woff2, agrego lazyload y preload de archivos
+PR: [#67](https://github.com/Thallys8/turismo-buenos-aires/pull/67) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/correcciones-primer-parcial] correcciones de rendimiento, cambio de img a picture y arreglo el nav en mobile
+PR: [#68](https://github.com/Thallys8/turismo-buenos-aires/pull/68) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/correcciones-primer-parcial] correcciones de los tests y agrego fotos faltantes
+PR: [#69](https://github.com/Thallys8/turismo-buenos-aires/pull/69) @Tomig02 (Coordinador / DevOps y Desarrollador de Componentes HTML Avanzados)
+- [feature/correcciones-primer-parcial] Edición de la captura de pantalla de performance en Mobile en test case 6, arreglo de errores en tests.   
+PR: [#70](https://github.com/Thallys8/turismo-buenos-aires/pull/70) @Thallys8 (Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap).
 
 ## [Release Actividad Obligatoria Nº 2] - 2025-09-26
 
