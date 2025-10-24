@@ -1,29 +1,25 @@
 
-const AtraccionTuristica = {
-    nombre: "",
-    imgSrc: "",
-    promptMaps: "",
-    momento: "",
-    horario: "",
-    actividad: "",
-    grupo: ""
-};
+const AtraccionTuristica = [
+    {
+        nombre: "atraccion 1",
+        imgSrc: "",
+        promptMaps: "",
+        momento: "",
+        horario: "",
+        actividad: "",
+        grupo: ""
+    },
+    {
+        nombre: "atraccion 2",
+        imgSrc: "",
+        promptMaps: "",
+        momento: "",
+        horario: "",
+        actividad: "",
+        grupo: ""
+    }
+];
 
-// Flujo 1: Validacion de datos ingresados en formulario
-
-function ValidacionIngresoPrompt(){
-
-}
-function IngresoDeOpcion(){
-
-}
-
-function BuscarAtracciones(momento, horario, actividad, grupo){
-    Solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
-
-    console.log(`Enviando la siguiente solicitud al backend...`);
-    console.log(Solicitud);
-}
 function PromptBusqueda(promptTxt, opciones){
     let elegido = [];
 
@@ -44,6 +40,16 @@ function PromptBusqueda(promptTxt, opciones){
 
     return elegido;
 }
+
+// ---- Flujo 1: Validacion de datos ingresados en formulario ----
+
+function BuscarAtracciones(momento, horario, actividad, grupo){
+    Solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
+
+    console.log(`Enviando la siguiente solicitud al backend...`);
+    console.log(Solicitud);
+}
+
 function GenerarBusqueda(){
     const opcionesMomento = ["1", "2"];
     const promptMomento = `
@@ -82,7 +88,7 @@ function GenerarBusqueda(){
 }
 
 
-// Flujo 2: Subscripcion a newsletter
+// ---- Flujo 2: Subscripcion a newsletter ----
 function PromptCorreoElectronico(){
     while(true){
         let respuesta = prompt("Ingresa tu correo electronico");
@@ -120,11 +126,87 @@ function SubscribirNewsletter(){
     FinalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
 }
 
-// Flujo 3: Creacion de tarjetas y carga de la informacion en web
-function CrearUnaReserva(){}
+// ---- Flujo 3: Creacion de tarjetas y carga de la informacion en web ----
+function SolicitarDisponibilidad(){
 
-// Flujo 4 Creacion de un itinerario:
-function CrearUnItinearario(){}
+}
+function SolicitarAtracciones(){
+
+    console.log("Solicitando atracciones al backend...");
+    
+    let respuesta = AtraccionTuristica;
+    console.log("Respuesta recibida:");
+    console.log(respuesta);
+
+    return respuesta;
+}
+function ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail){
+    const datosReserva = {
+        "atraccion": respuestaAtraccion, 
+        "grupo": respuestaGrupo, 
+        "dias": respuestaDias, 
+        "email": respuestaEmail
+    };
+
+    console.log("Enviando los datos de la reserva al backend...");
+    console.log(datosReserva);
+}
+function CrearUnaReserva()
+{
+    let opciones = [];
+    let promptOpciones = `
+        Seleccione la atraccion en la que quiera reservar (Solo una por solicitud):\n
+    `;
+    
+    let atracciones = SolicitarAtracciones();
+
+    for(let i = 0; i < atracciones.length; i++){
+        opciones.push("" + (i + 1));
+        promptOpciones.concat( `${i + 1} - ${atracciones.nombre}`);
+    }
+    
+    let respuestaAtraccion = prompt(promptOpciones); //TODO: PromptSeleccionUnica
+
+    let disponibilidad = SolicitarDisponibilidad(); //TODO
+
+    let dias = [];
+    let prompDias = `
+        Seleccione uno de los dias disponibles para reservar una visita\n
+    `;
+    for(let i = 0; i < disponibilidad.length; i++){
+        dias.push("" + (i + 1));
+        promptDias.concat( `${i + 1} - ${disponibilidad.nombre}`);
+    }
+
+    let respuestaDias = prompt(promptDias);
+
+    let respuestaGrupo = prompt("¿Cuantas personas van a asistir?");
+
+    // chequear si respuestagrupo es numerico
+
+    let respuestaEmail = PromptCorreoElectronico();
+
+    let precioAtraccion = atracciones[respuestaAtraccion];
+    let precio = (precioAtraccion * respuestaDias.length) * respuestaGrupo
+
+    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
+    let diasElegidos = "";
+    respuestaDias.forEach(numDia => { diasElegidos.concat(diasEscritos[int(numDia)], " ") });
+    
+    alert(`
+        Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
+        - Atraccion: ${atracciones[respuestaAtraccion].nombre}\n
+        - Personas: ${respuestaGrupo}\n
+        - Dias: ${diasElegidos.trim()}\n
+        - Contacto: ${respuestaEmail}
+        Pronto sera contactado en su correo, debera abonar $${precio}
+        `);
+
+    ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
+}
+
+// ---- Flujo 4 Creacion de un itinerario: ----
+function CrearUnItinerario(){}
 
 
 function menuDeUsuario(){
@@ -147,10 +229,12 @@ function menuDeUsuario(){
             break;
         }
         case "3": {
-            
+            CrearUnaReserva()
+            break;
         }
         case "4": {
-            
+            CrearUnItinerario()
+            break;
         }
         default:{
             alert("La opcion elegida no es valida, por favor reingrese su eleccion")
