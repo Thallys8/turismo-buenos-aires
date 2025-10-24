@@ -1,8 +1,8 @@
 ### Índice de los diagramas:
 - [Flujo 1 - Actividades diurnas](./01-diagrama-de-actividades/actividad-flujo-1-actividades-diurnas.puml)  
-- [Flujo 2 - Actividades diurnas](./01-diagrama-de-actividades/actividad-flujo-2-actividad-deportiva.puml)  
-- [Flujo 3 - Actividades diurnas](./01-diagrama-de-actividades/actividad-flujo-3-actividad-cultura-diurna.puml)  
-- [Flujo 4 - Actividades diurnas](./01-diagrama-de-actividades/actividad-flujo-3-actividad-cultura-diurna.puml)  
+- [Flujo 2 - Actividades deportivas nocturnas](./01-diagrama-de-actividades/actividad-flujo-2-actividad-deportiva.puml)  
+- [Flujo 3 - Actividades cultural diurna](./01-diagrama-de-actividades/actividad-flujo-3-actividad-cultura-diurna.puml)  
+- [Flujo 4 - Actividades nocturnas](./01-diagrama-de-actividades/actividad-flujo-4-actividad-nocturnas.puml)  
 
 ### Descripción:
 #### Flujo 1: Actividades diurnas: 
