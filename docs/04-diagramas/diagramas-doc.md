@@ -1,6 +1,6 @@
 ### Índice de los diagramas:
 - [Flujo 1 - Actividades diurnas](./01-diagrama-de-actividades/actividad-flujo-1-actividades-diurnas.puml)  
-- [Flujo 2 - Actividades deportivas nocturnas](./01-diagrama-de-actividades/actividad-flujo-2-actividad-deportiva.puml)  
+- [Flujo 2 - Actividades suscripcion a newsletter](./01-diagrama-de-actividades/actividad-flujo-2-actividad-subscripcion-newsletter.puml)  
 - [Flujo 3 - Actividades cultural diurna](./01-diagrama-de-actividades/actividad-flujo-3-actividad-cultura-diurna.puml)  
 - [Flujo 4 - Actividades nocturnas](./01-diagrama-de-actividades/actividad-flujo-4-actividad-nocturnas.puml)  
 
@@ -11,13 +11,14 @@ En las actividades está la opción de hacer un clic para direccionar a la pági
 [Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-1-actividades-diurnas.png)  
 
 
-#### Flujo 2: Actividades deportivas nocturnas con amigos:
-El usuario selecciona en el menú la combinación:
-- ¿En que momento de la semana? → Fin de Semana
-- ¿Cuándo te gusta? → De noche
-- ¿Qué te gustaría hacer? → Deporte
-- ¿Con quienes? → Amigos  
-[Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-2-actividad-deportiva.png)    
+#### Flujo 2: Actividades suscripción a newsletter:
+Pasos para la suscripción en newsletter:
+- El usuario ingresa su correo
+- El sistema valida si el formato del correo es válido.
+- Usuario informa su nombre
+- Usuario selecciona sus intereses
+- El sistema exhibe la información ingresada por el usuario en la creación. 
+[Imagen del diagrama](./01-diagrama-de-actividades/actividad-flujo-2-actividad-subscripcion-newsletter.png)    
 
 
 #### Flujo 3: Cultura diurna con pareja:
