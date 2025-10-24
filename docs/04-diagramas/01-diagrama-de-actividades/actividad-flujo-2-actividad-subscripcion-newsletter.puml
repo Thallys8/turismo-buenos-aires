@@ -1,20 +1,24 @@
-@startuml actividad-subscripcion-newsletter
-|Usuario|
+@startuml actividad-creacion-tarjetas
+|Sistema|
 start
-:Ingresa el email;
+:Solicita al Backend la disponibilidad;
+
+|Backend|
+:Informa la disponibilidad;
 
 |Sistema|
-if(El email es válido?)then(no)
-    :El formato del email no es correcto;
-else(sí)
-    :Correo es válido;
-endif
+:Solicita lista de atraciones;
+
+|Sistema|
+:Informa sobre nueva reserva;
 
 |Usuario|
-:Escribir el nombre completo;
-:Selecionar intereces;
+:Crea una reserva;
+:Informa nuero de personas;
+:Informa que días;
 
 |Sistema|
-:Exibir el nombre completo, intereses e email;
+:Confirma la reserva;
+
 stop
 @enduml
