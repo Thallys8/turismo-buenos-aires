@@ -1,0 +1,18 @@
+@startuml actividades-nocturnas
+|Usuario|
+start 
+:Seleccioar actividades nocturnas;
+
+|Sistema|
+:Direcionar para el listado de actividades nocturnas;
+
+|Usuario|
+if (Hace clic en el mapa)then(si)
+
+|Sistema|
+:Redirecionar a la pagina de Google Maps;
+
+else(no)
+endif
+stop
+@enduml

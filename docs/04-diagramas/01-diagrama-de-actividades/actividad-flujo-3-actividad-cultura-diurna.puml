@@ -1,0 +1,21 @@
+@startuml actividad-cultura-diurna
+|Usuario|
+start
+if (Seleciona Fin de Semana, De Noche, Deporte, Amigos)then(si)
+
+|Sistema|
+:Direcrionar al listado de actividades culturales;
+
+|Usuario|
+if (Hace clic en el mapa)then(si)
+
+|Sistema|
+:Redirecionar a la pagina de Google Maps;
+
+else(no)
+endif
+
+else(no)
+endif
+stop
+@enduml
