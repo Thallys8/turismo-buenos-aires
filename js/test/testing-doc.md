@@ -129,13 +129,13 @@
 ## Capturas de Pantalla
 
 ### Tests Pasando
-![Flujo 1](./screenshots/tests-passing-flujo1.png)
-![Flujo 2](./screenshots/tests-passing-flujo2.png)
-![Flujo 4](./screenshots/tests-passing-flujo3.png)
+![Flujo 1](./screenshots/tests-passing-flujo1.png)  
+![Flujo 2](./screenshots/tests-passing-flujo2.png)  
+![Flujo 4](./screenshots/tests-passing-flujo3.png)  
 
 ### Vista Detallada de Suites
-![Flujo 3](./screenshots/suite-detail-flujo3-1.png)
-![Flujo 3](./screenshots/suite-detail-flujo3-2.png)
+![Flujo 3](./screenshots/suite-detail-flujo3-1.png)  
+![Flujo 3](./screenshots/suite-detail-flujo3-2.png)  
 
 ---
 
