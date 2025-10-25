@@ -1,0 +1,16 @@
+@startuml actividades-creacion-itinerarios
+|Usuario|
+start 
+:Seleccioar crear un itinerario;
+
+|Sistema|
+:Crea el objeto itinerario en Backend;
+
+|Usuario|
+:Informa los datos del itinerario;
+
+|Sistema|
+:Registra en el itinerario;
+
+stop
+@enduml

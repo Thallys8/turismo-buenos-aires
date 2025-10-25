@@ -76,3 +76,7 @@ header hgroup * {
 .google-maps{
     width: 100%;
 }
+
+.bg-gris{
+    background-color: #eeeeee;
+}

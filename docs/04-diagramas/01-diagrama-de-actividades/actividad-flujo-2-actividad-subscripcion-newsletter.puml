@@ -1,0 +1,20 @@
+@startuml actividad-subscripcion-newsletter
+|Usuario|
+start
+:Ingresa el email;
+
+|Sistema|
+if(El email es válido?)then(no)
+    :El formato del email no es correcto;
+else(sí)
+    :Correo es válido;
+endif
+
+|Usuario|
+:Escribir el nombre completo;
+:Selecionar intereces;
+
+|Sistema|
+:Exibir el nombre completo, intereses e email;
+stop
+@enduml
