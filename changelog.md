@@ -11,6 +11,8 @@ PR: [#81](https://github.com/Thallys8/turismo-buenos-aires/pull/81) @Thallys8 (A
 PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed 
+- [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos
+PR: [#84](https://github.com/Thallys8/turismo-buenos-aires/pull/84) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Fixed
 - [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo
