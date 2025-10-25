@@ -141,7 +141,7 @@
 
 ## Issues Conocidos
 
-### Issue #[X]: [Título del Issue]
+### Issue #[82]: [Desarrollador JavaScript] Crear la base de datos con la información con el listado de atraciones  
 - **Severidad:** Alta
 - **Suite Afectada:** `describe("Suite 3")`
 - **Test Afectado:** `it("debería retornar la lista de atracciones")`
@@ -167,8 +167,8 @@
   });
   
   ```
-- **GitHub Issue:** #[número]
-- **Estado:** Abierto
+- **GitHub Issue:** #82  
+- **Estado:** Abierto  
 
 ---
 
