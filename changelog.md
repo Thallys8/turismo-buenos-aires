@@ -5,12 +5,14 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ### Added  
 - [backport/release-primer-parcial] Se genero el backport de master a develop y se actualizo el readme  
 PR: [#77](https://github.com/Thallys8/turismo-buenos-aires/pull/77) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
-- [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño  
+- [feature/dev-html-avanzado-implementacion-elementos] Se agrgó los dibujos UML  
 PR: [#83](https://github.com/Thallys8/turismo-buenos-aires/pull/83) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
-- [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño
+- [feature/dev-html-avanzado-implementacion-elementos] Se agregaron los test case Jasmine  
 PR: [#81](https://github.com/Thallys8/turismo-buenos-aires/pull/81) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
-- [feature/devjs-implementacion-flujos-javascript] Se implemento los cuatro flujos en javascript 
+- [feature/devjs-implementacion-flujos-javascript] Se implemento los cuatro flujos en javascript  
 PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/dev-html-avanzado-implementacion-elementos] Se agrgó las capturas de pantalla feltantes  
+PR: [#86](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 
 ### Changed 
 - [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos
