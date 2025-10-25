@@ -333,7 +333,7 @@ function CrearUnaReserva()
         - Dias: ${diasElegidos.trim()}\n
         - Contacto: ${respuestaEmail}
         Pronto sera contactado en su correo, debera abonar $${precio}
-        `);
+    `);
 
     ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
 }
@@ -368,6 +368,7 @@ function CrearUnItinerario(){
     let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
     let listaOpciones = ["x"];
     
+    // genera las opciones habilitadas y la lista para el prompt con formato *numero* - *descripcion*
     let promptAtracciones = "";
     for(let i = 0; i < atracciones.length; i++){
         listaOpciones.push("" + (i + 1));
@@ -375,8 +376,8 @@ function CrearUnItinerario(){
     }
 
 
+    // itera sobre los dias, generando un itinerario de atracciones ordenado por dias
     const resultado = []
-
     for(let i = 0; i < listaDias.length; i++){
         const promptTxt = `
             Seleccione las atracciones que desea agregar a su itinerario en el dia ${listaDias[i]} (ingrese X si no desea ninguna):\n
@@ -386,6 +387,7 @@ function CrearUnItinerario(){
         while(true){
             respuesta = PromptSeleccionMultiple(promptTxt, listaOpciones);
             
+            //si eligio la opcion "x" junto a otras, avisa del error
             if(respuesta.filter(item => item.toLowerCase() == "x").length != 0 && respuesta.length > 1){
                 alert("La opcion X debe ingresarse sola");
             } else break;
@@ -440,7 +442,6 @@ function menuDeUsuario(){
         }
     }
 }
-
 
 
 window.onload = menuDeUsuario;

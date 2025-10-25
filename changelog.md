@@ -11,6 +11,8 @@ PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Co
 ### Changed 
 
 ### Fixed
+- [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo
+PR: [#80](https://github.com/Thallys8/turismo-buenos-aires/pull/80) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ---
 
