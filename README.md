@@ -8,7 +8,10 @@
 ## 📣 Descripcion
 Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos
 
-## 🎯 Objetivo del entregable - entrega 3 parcial 1
+## 🎯 Objetivo del entregable - entrega 3 
+En esta entrega se busca la implementacion de las funcionalidades principales en javascript, asegurar su correcto funcionamiento con tests y documentar su flujo en diagramas de actividades
+
+## 🎯 Objetivo del entregable - parcial 1 (Finalizada)
 En esta entrega se busca completar la migracion de lo creado y diseñado hacia la libreria bootstrap, junto a la implementacion de nuevos elementos que provee tanto bootstrap como el html mas avanzado
 
 ## 🎯 Objetivo del entregable - entrega 2 (Finalizada)
@@ -21,11 +24,12 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 - [Mockup](https://www.figma.com/design/zM85pnRTZeivKJJcz2ikc9/Turismo-Buenos-Aires?node-id=0-1&p=f&t=iUcnCjVoltQsJJyO-0) 
 - [Indice de prompts](./docs/02-prompts/prompts.md)
 - [Indice de Test QA](docs/03-testing/testing-doc.md)
+- [Indice de diagramas de actividad](docs/04-diagramas/diagramas-doc.md)
 - [Changelog](changelog.md) 
 
 
 ## 👥 Integrantes
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
-| Thallys Gomes Leandro  | 145287  | Thallys8  | Desarrollador Frontend/Bootstrap + Especialista en Componentes Bootstrap | 
-| Guardo Tomas Agostino  | 153835  | Tomig02  | Coordinador / DevOps + Desarrollador de Componentes HTML Avanzados  | 
+| Thallys Gomes Leandro  | 145287  | Thallys8  | Tester Javascript / QA Engineer + Arquitecto de Diagramas de Actividades | 
+| Guardo Tomas Agostino  | 153835  | Tomig02  | Coordinador / DevOps + Desarrollador Javascript  | 

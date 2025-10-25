@@ -25,6 +25,11 @@ button.dia{
     border: 1px solid #98EBEE;
 }
 
+button.dia:hover{
+    background-color: #aaf2f5;
+    border: 1px solid #aaf2f5;
+}
+
 button.noche{
     background-color: #92B4F3;
     border: 1px solid #92B4F3;
