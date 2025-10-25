@@ -7,9 +7,14 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 PR: [#77](https://github.com/Thallys8/turismo-buenos-aires/pull/77) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/dev-html-avanzado-implementacion-elementos] Se implementaron los dos nuevos elementos html avanzados y se los ajusto al diseño
 PR: [#81](https://github.com/Thallys8/turismo-buenos-aires/pull/81) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
+- [feature/devjs-implementacion-flujos-javascript] Se implemento los cuatro flujos en javascript 
+PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+
 ### Changed 
 
 ### Fixed
+- [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo
+PR: [#80](https://github.com/Thallys8/turismo-buenos-aires/pull/80) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ---
 
