@@ -13,8 +13,8 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ## [Release Entrega Obligatoria Nº 3] - 2025-10-24
 
 ### Added  
-- [backport/release-primer-parcial] Se genero el backport de master a develop y se actualizo el readme  
-PR: [#77](https://github.com/Thallys8/turismo-buenos-aires/pull/77) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/correccion-release-codigo-js] Correcciones del codigo js y nuevas simulaciones del backend (busqueda y newsletter)  
+PR: [#90](https://github.com/Thallys8/turismo-buenos-aires/pull/90) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/dev-html-avanzado-implementacion-elementos] Se agrgó los dibujos UML  
 PR: [#83](https://github.com/Thallys8/turismo-buenos-aires/pull/83) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 - [feature/dev-html-avanzado-implementacion-elementos] Se agregaron los test case Jasmine  
@@ -25,11 +25,11 @@ PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Co
 PR: [#86](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 
 ### Changed 
-- [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos
+- [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos  
 PR: [#84](https://github.com/Thallys8/turismo-buenos-aires/pull/84) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Fixed
-- [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo
+- [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo  
 PR: [#80](https://github.com/Thallys8/turismo-buenos-aires/pull/80) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ## [Release Parcial Nº 1] - 2025-10-06
