@@ -103,7 +103,7 @@
         </hgroup>
         
         <div class="selector-avanzado">
-            <form>
+            <form id="formulario-selector-avanzado">
                 <div>
                     <label class="exterior">¿En que momento de la semana?</label>
                     
@@ -250,7 +250,7 @@
                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires">
                             </iframe>
 
-                            <button type="button" class="btn">Reservar</button>
+                            <button value="1" type="button" class="btn">Reservar</button>
                         </div>
 
                         <img loading="lazy" src="./assets/japones.webp" alt="foto de los jardines japones" >
@@ -291,7 +291,7 @@
     </section>
             
     <!-- JS: Se activa al seleccionar las opcion de actividades nocturnas -->
-    <section class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
+    <section id="lista-de-actividades" class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
         <h2>actividades de noche</h2>
 
         <div class="actividades-opciones">
@@ -410,7 +410,7 @@
                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=puerto+madero,buenos+aires">
                             </iframe>
 
-                            <button type="button" class="btn">Reservar</button>
+                            <button type="button" class="btn btn-subscripcion">Reservar</button>
                         </div>
                         
                         <img loading="lazy" src="./assets/madero.webp" alt="foto aerea de puerto madero" >
@@ -432,7 +432,7 @@
                     <p> Subscribite a nuestra newsletter para enterarte de todo lo nuevo en Buenos Aires </p>
                 </hgroup>
 
-                <button type="button" class="btn w-50 mt-auto">Subscribirse</button>
+                <button type="button" class="btn w-50 mt-auto" id="btn-newsletter">Subscribirse</button>
             </div>
             <div class="rounded col-12 col-lg w-md-auto text-center bg-gris p-4 d-flex flex-column align-items-center">
                 <hgroup class="col-12">
@@ -440,7 +440,7 @@
                     <p>Organiza tu viaje a Buenos Aires y aprovecha al maximo tu tiempo visitando todo lo que Buenos Aires tiene para ofrecer</p>
                 </hgroup>
 
-                <button type="button" class="btn w-50 mt-auto">Crear Itinerario</button>
+                <button type="button" class="btn w-50 mt-auto" id="btn-itinerario">Crear Itinerario</button>
             </div>
         </div>
     </section>

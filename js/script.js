@@ -1,4 +1,6 @@
 
+import { ConstructorHTML } from './placeholder.js';
+import { FiltroAtracciones } from './placeholder2.js';
 
 // ---- Informacion para pruebas o simular el backend ----
 const subscripcionesNewsletter = [
@@ -145,11 +147,17 @@ function promptCorreoElectronico(){
         else return respuesta;
     }
     
+    // generar html para nuevo formulario para la reserva
+    // este nuevo html se encarga de la validacion
+
+    // teniendo la reserva, se guarda en un archivo de reservas
 }
 
-// ----------------------------------------------------------------
+const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
+const listaActividades = document.getElementsByClassName("lista-de-actividades");
 
-// ---- Flujo 1: Buscar atracciones segun informacion ingresada en el formulario ----
+function formularioSubmit(event){
+    event.preventDefault();
 
 /**
  * Verifica si un arreglo contiene o no al menos un valor presente en otro
@@ -237,70 +245,33 @@ function generarBusqueda(){
     const respuestaActividad = promptSeleccionMultiple(promptActividad, opcionesActividad);
     const respuestaGrupo = promptSeleccionMultiple(promptGrupo, opcionesGrupo);
     
-    buscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo);
 }
-
-// ----------------------------------------------------------------
-
+myForm.addEventListener('submit', formularioSubmit);
 
 
+function subscripcionNewsletter(event){
 
-// ---- Flujo 2: Subscripcion a newsletter ------------------------
+    // generar html para nuevo formulario de subscripcion
+    // este nuevo html se encarga de la validacion
 
-/**
- * Solicita al backend que agregue al nuevo subscriptor para futuros avisos de la newsletter
- * 
- * @param {String} nombreCompleto - el nombre completo del nuevo subscriptor
- * @param {String[]} intereses - Los temas de interes del nuevo subscriptor
- * @param {String} email - El email de contacto para el nuevo subscriptor
- */
-function finalizarSubscripcion(nombreCompleto, intereses, email){
-    solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
-
-    console.log("Almacenando la subscripcion en el backend...");
-    console.log(solicitud);
-
-    let yaExiste = false;
-    subscripcionesNewsletter.forEach(sub => {
-        if(sub.email.toLowerCase() == solicitud.email.toLowerCase()) {
-            yaExiste = true; 
-        };
-    });
-    if(!yaExiste) {
-        subscripcionesNewsletter.push(solicitud);
-    }
-    else { 
-        alert("El email ya esta subscripto"); 
-    }
+    // con los datos del formulario, generar subscripcion
 }
+const botonNewsletter = document.getElementById("btn-newsletter");
+botonNewsletter.addEventListener('onclick', subscripcionNewsletter);
 
-/**
- * Solicita los datos del usuario, corrobora que sean correctos y lo subscribe a la newsletter
- */
-function subscribirNewsletter(){
-    let nombreCompleto = prompt("¿Como es tu nombre completo?");
+function generarItinerario(){
 
-    const opcionesIntereses = ["1", "2", "3"];
-    const promptIntereses = `
-        ¿En que te querrias mantener actualizado? (para ingresar varias opciones, separe con coma)\n
-        1 - noticias\n
-        2 - eventos\n
-        3 - ofertas
-    `;
-    let intereses = promptSeleccionMultiple(promptIntereses, opcionesIntereses); 
-    
-    let correoElectronico = promptCorreoElectronico();
+    //generar una ventana html que permita ingresar los datos del itinerario
+    //este nuevo html se encarga de la validacion
 
-    alert("Subscripcion exitosa! Recibira la confirmacion en su correo");
-    finalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
+    // generar el itinerario y envialo por email (no de verdad) 
 }
-
-// ----------------------------------------------------------------
-
-
+const botonItinerario = document.getElementById("btn-itinerario");
+botonNewsletter.addEventListener('onclick', generarItinerario);
 
 
-// ---- Flujo 3: Creacion de tarjetas y carga de la informacion en web ----
+
+
 
 /**
  * Solicita al backend que devuelva la disponibilidad de una atraccion
@@ -559,5 +530,5 @@ function menuDeUsuario(){
     }
 }
 
-
-window.onload = menuDeUsuario;
+}
+window.onload = menuDeUsuario();
