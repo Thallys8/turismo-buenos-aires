@@ -27,8 +27,10 @@ PR: [#86](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (A
 ### Changed 
 - [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos
 PR: [#84](https://github.com/Thallys8/turismo-buenos-aires/pull/84) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
-- [feature/correccion-release-diagramas-uml] Correción de los diagrams UML
+- [feature/correccion-release-diagramas-uml] Correción de los diagrams UML  
 PR: [#91](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer). 
+- [feature/correccion-release-test-jasmine] Correción parcial de los códigod de las pruebas Jasmine.  
+PR: [#92](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).
 
 ### Fixed
 - [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo
