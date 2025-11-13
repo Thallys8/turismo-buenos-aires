@@ -2,26 +2,47 @@
 |Usuario|
 start
 :Seleciona la atración;
+    switch (Seleciona una atraccion)
+        case ( condition A )
+        :Atraccion 1;
+        case ( condition B ) 
+        :Atraccion 2;
+        case ( condition C )
+        :Atraccion 3;
+        case ( condition D )
+        :Atraccion 4;
+        case ( condition E )
+        :Atraccion 5;
+    endswitch
 
 |Sistema|
-:Solicita al Backend la disponibilidad;
-
-|Backend|
+:Verifica la disponibilidad;
 :Informa la disponibilidad;
 
-|Sistema|
-:Solicita lista de atraciones;
-
-|Sistema|
-:Informa sobre nueva reserva;
 
 |Usuario|
-:Crea una reserva;
-:Informa nuero de personas;
-:Informa que días;
+:Seleciona la atración;
+    switch (Seleciona una atraccion)
+        case ( condition A )
+        :Atraccion 1;
+        case ( condition B ) 
+        :Atraccion 2;
+        case ( condition C )
+        :Atraccion 3;
+        case ( condition D )
+        :Atraccion 4;
+        case ( condition E )
+        :Atraccion 5;
+    endswitch
+
+|Usuario|
+:Ingresa la cantidad de dias;
+:Ingresa la cantidad de personas;
+:Ingresa el email;
 
 |Sistema|
-:Confirma la reserva;
+:Guarda la nueva reserva;
+:Confirma la creacion de la reserva;
 
 stop
 @enduml
