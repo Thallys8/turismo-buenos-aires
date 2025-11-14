@@ -4,10 +4,10 @@
 const subscripcionesNewsletter = [
 
 ];
-const ReservasGeneradas = [
+const reservasGeneradas = [
 
 ];
-const ItinerariosCreados = [
+const itinerariosCreados = [
 
 ];
 const atraccionTuristica = [
@@ -127,7 +127,7 @@ function promptSeleccionMultiple(promptTxt, opciones){
  * @param {string} email El email ingresado por el usuario 
  * @returns {Boolean} valor de verdad por si es un email o no
  */
-function EsUnEmail( email ){
+function esUnEmail( email ){
     // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
     return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email)
 }
@@ -138,7 +138,7 @@ function promptCorreoElectronico(){
     while(true){
         let respuesta = prompt("Ingresa tu correo electronico");
 
-        let esEmail = EsUnEmail(respuesta);
+        let esEmail = esUnEmail(respuesta);
         if(!esEmail){
             alert("El formato del email no es correcto");
         } 
@@ -357,10 +357,10 @@ function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, res
 
     console.log("Enviando los datos de la reserva al backend...");
     console.log(datosReserva);
-    ReservasGeneradas.push(datosReserva);
+    reservasGeneradas.push(datosReserva);
 
     console.log("Reserva Almacenada!");
-    console.log(ReservasGeneradas);
+    console.log(reservasGeneradas);
 }
 
 /**
@@ -370,7 +370,7 @@ function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, res
  * @param {Number} cantPersonas 
  * @returns 
  */
-function CalculadorPrecio(atraccion, cantDias, cantPersonas){
+function calculadorPrecio(atraccion, cantDias, cantPersonas){
     let precioAtraccion = atraccion.precio;
     return (precioAtraccion * cantDias) * cantPersonas
 }
@@ -379,7 +379,7 @@ function CalculadorPrecio(atraccion, cantDias, cantPersonas){
  * convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
  * @param {Number[]} respuestaDias 
  */
-function ConvertidorDeDias( respuestaDias ){
+function convertidorDeDias( respuestaDias ){
     let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
     let diasElegidos = "";
     respuestaDias.forEach(numDia => { 
@@ -434,9 +434,9 @@ function crearUnaReserva()
 
     let respuestaEmail = promptCorreoElectronico();
 
-    let precio = CalculadorPrecio(atracciones[respuestaAtraccion], respuestaDias.length, respuestaGrupo);
+    let precio = calculadorPrecio(atracciones[respuestaAtraccion], respuestaDias.length, respuestaGrupo);
 
-    let diasElegidos = ConvertidorDeDias( respuestaDias );
+    let diasElegidos = convertidorDeDias( respuestaDias );
 
     alert(`
         Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
@@ -469,10 +469,10 @@ function finalizarItinerario(email, itinerario)
 
     console.log("Itinerario enviado al backend...");
     console.log(envio);
-    ItinerariosCreados.push(envio);
+    itinerariosCreados.push(envio);
 
     console.log("Itinerario almacenado!");
-    console.log(ItinerariosCreados);
+    console.log(itinerariosCreados);
 }
 
 /**
