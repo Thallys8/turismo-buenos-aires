@@ -18,6 +18,10 @@ class Itinerario{
     estaCompleto(){
         return this.itinerario.length < this.listaDias.length
     }
+
+    toJSON(){
+        JSON.parse(this.itinerario);
+    }
 }
 
 export default Itinerario;
