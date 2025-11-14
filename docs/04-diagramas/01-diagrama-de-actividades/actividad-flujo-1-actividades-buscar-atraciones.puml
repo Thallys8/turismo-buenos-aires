@@ -1,0 +1,63 @@
+@startuml actividades-buscar-atraciones
+|Usuario|
+start 
+:Seleciona atraciones en el formulario;
+switch (Momento de la semana)
+  case ( condition A )
+    :Durante la semana;
+  case ( condition A )
+    :Fin de semana;
+endswitch
+
+switch (Horario)
+  case ( condition A )
+    :Día;
+  case ( condition A )
+    :Noche;
+endswitch
+
+switch (Tipo de actividad)
+  case ( condition A )
+    :Deporte;
+  case ( condition A )
+    :Fiesta;
+  case ( condition A )
+    :Cultura;
+  case ( condition A )
+    :Relajacion;
+endswitch
+
+switch (Tipo de Grupo)
+  case ( condition A )
+    :Familia;
+  case ( condition A )
+    :Amigos;
+  case ( condition A )
+    :Parejas;
+  case ( condition A )
+    :Desconocidos;
+endswitch
+
+|Sistema|
+:Devuelve la lista de atraciones;
+
+|Usuario|
+repeat
+:Revisa la lista de atraciones;
+
+    switch (Seleciona una atraccion)
+    case ( condition A )
+    :Atraccion 1;
+    case ( condition B ) 
+    :Atraccion 2;
+    case ( condition C )
+    :Atraccion 3;
+    case ( condition D )
+    :Atraccion 4;
+    case ( condition E )
+    :Atraccion 5;
+    endswitch
+
+repeat while (Desea revisar otra atraccion?) is (yes)
+stop
+@enduml

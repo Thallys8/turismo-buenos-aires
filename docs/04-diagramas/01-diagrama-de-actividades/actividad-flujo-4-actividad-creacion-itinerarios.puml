@@ -1,0 +1,50 @@
+@startuml actividades-creacion-itinerarios
+|Usuario|
+start 
+:Ingresa el email;
+:Seleciona dias de la semana;
+    fork
+      :Lunes;
+    fork again
+      :Martes;
+    fork again
+      :Miercoles;
+    fork again
+      :Jueves;
+    fork again
+      :Viernes;
+    fork again
+      :Sabado;
+    fork again
+      :Domingo;
+    end merge
+|Sistema|
+:Verifica las atraciones didponibles;
+:Informa las atraciones disponibles;
+
+|Usuario|
+:Seleciona las atraciones;
+    repeat
+    :Revisa la lista de atraciones;
+
+        switch (Seleciona una atraccion)
+        case ( condition A )
+        :Atraccion 1;
+        case ( condition B ) 
+        :Atraccion 2;
+        case ( condition C )
+        :Atraccion 3;
+        case ( condition D )
+        :Atraccion 4;
+        case ( condition E )
+        :Atraccion 5;
+        endswitch
+
+    repeat while (Desea revisar otra atraccion?) is (yes)
+
+|Sistema|
+:Registra en el itinerario;
+:Envia un email con el itinerario hacia el usuario;
+
+stop
+@enduml
