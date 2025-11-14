@@ -8,7 +8,17 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 
 ### Fixed  
 
----
+---  
+
+## [Release Entrega Obligatoria Nº 3] - 2025-10-24  
+
+### Added  
+- [feature/dev-storage] Creó el js/utils/storage.js  
+PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (Coordinador / DevOps + Tester QA).  
+
+### Changed  
+
+### Fixed  
 
 ## [Release Entrega Obligatoria Nº 3] - 2025-10-24
 
