@@ -80,6 +80,10 @@ function promptSeleccionUnica(promptTxt, opciones){
  */
 function validacionPrompts( respuesta, elegido ){
 
+    if( respuesta === null || respuesta === undefined){
+        return false;
+    }
+
     // si hubo opciones rechazadas, avisa cuales
     let valoresInvalidos = respuesta.split(",").length > elegido.length;
     if(valoresInvalidos)
