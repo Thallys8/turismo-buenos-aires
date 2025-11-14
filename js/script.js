@@ -154,13 +154,13 @@ function promptCorreoElectronico(){
 /**
  * Verifica si un arreglo contiene o no al menos un valor presente en otro
  * 
- * @param {Number[]} ArrayChequeado - El arreglo que almacena los valores aceptados
- * @param {Number[]} ValoresBuscados - El arreglo de los valores a buscar
+ * @param {Number[]} arrayChequeado - El arreglo que almacena los valores aceptados
+ * @param {Number[]} valoresBuscados - El arreglo de los valores a buscar
  * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
  */
-function algunValorExiste(ArrayChequeado, ValoresBuscados){
-    let chequeadoNumero = ArrayChequeado.map( valor => {return parseInt(valor)});
-    let valoresNumero = ValoresBuscados.map( valor => {return parseInt(valor)});
+function algunValorExiste(arrayChequeado, valoresBuscados){
+    let chequeadoNumero = arrayChequeado.map( valor => {return parseInt(valor)});
+    let valoresNumero = valoresBuscados.map( valor => {return parseInt(valor)});
 
     return valoresNumero.some(value => chequeadoNumero.includes(value));
 }
