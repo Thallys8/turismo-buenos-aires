@@ -1,5 +1,5 @@
 /** * Módulo de utilidades para Storage (localStorage y sessionStorage) */
-const Storage = {
+const StorageUtil = {
 
    /**
    * Guarda cualquier valor en localStorage o sessionStorage
@@ -89,3 +89,6 @@ const Storage = {
         storage.clear();
     }
 };
+
+
+//export default StorageUtil;
