@@ -9,10 +9,10 @@ if(El email es válido?)then(no)
 else(sí)
     :Correo es válido;
 endif
-
+ 
 |Usuario|
 :Escribir el nombre completo;
-:Selecionar intereces;
+:Selecionar intereses;
 
 |Sistema|
 :Exibir el nombre completo, intereses e email;
