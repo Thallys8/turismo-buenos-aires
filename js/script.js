@@ -4,6 +4,12 @@
 const subscripcionesNewsletter = [
 
 ];
+const ReservasGeneradas = [
+
+];
+const ItinerariosCreados = [
+
+];
 const atraccionTuristica = [
     {
         nombre: "Rosedal de palermo",
@@ -66,6 +72,23 @@ function promptSeleccionUnica(promptTxt, opciones){
     return elegido;
 }
 
+
+function validacionPrompts( respuesta ){
+    // divide por coma > borra espacios en blanco > filtra para saber si las opciones son correctas
+    if(respuesta)
+        elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
+
+    // si hubo opciones rechazadas, avisa cuales
+    let valoresInvalidos = respuesta.split(",").length > elegido.length;
+    if(valoresInvalidos)
+        alert(`Existen opciones invalidas en la solicitud: ${respuesta.split(",").filter(opcion => !elegido.includes(opcion)).toString()}`);
+        
+    // si no hubo opciones validas, avisa
+    if(elegido.length > 0 && !valoresInvalidos){
+        return true;
+    }
+    return false;
+}
 /**
  * Permite la seleccion de multiples opciones, corroborando que este dentro de las propuestas
  *
@@ -79,16 +102,8 @@ function promptSeleccionMultiple(promptTxt, opciones){
     while(true){
         let respuesta = prompt(promptTxt);
 
-        // divide por coma > borra espacios en blanco > filtra para saber si las opciones son correctas
-        if(respuesta)
-            elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
-
-        // si hubo opciones rechazadas, avisa cuales
-        if(respuesta.split(",").length > elegido.length)
-            alert(`Se eliminaron las opciones invalidas de la solicitud: ${respuesta.split(",").filter(opcion => !elegido.includes(opcion)).toString()}`)
-
-        // si no hubo opciones validas, avisa
-        if(elegido.length > 0){
+        let esValido = validacionPrompts(respuesta);
+        if(esValido){
             break;
         }
         else alert("Por favor, seleccione una opcion");
@@ -98,14 +113,22 @@ function promptSeleccionMultiple(promptTxt, opciones){
 }
 
 /**
+ * 
+ * @param {string} email El email ingresado por el usuario 
+ * @returns {Boolean} valor de verdad por si es un email o no
+ */
+function EsUnEmail( email ){
+    // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
+    return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email)
+}
+/**
  * Permite ingresar un email, corroborando que sea un formato valido 
  */
 function promptCorreoElectronico(){
     while(true){
         let respuesta = prompt("Ingresa tu correo electronico");
 
-        // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
-        let esEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(respuesta)
+        let esEmail = EsUnEmail(respuesta);
         if(!esEmail){
             alert("El formato del email no es correcto");
         } 
@@ -319,8 +342,36 @@ function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, res
 
     console.log("Enviando los datos de la reserva al backend...");
     console.log(datosReserva);
+    ReservasGeneradas.push(datosReserva);
+
+    console.log("Reserva Almacenada!");
+    console.log(ReservasGeneradas);
 }
 
+/**
+ * Calcula el precio de una atraccion = precio de la atraccion * cant. de dias * cant. de personas (grupo)
+ * @param {object} atraccion 
+ * @param {Number} cantDias 
+ * @param {Number} cantPersonas 
+ * @returns 
+ */
+function CalculadorPrecio(atraccion, cantDias, cantPersonas){
+    let precioAtraccion = atraccion.precio;
+    return (precioAtraccion * cantDias) * cantPersonas
+}
+
+/**
+ * convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
+ * @param {Number[]} respuestaDias 
+ */
+function ConvertidorDeDias( respuestaDias ){
+    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
+    let diasElegidos = "";
+    respuestaDias.forEach(numDia => { 
+        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
+    });
+    return diasElegidos;
+}
 /**
  * Permite al usuario crear una reserva, recibiendo su informacion y validandola
  */
@@ -368,17 +419,9 @@ function crearUnaReserva()
 
     let respuestaEmail = promptCorreoElectronico();
 
+    let precio = CalculadorPrecio(atracciones[respuestaAtraccion], respuestaDias.length, respuestaGrupo);
 
-    // Precio: precio de la atraccion * cant. de dias * cant. de personas (grupo)
-    let precioAtraccion = atracciones[respuestaAtraccion].precio;
-    let precio = (precioAtraccion * respuestaDias.length) * respuestaGrupo
-
-    // convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
-    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
-    let diasElegidos = "";
-    respuestaDias.forEach(numDia => { 
-        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
-    });
+    let diasElegidos = ConvertidorDeDias( respuestaDias );
 
     alert(`
         Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
@@ -411,6 +454,10 @@ function finalizarItinerario(email, itinerario)
 
     console.log("Itinerario enviado al backend...");
     console.log(envio);
+    ItinerariosCreados.push(envio);
+
+    console.log("Itinerario almacenado!");
+    console.log(ItinerariosCreados);
 }
 
 /**

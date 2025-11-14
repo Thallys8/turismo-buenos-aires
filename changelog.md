@@ -25,6 +25,8 @@ PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Co
 PR: [#86](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 
 ### Changed 
+- [feature/correcciones-codigo-js-release] correcciones extra en el codigo, nuevas funciones y objetos  
+PR: [#94](https://github.com/Thallys8/turismo-buenos-aires/pull/94) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos  
 PR: [#84](https://github.com/Thallys8/turismo-buenos-aires/pull/84) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/correccion-release-diagramas-uml] Correción de los diagrams UML  
