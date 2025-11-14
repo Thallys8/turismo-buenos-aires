@@ -72,11 +72,13 @@ function promptSeleccionUnica(promptTxt, opciones){
     return elegido;
 }
 
-
-function validacionPrompts( respuesta ){
-    // divide por coma > borra espacios en blanco > filtra para saber si las opciones son correctas
-    if(respuesta)
-        elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
+/**
+ * Valida los datos ingresados en los prompts multiples
+ * @param {string} respuesta 
+ * @param {string[]} opciones 
+ * @returns {boolean} si es una respuesta valida
+ */
+function validacionPrompts( respuesta, elegido ){
 
     // si hubo opciones rechazadas, avisa cuales
     let valoresInvalidos = respuesta.split(",").length > elegido.length;
@@ -102,7 +104,11 @@ function promptSeleccionMultiple(promptTxt, opciones){
     while(true){
         let respuesta = prompt(promptTxt);
 
-        let esValido = validacionPrompts(respuesta);
+        // divide por coma > borra espacios en blanco > filtra para saber si las opciones son correctas
+        if(respuesta)
+            elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
+
+        let esValido = validacionPrompts(respuesta, elegido);
         if(esValido){
             break;
         }
@@ -149,7 +155,10 @@ function promptCorreoElectronico(){
  * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
  */
 function algunValorExiste(ArrayChequeado, ValoresBuscados){
-    return ValoresBuscados.some(value => ArrayChequeado.includes(value));
+    let chequeadoNumero = ArrayChequeado.map( valor => {return parseInt(valor)});
+    let valoresNumero = ValoresBuscados.map( valor => {return parseInt(valor)});
+
+    return valoresNumero.some(value => chequeadoNumero.includes(value));
 }
 
 /**
@@ -176,11 +185,13 @@ function buscarAtracciones(momento, horario, actividad, grupo){
         let actividadOk = algunValorExiste(solicitud.actividad, atraccion.actividad);
         let grupoOk = algunValorExiste(solicitud.grupo, atraccion.grupo);
     
-        if(momentoOk, horarioOk, actividadOk, grupoOk) { 
+        if(momentoOk && horarioOk && actividadOk && grupoOk) { 
             atraccionesFiltradas.push(atraccion);
         }
     });
 
+    console.log("Estos elementos cumplen con los criterios: ");
+    console.log(atraccionesFiltradas);
     return atraccionesFiltradas;
 }
 
