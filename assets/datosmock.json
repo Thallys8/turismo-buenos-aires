@@ -1,0 +1,47 @@
+
+{
+    "datos": [
+        {
+            "titulo": "Rosedal de palermo",
+            "subtitulo": "algun subtitulo",
+            "descripcion": "alguna descripcion",
+            "imgSrc": "./assets/rosedales.webp",
+            "altFoto": "foto del rosedal de palermo",
+            "idMapa": "mapa-rosedal-palermo",
+            "promptMaps": "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+botanico,buenos+aires",
+            "momento": [1],
+            "horario": [1],
+            "actividad": [3],
+            "grupo": [1, 2, 3],
+            "precio": 10000
+        },
+        {
+            "titulo": "Jardin Japones",
+            "subtitulo": "algun subtitulo",
+            "descripcion": "alguna descripcion",
+            "imgSrc": "./assets/japones.webp",
+            "altFoto": "foto del jardin japones",
+            "idMapa": "mapa-jardin-japones",
+            "promptMaps": "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires",
+            "momento": ["1"],
+            "horario": ["1"],
+            "actividad": ["1", "3"],
+            "grupo": ["1", "2", "3"],
+            "precio": 7000
+        },
+        {
+            "titulo": "Rey de Copas Bar",
+            "subtitulo": "algun subtitulo",
+            "descripcion": "alguna descripcion",
+            "imgSrc": "./assets/bar.webp",
+            "altFoto": "foto del bar rey de copas",
+            "idMapa": "mapa-rey-de-copas",
+            "promptMaps": "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=bar+rey+de+copas,buenos+aires",
+            "momento": [1, 2],
+            "horario": [2],
+            "actividad": [1, 4],
+            "grupo": [2, 3],
+            "precio": 0
+        }
+    ]
+}

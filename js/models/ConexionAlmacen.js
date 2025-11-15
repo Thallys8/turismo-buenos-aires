@@ -1,9 +1,14 @@
-//import managerAlmacenamiento from "../utils/storage.js";
+import managerAlmacenamiento from "../utils/storage.js";
+
 
 class ConexionAlamacen { 
-    
+    keyAtracciones = "atracciones";
+    keyItinerarios = "itinerarios";
+    keyNewsletter = "newsletter";
+    keyReservas = "reservas";
+
     solicitarInformacionAtracciones(){
-        // solicita las atracciones
+        return managerAlmacenamiento.obtener(this.keyAtracciones, "local");
     }
 
     solicitarDisponibilidad(idAtraccion){
@@ -21,16 +26,42 @@ class ConexionAlamacen {
         return disponibilidad;
     }
 
-    ingresarInformacionNewsletter(){
-        // almacena nueva informacion
+    agregarLocalArrayActualizable(clave, valor, propiedad){
+        let datos = managerAlmacenamiento.obtener(clave, "local");
+        console.log(datos);
+        if(datos !== null){
+            let arrayDatos = datos.datos;
+
+            if( arrayDatos !== null){
+                arrayDatos.append(valor);
+                datos.subscripciones = arrayDatos;
+                
+                managerAlmacenamiento.actualizar(datos);
+            }
+        }
+        
+        else{ managerAlmacenamiento.guardar(clave, valor, "local");}
+    }
+    DataFormToJSON(form){
+        var json = {};
+        form.forEach(function(value, key){
+            json[key] = value;
+        });
+
+        return json;
+    }
+    ingresarInformacionNewsletter( subscripcionForm ){
+        const subscripcion = this.DataFormToJSON(subscripcionForm);
+        this.agregarLocalArrayActualizable(this.keyNewsletter, subscripcion, "subscripciones");
     }
 
-    ingresarInformacionItinerario(){
-        // almacena nueva informacion
+    ingresarInformacionItinerario( itinerarioObj ){
+        const itinerario = itinerarioObj.toJSON();
+        this.agregarLocalArrayActualizable(this.keyItinerarios, itinerario, "generados");
     }
-
-    ingresarInformacionReservas(){
-        // almacena nueva informacion
+    ingresarInformacionReservas( reservaForm ){
+        const reserva = this.DataFormToJSON(reservaForm);
+        this.agregarLocalArrayActualizable(this.keyReservas, reserva, "generados");
     }
 }
 

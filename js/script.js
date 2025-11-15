@@ -1,8 +1,10 @@
 
 import constructorHTML from './models/ConstructorHTML.js';
-import filtroAtracciones from './models/FiltroAtracciones.js';
 import conexionAlamacen from './models/ConexionAlmacen.js';
 import Itinerario from './models/Itinerario.js';
+
+// para simular que hay algo en el storage
+import storage from "./utils/storage.js";
 
 // esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion
 function concretarReserva(event, formulario){
@@ -10,7 +12,7 @@ function concretarReserva(event, formulario){
 
     const datosFormulario = new FormData(formulario);
 
-    // guardar la reserva
+    conexionAlamacen.ingresarInformacionReservas(datosFormulario);
 
     formulario.parentElement.remove();
     let precio = 0; //TODO calcular precio
@@ -28,19 +30,20 @@ function concretarReserva(event, formulario){
     document.body.appendChild(nuevoPopUp);
 }
 function generarMenuReserva(event){
-    const idAtraccion = event.target.value;
-    const diasDisponibles = conexionAlamacen.solicitarDisponibilidad(idAtraccion);
+    const atraccion = event.target.value;
+    const diasDisponibles = conexionAlamacen.solicitarDisponibilidad(atraccion);
 
-    console.log(diasDisponibles);
     if(diasDisponibles.length > 0){
         // crea los elementos opcion para el selector
         const opcionesDisponibilidad = [];
-        for(let i = 0; i < diasDisponibles.lenght; i++){
-            opcionesDisponibilidad.push(`<option value="${posInt}">${nombreDia}</option>`);
+        for(let i = 0; i < diasDisponibles.length; i++){
+
+            console.log(`<option value="${i}"> ${diasDisponibles[i]} </option>`);
+            opcionesDisponibilidad.push(`<option value="${diasDisponibles[i]}"> ${diasDisponibles[i]} </option>`);
         }
 
         const nuevoElemento = constructorHTML.crearPopUpFormulario( `
-            <input type="hidden" name="atraccion" value="${idAtraccion}">
+            <input type="hidden" name="atraccion" value="${atraccion}">
 
             <label for="disponibilidad"> Seleccione una de los dias disponibles</label>
             <select required name="disponibilidad" id="disponibilidad">
@@ -63,11 +66,23 @@ function generarMenuReserva(event){
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
 
+function HandlerSubmitBusqueda(parametros){
+    
+    const elementosHTML = constructorHTML.crearAtracciones(parametros, generarMenuReserva);
+
+    // destruye todos los elementos contenidos y agrega los nuevos
+    while (listaActividades.firstChild) {
+        listaActividades.removeChild(listaActividades.firstChild);
+    }
+    elementosHTML.forEach(elemento => {
+        listaActividades.appendChild(elemento);
+    });
+}
 function formularioSubmit(event){
     event.preventDefault();
 
     const formData = new FormData(formularioAvanzado);
-    
+
     const momento = [];
     
     if (formData.get("semana") === "1")  
@@ -78,27 +93,34 @@ function formularioSubmit(event){
     const horario = [formData.get("horario")];
     const actividad = [formData.get("tipo-actividad")];
     const grupo = [formData.get("tipo-grupo")];
-    
-    
-    const listaDatos = filtroAtracciones.buscarAtracciones(momento, horario, actividad, grupo);
-    const elementosHTML = constructorHTML.crearAtracciones(listaDatos, generarMenuReserva.name);
 
-
-    // destruye todos los elementos contenidos y agrega los nuevos
-    while (listaActividades.firstChild) {
-        listaActividades.removeChild(listaActividades.firstChild);
-    }
-    elementosHTML.forEach(elemento => {
-        listaActividades.appendChild(elemento);
-    });
+    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
+    HandlerSubmitBusqueda(parametros);
 }
 formularioAvanzado.addEventListener('submit', formularioSubmit);
+
+const maxTipos = 10;
+const opciones = [];
+for (var i = 0; i <= maxTipos; i++) {
+    opciones.push(i);
+}
+function onclickAtraccionesDia(){
+    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
+    HandlerSubmitBusqueda(parametros);
+}
+function onclickAtraccionesNoche(){
+    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
+    HandlerSubmitBusqueda(parametros);
+}
+document.getElementById("atracciones-noche-elegir").addEventListener("click", onclickAtraccionesNoche);
+document.getElementById("atracciones-dia-elegir").addEventListener("click", onclickAtraccionesDia);
+
 
 function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
 
-    // guardar la subscripcion
+    conexionAlamacen.ingresarInformacionNewsletter( datosFormulario );
 
     formulario.parentElement.remove();
 
@@ -158,7 +180,7 @@ function generarMenuItinerario(dia, opciones){
 
         <div class="itinerario-fila">
             <label for="mañana"> Mañana </label>
-            <select required name"mañana"> 
+            <select required name="mañana"> 
                 <option value=""> Seleccione una opcion </option>
                 ${opciones} 
             </select>
@@ -166,7 +188,7 @@ function generarMenuItinerario(dia, opciones){
         
         <div class="itinerario-fila">
             <label for="media-mañana"> Media mañana </label>
-            <select required name"media-mañana"> 
+            <select required name="media-mañana"> 
                 <option value=""> Seleccione una opcion </option>
                 ${opciones} 
             </select>
@@ -174,7 +196,7 @@ function generarMenuItinerario(dia, opciones){
 
         <div class="itinerario-fila">
             <label for="media-tarde"> Media tarde </label>
-            <select required name"media-tarde"> 
+            <select required name="media-tarde"> 
                 <option value=""> Seleccione una opcion </option>
                 ${opciones} 
             </select>
@@ -182,7 +204,15 @@ function generarMenuItinerario(dia, opciones){
 
         <div class="itinerario-fila">
             <label for="tarde"> Tarde </label>
-            <select required name"tarde"> 
+            <select required name="tarde"> 
+                <option value=""> Seleccione una opcion </option>
+                ${opciones} 
+            </select>
+        </div>
+
+        <div class="itinerario-fila">
+            <label for="noche"> Tarde </label>
+            <select required name="noche"> 
                 <option value=""> Seleccione una opcion </option>
                 ${opciones} 
             </select>
@@ -197,8 +227,11 @@ function generarItinerario(){
     itinerario = new Itinerario();
     opcionesAtraccion = [];
 
-    const atracciones = filtroAtracciones.arrayAtracciones.map(atraccion => {return atraccion.nombre});
-    for(let i = 0; i < atracciones.lenght; i++){
+    const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
+    
+    const atracciones = datosAtracciones.datos.map(atraccion => {return atraccion.titulo});
+
+    for(let i = 0; i < atracciones.length; i++){
         opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
     }
     opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);
@@ -210,8 +243,18 @@ function generarItinerario(){
 const botonItinerario = document.getElementById("btn-itinerario");
 botonItinerario.addEventListener("click", generarItinerario);
 
+// para agregar informacion inicial si no existe
 
+if(storage.obtener("atracciones") === null){
+    fetch("../../assets/datosmock.json")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
-
-
-document.getElementById("1234").addEventListener("click", generarMenuReserva);
+            return response.json(); // Parse the JSON data
+        })
+        .then(json => {
+            storage.guardar("atracciones", json, "local");
+        });
+}

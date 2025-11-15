@@ -34,14 +34,19 @@ class TarjetaAtraccion{
                     loading="lazy"
                     allowfullscreen
                     referrerpolicy="no-referrer-when-downgrade"
-                    src="${datosAtraccion.urlMapa}">
+                    src="${datosAtraccion.promptMaps}">
                 </iframe>
 
-                <button type="button" class="btn" value="${datosAtraccion.id}" onclick="${callback}">Reservar</button>
+                <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
             </div>
 
-            <img loading="lazy" src="${datosAtraccion.urlFoto}" alt="${datosAtraccion.altFoto}" >
+            <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
         `;
+
+        const button = this.elementoHTML.querySelector('.reservar-btn');
+        button.addEventListener('click', (event) => {
+            callback(event);
+        });
     }
 }
 

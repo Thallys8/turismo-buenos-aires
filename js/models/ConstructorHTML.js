@@ -16,7 +16,9 @@ class ConstructorHTML {
             criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
         );
         listaDatos.forEach( atraccion => {
-            const tarjeta = new TarjetaAtraccion().crearHTML(atraccion, callbackReserva);
+            const tarjeta = new TarjetaAtraccion();
+            tarjeta.crearHTML(atraccion, callbackReserva);
+
             nuevasTarjetas.push( tarjeta.getHTML() );
         });
 
@@ -53,7 +55,7 @@ class ConstructorHTML {
         contenedor.className = "panel-con-fondo-frente";
 
         const boton = document.createElement("button")
-        boton.addEventListener("click", () => { contenedor.remove(); });
+        boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
         boton.innerText = "Cerrar";
 
         contenedor.innerHTML = nuevoInnerHtml;
