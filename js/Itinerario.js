@@ -1,3 +1,4 @@
+import conexionAlmacen from "./ConexionAlmacen.js";
 
 class Itinerario{
     listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
@@ -21,6 +22,10 @@ class Itinerario{
 
     toJSON(){
         JSON.parse(this.itinerario);
+    }
+    almacenarElemento(){
+        let datos = this.toJSON();
+        conexionAlmacen.ingresarInformacionItinerario(datos);
     }
 }
 
