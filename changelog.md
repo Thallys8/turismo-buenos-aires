@@ -5,8 +5,12 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ### Added  
 - [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
 PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/dev-js-conexion-eventos-y-dom] Conexion con el dom y eventos  
+PR: [#101](https://github.com/Thallys8/turismo-buenos-aires/pull/101) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed  
+- [feature/dev-js-correcciones] Correcciones en el codigo js y clases
+PR: [#x](https://github.com/Thallys8/turismo-buenos-aires/pull/x) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Fixed  
 
