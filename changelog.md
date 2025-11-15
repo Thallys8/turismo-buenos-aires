@@ -3,6 +3,8 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+- [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
+PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed  
 
