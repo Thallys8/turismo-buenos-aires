@@ -10,7 +10,7 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 
 ---  
 
-## [Release Entrega Obligatoria Nº 3] - 2025-10-24  
+## [Release Entrega Obligatoria Nº 4] - 2025-11-14   
 
 ### Added  
 - [feature/dev-storage] Creó el js/utils/storage.js  
