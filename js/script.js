@@ -1,26 +1,45 @@
 
 
-// ---- Informacion de atracciones para pruebas o simular el backend ----
-const AtraccionTuristica = [
+// ---- Informacion para pruebas o simular el backend ----
+const subscripcionesNewsletter = [
+
+];
+const reservasGeneradas = [
+
+];
+const itinerariosCreados = [
+
+];
+const atraccionTuristica = [
     {
-        nombre: "atraccion 1",
-        imgSrc: "",
-        promptMaps: "",
-        momento: "",
-        horario: "",
-        actividad: "",
-        grupo: "",
+        nombre: "Rosedal de palermo",
+        imgSrc: "./assets/rosedales.webp",
+        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+botanico,buenos+aires",
+        momento: [1],
+        horario: [1],
+        actividad: [3],
+        grupo: [1, 2, 3],
         precio: 10000
     },
     {
-        nombre: "atraccion 2",
-        imgSrc: "",
-        promptMaps: "",
-        momento: "",
-        horario: "",
-        actividad: "",
-        grupo: "",
+        nombre: "Jardin Japones",
+        imgSrc: "./assets/japones.webp",
+        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires",
+        momento: [1],
+        horario: [1],
+        actividad: [1, 3],
+        grupo: [1, 2, 3],
         precio: 7000
+    },
+    {
+        nombre: "Rey de Copas Bar",
+        imgSrc: "./assets/bar.webp",
+        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=bar+rey+de+copas,buenos+aires",
+        momento: [1, 2],
+        horario: [2],
+        actividad: [1, 4],
+        grupo: [2, 3],
+        precio: 0
     }
 ];
 // ----------------------------------------------------------------
@@ -37,7 +56,7 @@ const AtraccionTuristica = [
  * @param {String[]} opciones - Las opciones permitidas (debe ser completamente igual y numerica)
  * @returns {String} La opcion que eligio el usuario
  */
-function PromptSeleccionUnica(promptTxt, opciones){
+function promptSeleccionUnica(promptTxt, opciones){
     let elegido = "";
 
     while(true){
@@ -54,13 +73,36 @@ function PromptSeleccionUnica(promptTxt, opciones){
 }
 
 /**
+ * Valida los datos ingresados en los prompts multiples
+ * @param {string} respuesta 
+ * @param {string[]} opciones 
+ * @returns {boolean} si es una respuesta valida
+ */
+function validacionPrompts( respuesta, elegido ){
+
+    if( respuesta === null || respuesta === undefined){
+        return false;
+    }
+
+    // si hubo opciones rechazadas, avisa cuales
+    let valoresInvalidos = respuesta.split(",").length > elegido.length;
+    if(valoresInvalidos)
+        alert(`Existen opciones invalidas en la solicitud: ${respuesta.split(",").filter(opcion => !elegido.includes(opcion)).toString()}`);
+        
+    // si no hubo opciones validas, avisa
+    if(elegido.length > 0 && !valoresInvalidos){
+        return true;
+    }
+    return false;
+}
+/**
  * Permite la seleccion de multiples opciones, corroborando que este dentro de las propuestas
  *
  * @param {String[]} promptTxt - El prompt que se muestra al usuario
  * @param {String[]} opciones - Las opciones permitidas (debe ser completamente igual y numerica)
  * @returns {String[]} Las opciones que eligio el usuario
  */
-function PromptSeleccionMultiple(promptTxt, opciones){
+function promptSeleccionMultiple(promptTxt, opciones){
     let elegido = [];
 
     while(true){
@@ -70,12 +112,8 @@ function PromptSeleccionMultiple(promptTxt, opciones){
         if(respuesta)
             elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
 
-        // si hubo opciones rechazadas, avisa cuales
-        if(respuesta.split(",").length > elegido.length)
-            alert(`Se eliminaron las opciones invalidas de la solicitud: ${respuesta.split(",").filter(opcion => !elegido.includes(opcion)).toString()}`)
-
-        // si no hubo opciones validas, avisa
-        if(elegido.length > 0){
+        let esValido = validacionPrompts(respuesta, elegido);
+        if(esValido){
             break;
         }
         else alert("Por favor, seleccione una opcion");
@@ -85,14 +123,22 @@ function PromptSeleccionMultiple(promptTxt, opciones){
 }
 
 /**
+ * 
+ * @param {string} email El email ingresado por el usuario 
+ * @returns {Boolean} valor de verdad por si es un email o no
+ */
+function esUnEmail( email ){
+    // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
+    return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email)
+}
+/**
  * Permite ingresar un email, corroborando que sea un formato valido 
  */
-function PromptCorreoElectronico(){
+function promptCorreoElectronico(){
     while(true){
         let respuesta = prompt("Ingresa tu correo electronico");
 
-        // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
-        let esEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(respuesta)
+        let esEmail = esUnEmail(respuesta);
         if(!esEmail){
             alert("El formato del email no es correcto");
         } 
@@ -106,6 +152,20 @@ function PromptCorreoElectronico(){
 // ---- Flujo 1: Buscar atracciones segun informacion ingresada en el formulario ----
 
 /**
+ * Verifica si un arreglo contiene o no al menos un valor presente en otro
+ * 
+ * @param {Number[]} arrayChequeado - El arreglo que almacena los valores aceptados
+ * @param {Number[]} valoresBuscados - El arreglo de los valores a buscar
+ * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
+ */
+function algunValorExiste(arrayChequeado, valoresBuscados){
+    let chequeadoNumero = arrayChequeado.map( valor => {return parseInt(valor)});
+    let valoresNumero = valoresBuscados.map( valor => {return parseInt(valor)});
+
+    return valoresNumero.some(value => chequeadoNumero.includes(value));
+}
+
+/**
  * Solicita al backend que devuelva las atracciones que cumplen con los requisitos
  * 
  * @param {String[]} momento - Los momentos de la semana seleccionados
@@ -114,17 +174,35 @@ function PromptCorreoElectronico(){
  * @param {String[]} grupo - Los tipos de grupos seleccionados
  * @returns {Object[]} Las atracciones que cumplan con los parametros
  */
-function BuscarAtracciones(momento, horario, actividad, grupo){
-    Solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
+function buscarAtracciones(momento, horario, actividad, grupo){
+    const solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
 
     console.log(`Enviando la siguiente solicitud al backend...`);
-    console.log(Solicitud);
+    console.log(solicitud);
+
+    // simulacion de la busqueda en el listado de atracciones
+    let arrayAtracciones = solicitarAtracciones();
+    let atraccionesFiltradas = [];
+    arrayAtracciones.forEach(atraccion => {
+        let momentoOk = algunValorExiste(solicitud.momento, atraccion.momento);
+        let horarioOk = algunValorExiste(solicitud.horario, atraccion.horario);
+        let actividadOk = algunValorExiste(solicitud.actividad, atraccion.actividad);
+        let grupoOk = algunValorExiste(solicitud.grupo, atraccion.grupo);
+    
+        if(momentoOk && horarioOk && actividadOk && grupoOk) { 
+            atraccionesFiltradas.push(atraccion);
+        }
+    });
+
+    console.log("Estos elementos cumplen con los criterios: ");
+    console.log(atraccionesFiltradas);
+    return atraccionesFiltradas;
 }
 
 /**
  * Consulta y recibe los parametros por parte del usuario y busca las atracciones que los cumplan todos 
  */
-function GenerarBusqueda(){
+function generarBusqueda(){
     const opcionesMomento = ["1", "2"];
     const promptMomento = `
         ¿En que momento de la semana? (para ingresar varias opciones, separe con coma)\n
@@ -133,13 +211,13 @@ function GenerarBusqueda(){
     `;
     const opcionesHorario = ["1", "2"];
     const promptHorario = `
-        ¿En que momento del dia? (para ingresar varias opciones, separe con coma)\n
+        ¿En que momento del dia?\n
         1 - me gusta salir de dia\n
         2 - me gusta salir de noche
     `;
     const opcionesActividad = ["1", "2", "3", "4"];
     const promptActividad = `
-        ¿Que tipo de actividad te interesa? (para ingresar varias opciones, separe con coma)\n
+        ¿Que tipo de actividad te interesa?\n
         1 - Deporte\n
         2 - Fiesta\n
         3 - Cultura\n
@@ -147,19 +225,19 @@ function GenerarBusqueda(){
     `;
     const opcionesGrupo = ["1", "2", "3", "4"];
     const promptGrupo = `
-        ¿Con quien te gustaria ir? (para ingresar varias opciones, separe con coma)\n
+        ¿Con quien te gustaria ir?\n
         1 - familia\n
         2 - amigos\n
         3 - parejas\n
         4 - desconocidos
     `;
 
-    const respuestaMomento = PromptSeleccionMultiple(promptMomento, opcionesMomento);
-    const respuestaHorario = PromptSeleccionMultiple(promptHorario, opcionesHorario);
-    const respuestaActividad = PromptSeleccionMultiple(promptActividad, opcionesActividad);
-    const respuestaGrupo = PromptSeleccionMultiple(promptGrupo, opcionesGrupo);
+    const respuestaMomento = promptSeleccionMultiple(promptMomento, opcionesMomento);
+    const respuestaHorario = promptSeleccionMultiple(promptHorario, opcionesHorario);
+    const respuestaActividad = promptSeleccionMultiple(promptActividad, opcionesActividad);
+    const respuestaGrupo = promptSeleccionMultiple(promptGrupo, opcionesGrupo);
     
-    BuscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo);
+    buscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo);
 }
 
 // ----------------------------------------------------------------
@@ -176,17 +254,30 @@ function GenerarBusqueda(){
  * @param {String[]} intereses - Los temas de interes del nuevo subscriptor
  * @param {String} email - El email de contacto para el nuevo subscriptor
  */
-function FinalizarSubscripcion(nombreCompleto, intereses, email){
-    Solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
+function finalizarSubscripcion(nombreCompleto, intereses, email){
+    solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
 
-    console.log("Enviando la siguiente solicitud al backend...");
-    console.log(Solicitud);
+    console.log("Almacenando la subscripcion en el backend...");
+    console.log(solicitud);
+
+    let yaExiste = false;
+    subscripcionesNewsletter.forEach(sub => {
+        if(sub.email.toLowerCase() == solicitud.email.toLowerCase()) {
+            yaExiste = true; 
+        };
+    });
+    if(!yaExiste) {
+        subscripcionesNewsletter.push(solicitud);
+    }
+    else { 
+        alert("El email ya esta subscripto"); 
+    }
 }
 
 /**
  * Solicita los datos del usuario, corrobora que sean correctos y lo subscribe a la newsletter
  */
-function SubscribirNewsletter(){
+function subscribirNewsletter(){
     let nombreCompleto = prompt("¿Como es tu nombre completo?");
 
     const opcionesIntereses = ["1", "2", "3"];
@@ -196,12 +287,12 @@ function SubscribirNewsletter(){
         2 - eventos\n
         3 - ofertas
     `;
-    let intereses = PromptSeleccionMultiple(promptIntereses, opcionesIntereses); 
+    let intereses = promptSeleccionMultiple(promptIntereses, opcionesIntereses); 
     
-    let correoElectronico = PromptCorreoElectronico();
+    let correoElectronico = promptCorreoElectronico();
 
     alert("Subscripcion exitosa! Recibira la confirmacion en su correo");
-    FinalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
+    finalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
 }
 
 // ----------------------------------------------------------------
@@ -216,10 +307,11 @@ function SubscribirNewsletter(){
  * 
  * @param {String} atraccion - la atraccion solicitada
  */
-function SolicitarDisponibilidad(atraccion){
+function solicitarDisponibilidad(atraccion){
 
     console.log("Solicitando disponibilidad de la atraccion al backend...");
-
+    console.log(atraccion);
+    
     let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     
     // 50/50 de si el dia tiene cupos disponibles o no
@@ -236,11 +328,11 @@ function SolicitarDisponibilidad(atraccion){
  * 
  * @returns {Object[]} Una lista de atracciones, que contienen sus datos 
  */
-function SolicitarAtracciones(){
+function solicitarAtracciones(){
 
     console.log("Solicitando atracciones al backend...");
     
-    let respuesta = AtraccionTuristica;
+    let respuesta = atraccionTuristica;
     console.log("Respuesta recibida:");
     console.log(respuesta);
 
@@ -255,7 +347,7 @@ function SolicitarAtracciones(){
  * @param {String[]} respuestaDias La cantidad de dias para reservar 
  * @param {String} respuestaEmail El email de contacto para la reserva 
  */
-function ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail){
+function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail){
     const datosReserva = {
         "atraccion": respuestaAtraccion, 
         "grupo": respuestaGrupo, 
@@ -265,28 +357,56 @@ function ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, res
 
     console.log("Enviando los datos de la reserva al backend...");
     console.log(datosReserva);
+    reservasGeneradas.push(datosReserva);
+
+    console.log("Reserva Almacenada!");
+    console.log(reservasGeneradas);
 }
 
 /**
+ * Calcula el precio de una atraccion = precio de la atraccion * cant. de dias * cant. de personas (grupo)
+ * @param {object} atraccion 
+ * @param {Number} cantDias 
+ * @param {Number} cantPersonas 
+ * @returns 
+ */
+function calculadorPrecio(atraccion, cantDias, cantPersonas){
+    let precioAtraccion = atraccion.precio;
+    return (precioAtraccion * cantDias) * cantPersonas
+}
+
+/**
+ * convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
+ * @param {Number[]} respuestaDias 
+ */
+function convertidorDeDias( respuestaDias ){
+    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
+    let diasElegidos = "";
+    respuestaDias.forEach(numDia => { 
+        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
+    });
+    return diasElegidos;
+}
+/**
  * Permite al usuario crear una reserva, recibiendo su informacion y validandola
  */
-function CrearUnaReserva()
+function crearUnaReserva()
 {
     let opciones = [];
     let promptOpciones = `
         Seleccione la atraccion en la que quiera reservar (Solo una por solicitud):\n
     `;
     
-    let atracciones = SolicitarAtracciones();
+    let atracciones = solicitarAtracciones();
 
     for(let i = 0; i < atracciones.length; i++){
         opciones.push("" + (i + 1));
         promptOpciones = promptOpciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
     }
     
-    let respuestaAtraccion = PromptSeleccionUnica(promptOpciones, opciones)
+    let respuestaAtraccion = promptSeleccionUnica(promptOpciones, opciones)
 
-    let disponibilidad = SolicitarDisponibilidad(respuestaAtraccion);
+    let disponibilidad = solicitarDisponibilidad(respuestaAtraccion);
 
     let dias = [];
     let promptDias = `
@@ -297,7 +417,7 @@ function CrearUnaReserva()
         promptDias = promptDias.concat( `${i + 1} - ${disponibilidad[i]} \n`);
     }
 
-    let respuestaDias = PromptSeleccionMultiple(promptDias, dias);
+    let respuestaDias = promptSeleccionMultiple(promptDias, dias);
 
     // Recibe del usuario el numero de personas en el grupo (si no es numerico, entonces rechaza)
     let respuestaGrupo
@@ -312,19 +432,11 @@ function CrearUnaReserva()
     }
 
 
-    let respuestaEmail = PromptCorreoElectronico();
+    let respuestaEmail = promptCorreoElectronico();
 
+    let precio = calculadorPrecio(atracciones[respuestaAtraccion], respuestaDias.length, respuestaGrupo);
 
-    // Precio: precio de la atraccion * cant. de dias * cant. de personas (grupo)
-    let precioAtraccion = atracciones[respuestaAtraccion].precio;
-    let precio = (precioAtraccion * respuestaDias.length) * respuestaGrupo
-
-    // convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
-    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
-    let diasElegidos = "";
-    respuestaDias.forEach(numDia => { 
-        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
-    });
+    let diasElegidos = convertidorDeDias( respuestaDias );
 
     alert(`
         Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
@@ -335,7 +447,7 @@ function CrearUnaReserva()
         Pronto sera contactado en su correo, debera abonar $${precio}
     `);
 
-    ConcretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
+    concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
 }
 
 // ----------------------------------------------------------------
@@ -351,19 +463,23 @@ function CrearUnaReserva()
  * @param {String} email El correo electronico a donde enviar el itinerario 
  * @param {Object[]} itinerario El nuevo itinerario generado
  */
-function FinalizarItinerario(email, itinerario)
+function finalizarItinerario(email, itinerario)
 {
     const envio = {"email": email, "itinerario": itinerario}
 
     console.log("Itinerario enviado al backend...");
     console.log(envio);
+    itinerariosCreados.push(envio);
+
+    console.log("Itinerario almacenado!");
+    console.log(itinerariosCreados);
 }
 
 /**
  * Recibe la informacion del itinerario del usuario a travez de prompts y lo genera
  */
-function CrearUnItinerario(){
-    let atracciones = SolicitarAtracciones();
+function crearUnItinerario(){
+    let atracciones = solicitarAtracciones();
 
     let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
     let listaOpciones = ["x"];
@@ -385,7 +501,7 @@ function CrearUnItinerario(){
 
         let respuesta;
         while(true){
-            respuesta = PromptSeleccionMultiple(promptTxt, listaOpciones);
+            respuesta = promptSeleccionMultiple(promptTxt, listaOpciones);
             
             //si eligio la opcion "x" junto a otras, avisa del error
             if(respuesta.filter(item => item.toLowerCase() == "x").length != 0 && respuesta.length > 1){
@@ -401,10 +517,10 @@ function CrearUnItinerario(){
         }
     }
     
-    let correo = PromptCorreoElectronico();
+    let correo = promptCorreoElectronico();
     alert("Itinerario generado con exito, pronto sera enviado a su correo");
     
-    FinalizarItinerario(correo, resultado);
+    finalizarItinerario(correo, resultado);
 }
 
 /**
@@ -422,19 +538,19 @@ function menuDeUsuario(){
 
     switch (opcionElegida) {
         case "1": {
-            GenerarBusqueda();
+            generarBusqueda();
             break;
         }
         case "2": {
-            SubscribirNewsletter();
+            subscribirNewsletter();
             break;
         }
         case "3": {
-            CrearUnaReserva()
+            crearUnaReserva()
             break;
         }
         case "4": {
-            CrearUnItinerario()
+            crearUnItinerario()
             break;
         }
         default:{
