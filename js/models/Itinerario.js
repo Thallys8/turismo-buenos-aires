@@ -6,14 +6,30 @@ class Itinerario{
 
     cargarDiaItinerario( formulario ){
         const datosFormulario = new FormData(formulario);
-        const datosItinerario = {
-            dia: datosFormulario.get("dia"),
-            mañana: { eleccion: datosFormulario.get("mañana"), comentario: datosFormulario.get("mañana-comentario") },
-            mediaMañana: { eleccion: datosFormulario.get("media-mañana"), comentario: datosFormulario.get("media-mañana-comentario")},
-            mediaTarde: { eleccion: datosFormulario.get("media-tarde"), comentario: datosFormulario.get("media-tarde-comentario")},
-            tarde: { eleccion: datosFormulario.get("tarde"), comentario: datosFormulario.get("tarde-comentario")},
-            noche: { eleccion: datosFormulario.get("noche"), comentario: datosFormulario.get("noche-comentario")}
-        };
+
+        /*const datosItinerario = {
+            dia: datosFormulario.get("dia").toString(),
+            mañana: { eleccion: datosFormulario.get("mañana").toString() , comentario: datosFormulario.get("mañana-comentario").toString() },
+            mediaMañana: { eleccion: datosFormulario.get("media-mañana").toString(), comentario: datosFormulario.get("media-mañana-comentario").toString()},
+            mediaTarde: { eleccion: datosFormulario.get("media-tarde").toString(), comentario: datosFormulario.get("media-tarde-comentario").toString()},
+            tarde: { eleccion: datosFormulario.get("tarde").toString(), comentario: datosFormulario.get("tarde-comentario").toString()},
+            noche: { eleccion: datosFormulario.get("noche").toString(), comentario: datosFormulario.get("noche-comentario").toString()}
+        };*/
+
+        var datosItinerario = {};
+        datosFormulario.forEach(function(value, key){
+            datosItinerario[key] = value;
+        });
+
+        /*const datosItinerario = {
+            dia: datosFormulario.get("dia").toString(),
+            mañana: datosFormulario.get("mañana").toString(),
+            mediaMañana: datosFormulario.get("media-mañana").toString(),
+            mediaTarde: datosFormulario.get("media-tarde").toString(),
+            tarde: datosFormulario.get("tarde").toString(),
+            noche: datosFormulario.get("noche").toString()
+        };*/
+
         this.itinerario.push(datosItinerario);
     }
     estaCompleto(){
@@ -24,11 +40,8 @@ class Itinerario{
     }
 
     toJSON(){
-        JSON.parse(this.itinerario);
-    }
-    almacenarElemento(){
-        let datos = this.toJSON();
-        conexionAlmacen.ingresarInformacionItinerario(datos);
+        console.log(this.itinerario);
+        return JSON.stringify({ datos: this.itinerario });
     }
 }
 

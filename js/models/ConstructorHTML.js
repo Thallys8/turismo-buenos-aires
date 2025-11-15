@@ -16,7 +16,9 @@ class ConstructorHTML {
             criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
         );
         listaDatos.forEach( atraccion => {
-            const tarjeta = new TarjetaAtraccion().crearHTML(atraccion, callbackReserva);
+            const tarjeta = new TarjetaAtraccion();
+            tarjeta.crearHTML(atraccion, callbackReserva);
+
             nuevasTarjetas.push( tarjeta.getHTML() );
         });
 

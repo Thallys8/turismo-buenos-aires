@@ -1,38 +1,6 @@
 import conexionAlmacen from "./ConexionAlmacen.js";
 import validador from "./Validador.js"
 class FiltroAtracciones {
-    arrayAtracciones = [
-        {
-            nombre: "Rosedal de palermo",
-            imgSrc: "./assets/rosedales.webp",
-            promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+botanico,buenos+aires",
-            momento: [1],
-            horario: [1],
-            actividad: [3],
-            grupo: [1, 2, 3],
-            precio: 10000
-        },
-        {
-            nombre: "Jardin Japones",
-            imgSrc: "./assets/japones.webp",
-            promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires",
-            momento: ["1"],
-            horario: ["1"],
-            actividad: ["1", "3"],
-            grupo: ["1", "2", "3"],
-            precio: 7000
-        },
-        {
-            nombre: "Rey de Copas Bar",
-            imgSrc: "./assets/bar.webp",
-            promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=bar+rey+de+copas,buenos+aires",
-            momento: [1, 2],
-            horario: [2],
-            actividad: [1, 4],
-            grupo: [2, 3],
-            precio: 0
-        }
-    ]; //test
 
     /**
      * Solicita al backend que devuelva las atracciones que cumplen con los requisitos
@@ -44,9 +12,8 @@ class FiltroAtracciones {
      * @returns {Object[]} Las atracciones que cumplan con los parametros
      */
     buscarAtracciones(momento, horario, actividad, grupo){
-        const arrayAtracciones = conexionAlmacen.solicitarInformacionAtracciones() || this.arrayAtracciones; //test
-        console.log("momento:" + momento + "horario:" + horario + "actividad:" + actividad + "grupo:" + grupo);
-        
+        const arrayAtracciones = conexionAlmacen.solicitarInformacionAtracciones().datos;
+
         let atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
             let momentoOk = validador.algunValorExiste(momento, atraccion.momento);
             let horarioOk = validador.algunValorExiste(horario, atraccion.horario);
@@ -57,7 +24,6 @@ class FiltroAtracciones {
             return momentoOk && horarioOk && actividadOk && grupoOk;
         });
 
-        console.log(atraccionesFiltradas);
         return atraccionesFiltradas;
     }
 }
