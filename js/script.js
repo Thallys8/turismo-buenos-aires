@@ -82,7 +82,6 @@ function formularioSubmit(event){
     event.preventDefault();
 
     const formData = new FormData(formularioAvanzado);
-    console.log(formData);
 
     const momento = [];
     
@@ -121,7 +120,7 @@ function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
 
-    conexionAlamacen.ingresarInformacionNewsletter();
+    conexionAlamacen.ingresarInformacionNewsletter( datosFormulario );
 
     formulario.parentElement.remove();
 
@@ -229,12 +228,10 @@ function generarItinerario(){
     opcionesAtraccion = [];
 
     const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
-
-    const atracciones = datosAtracciones.datos.map(atraccion => {return atraccion.nombre});
     
+    const atracciones = datosAtracciones.datos.map(atraccion => {return atraccion.titulo});
 
     for(let i = 0; i < atracciones.length; i++){
-        console.log(atracciones[i]);
         opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
     }
     opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);

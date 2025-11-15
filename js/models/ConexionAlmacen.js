@@ -28,9 +28,9 @@ class ConexionAlamacen {
 
     agregarLocalArrayActualizable(clave, valor, propiedad){
         let datos = managerAlmacenamiento.obtener(clave, "local");
-
+        console.log(datos);
         if(datos !== null){
-            let arrayDatos = datos[propiedad];
+            let arrayDatos = datos.datos;
 
             if( arrayDatos !== null){
                 arrayDatos.append(valor);
@@ -40,13 +40,15 @@ class ConexionAlamacen {
             }
         }
         
-        else{ managerAlmacenamiento.guardar(this.keyNewsletter, valor, "local");}
+        else{ managerAlmacenamiento.guardar(clave, valor, "local");}
     }
-    DataFormToJSON(subscripcionForm){
-        var subscripcion = {};
-        subscripcionForm.forEach(function(value, key){
-            subscripcion[key] = value;
+    DataFormToJSON(form){
+        var json = {};
+        form.forEach(function(value, key){
+            json[key] = value;
         });
+
+        return json;
     }
     ingresarInformacionNewsletter( subscripcionForm ){
         const subscripcion = this.DataFormToJSON(subscripcionForm);

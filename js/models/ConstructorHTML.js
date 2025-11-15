@@ -55,7 +55,7 @@ class ConstructorHTML {
         contenedor.className = "panel-con-fondo-frente";
 
         const boton = document.createElement("button")
-        boton.addEventListener("click", () => { contenedor.remove(); });
+        boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
         boton.innerText = "Cerrar";
 
         contenedor.innerHTML = nuevoInnerHtml;
