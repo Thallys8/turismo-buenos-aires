@@ -1,4 +1,43 @@
 
+import constructorHTML from './ConstructorHTML.js';
+import filtroAtracciones from './FiltroAtracciones.js';
+import conexionAlamacen from './ConexionAlmacen.js';
+import Itinerario from './Itinerario.js';
+
+// esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion
+function concretarReserva(event, formulario){
+    event.preventDefault();
+
+    const datosFormulario = new FormData(formulario);
+
+    // guardar la reserva
+
+    formulario.parentElement.remove();
+    let precio = 0; //TODO calcular precio
+
+    let nuevoPopUp = constructorHTML.crearPopUpSimple(`
+        <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
+        <ul>
+            <li> Atraccion: ${datosFormulario.get("atraccion")} </li>
+            <li> Personas: ${datosFormulario.get("visitantes")} </li>
+            <li> Dias: ${datosFormulario.get("disponibilidad")} </li>
+            <li> Contacto: ${datosFormulario.get("email")} </li>
+        </ul>
+        <p> Pronto sera contactado en su correo, debera abonar $${precio} </p>
+    `);
+    document.body.appendChild(nuevoPopUp);
+}
+function generarMenuReserva(event){
+    const idAtraccion = event.target.value;
+    const diasDisponibles = filtroAtracciones.solicitarDisponibilidad(idAtraccion);
+
+    console.log(diasDisponibles);
+    if(diasDisponibles.length > 0){
+        // crea los elementos opcion para el selector
+        const opcionesDisponibilidad = [];
+        for(let i = 0; i < diasDisponibles.lenght; i++){
+            opcionesDisponibilidad.push(`<option value="${posInt}">${nombreDia}</option>`);
+        }
 
 // ---- Informacion para pruebas o simular el backend ----
 const subscripcionesNewsletter = [
@@ -46,30 +85,22 @@ const atraccionTuristica = [
 
 
 
+            <label for="disponibilidad"> Seleccione una de los dias disponibles</label>
+            <select required name="disponibilidad" id="disponibilidad">
+                <option value=""> Seleccione una opcion </option>
+                ${opcionesDisponibilidad.join(" ")}
+            </select>
 
-// ---- Funciones utiles ------------------------------------------
+            <label for="visitantes"> ¿Cuantas personas van a asistir? </label>
+            <input required type="number" name="visitantes" id="visitantes">
 
-/**
- * Permite la seleccion de una unica opcion, corroborando que este dentro de las propuestas
- *
- * @param {String[]} promptTxt - El prompt que se muestra al usuario
- * @param {String[]} opciones - Las opciones permitidas (debe ser completamente igual y numerica)
- * @returns {String} La opcion que eligio el usuario
- */
-function promptSeleccionUnica(promptTxt, opciones){
-    let elegido = "";
+            <label for="email"> Ingrese su email de contacto </label>
+            <input required type="email" name="email" id="email">
 
-    while(true){
-        let respuesta = prompt(promptTxt);
+        `, (event) => { concretarReserva(event, event.target); } );
 
-        // si la respuesta tiene mas de un caracter, se rechaza
-        if(respuesta.length = 1){
-            elegido = respuesta
-            break;
-        } else alert("Ingrese una sola opcion");
+        document.body.appendChild(nuevoElemento);
     }
-
-    return elegido;
 }
 
 /**
@@ -119,8 +150,8 @@ function promptSeleccionMultiple(promptTxt, opciones){
         else alert("Por favor, seleccione una opcion");
     }
 
-    return elegido;
-}
+function formularioSubmit(event){
+    event.preventDefault();
 
 /**
  * 
@@ -237,107 +268,28 @@ function generarBusqueda(){
     const respuestaActividad = promptSeleccionMultiple(promptActividad, opcionesActividad);
     const respuestaGrupo = promptSeleccionMultiple(promptGrupo, opcionesGrupo);
     
-    buscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo);
-}
-
-// ----------------------------------------------------------------
-
+    
+    const listaDatos = filtroAtracciones.buscarAtracciones(momento, horario, actividad, grupo);
+    const elementosHTML = constructorHTML.crearAtracciones(listaDatos, generarMenuReserva.name);
 
 
-
-// ---- Flujo 2: Subscripcion a newsletter ------------------------
-
-/**
- * Solicita al backend que agregue al nuevo subscriptor para futuros avisos de la newsletter
- * 
- * @param {String} nombreCompleto - el nombre completo del nuevo subscriptor
- * @param {String[]} intereses - Los temas de interes del nuevo subscriptor
- * @param {String} email - El email de contacto para el nuevo subscriptor
- */
-function finalizarSubscripcion(nombreCompleto, intereses, email){
-    solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
-
-    console.log("Almacenando la subscripcion en el backend...");
-    console.log(solicitud);
-
-    let yaExiste = false;
-    subscripcionesNewsletter.forEach(sub => {
-        if(sub.email.toLowerCase() == solicitud.email.toLowerCase()) {
-            yaExiste = true; 
-        };
-    });
-    if(!yaExiste) {
-        subscripcionesNewsletter.push(solicitud);
+    // destruye todos los elementos contenidos y agrega los nuevos
+    while (listaActividades.firstChild) {
+        listaActividades.removeChild(listaActividades.firstChild);
     }
-    else { 
-        alert("El email ya esta subscripto"); 
-    }
-}
-
-/**
- * Solicita los datos del usuario, corrobora que sean correctos y lo subscribe a la newsletter
- */
-function subscribirNewsletter(){
-    let nombreCompleto = prompt("¿Como es tu nombre completo?");
-
-    const opcionesIntereses = ["1", "2", "3"];
-    const promptIntereses = `
-        ¿En que te querrias mantener actualizado? (para ingresar varias opciones, separe con coma)\n
-        1 - noticias\n
-        2 - eventos\n
-        3 - ofertas
-    `;
-    let intereses = promptSeleccionMultiple(promptIntereses, opcionesIntereses); 
-    
-    let correoElectronico = promptCorreoElectronico();
-
-    alert("Subscripcion exitosa! Recibira la confirmacion en su correo");
-    finalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
-}
-
-// ----------------------------------------------------------------
-
-
-
-
-// ---- Flujo 3: Creacion de tarjetas y carga de la informacion en web ----
-
-/**
- * Solicita al backend que devuelva la disponibilidad de una atraccion
- * 
- * @param {String} atraccion - la atraccion solicitada
- */
-function solicitarDisponibilidad(atraccion){
-
-    console.log("Solicitando disponibilidad de la atraccion al backend...");
-    console.log(atraccion);
-    
-    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-    
-    // 50/50 de si el dia tiene cupos disponibles o no
-    let disponibilidad = [];
-    listaDias.forEach(dia => { 
-        if(Math.random() < 0.5) { disponibilidad.push(dia); } 
+    elementosHTML.forEach(elemento => {
+        listaActividades.appendChild(elemento);
     });
-
-    return disponibilidad;
 }
+formularioAvanzado.addEventListener('submit', formularioSubmit);
 
-/**
- * Solicita al backend que devuelva las atracciones almacenadas en el sistema
- * 
- * @returns {Object[]} Una lista de atracciones, que contienen sus datos 
- */
-function solicitarAtracciones(){
+function concretarSubscripcionNews( event, formulario ){
+    event.preventDefault();
+    const datosFormulario = new FormData(formulario);
 
-    console.log("Solicitando atracciones al backend...");
-    
-    let respuesta = atraccionTuristica;
-    console.log("Respuesta recibida:");
-    console.log(respuesta);
+    // guardar la subscripcion
 
-    return respuesta;
-}
+    formulario.parentElement.remove();
 
 /**
  * Envia al backend la informacion de la nueva reserva
@@ -362,6 +314,7 @@ function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, res
     console.log("Reserva Almacenada!");
     console.log(reservasGeneradas);
 }
+function subscripcionNewsletter(event){
 
 /**
  * Calcula el precio de una atraccion = precio de la atraccion * cant. de dias * cant. de personas (grupo)
@@ -408,23 +361,16 @@ function crearUnaReserva()
 
     let disponibilidad = solicitarDisponibilidad(respuestaAtraccion);
 
-    let dias = [];
-    let promptDias = `
-        Seleccione uno de los dias disponibles para reservar una visita\n
-    `;
-    for(let i = 0; i < disponibilidad.length; i++){
-        dias.push("" + (i + 1));
-        promptDias = promptDias.concat( `${i + 1} - ${disponibilidad[i]} \n`);
-    }
+        <label for="id-intereses"> ¿Que informacion le interesa? </label>
+        <div id="id-intereses">
+            <label> <input type="checkbox" name="noticias" value="1" > <span>Noticias</span></label>
+            <label> <input type="checkbox" name="eventos" value="2" > <span>Eventos</span></label>
+            <label> <input type="checkbox" name="ofertas" value="3" > <span>Ofertas</span></label>
+        </div>
 
-    let respuestaDias = promptSeleccionMultiple(promptDias, dias);
+        <label for="email"> Ingrese su correo electronico</label>
+        <input required type="email" name="email" id="email">
 
-    // Recibe del usuario el numero de personas en el grupo (si no es numerico, entonces rechaza)
-    let respuestaGrupo
-    while(true){
-        respuestaGrupo = prompt("¿Cuantas personas van a asistir?");
-
-        const nuevoNumero = parseInt(respuestaGrupo, 10);
         
         if(!isNaN(nuevoNumero) && String(nuevoNumero) == respuestaGrupo){
             break;
@@ -447,25 +393,68 @@ function crearUnaReserva()
         Pronto sera contactado en su correo, debera abonar $${precio}
     `);
 
-    concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
+    document.body.appendChild(nuevoElemento);
+    // con los datos del formulario, generar subscripcion
 }
-
-// ----------------------------------------------------------------
-
-
+const botonNewsletter = document.getElementById("btn-newsletter");
+botonNewsletter.addEventListener("click", subscripcionNewsletter);
 
 
-// ---- Flujo 4 Creacion de un itinerario: ------------------------
+const listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+let opcionesAtraccion = [];
+let itinerario;
 
-/**
- * Envia al backend el nuevo itinerario generado
- * 
- * @param {String} email El correo electronico a donde enviar el itinerario 
- * @param {Object[]} itinerario El nuevo itinerario generado
- */
-function finalizarItinerario(email, itinerario)
-{
-    const envio = {"email": email, "itinerario": itinerario}
+function almacenarDiaItinerario(event, formulario){
+    event.preventDefault();
+
+    const datosFormulario = new FormData(formulario);
+    itinerario.cargarDiaItinerario(datosFormulario);
+
+    formulario.parentElement.remove();
+    
+    if(itinerario.estaCompleto())
+        conexionAlamacen.ingresarInformacionItinerario(itinerario);
+    else
+        generarMenuItinerario(listaDias[itinerario.length], opcionesAtraccion);
+};
+function generarMenuItinerario(dia, opciones){
+    const nuevoElemento = constructorHTML.crearPopUpFormulario(`
+        <p> itinerario para el dia ${dia} </p>
+        <input type="hidden" name="dia" value="${dia}">
+
+        <div class="itinerario-fila">
+            <label for="mañana"> Mañana </label>
+            <select required name"mañana"> 
+                <option value=""> Seleccione una opcion </option>
+                ${opciones} 
+            </select>
+        </div>
+        
+        <div class="itinerario-fila">
+            <label for="media-mañana"> Media mañana </label>
+            <select required name"media-mañana"> 
+                <option value=""> Seleccione una opcion </option>
+                ${opciones} 
+            </select>
+        </div>
+
+        <div class="itinerario-fila">
+            <label for="media-tarde"> Media tarde </label>
+            <select required name"media-tarde"> 
+                <option value=""> Seleccione una opcion </option>
+                ${opciones} 
+            </select>
+        </div>
+
+        <div class="itinerario-fila">
+            <label for="tarde"> Tarde </label>
+            <select required name"tarde"> 
+                <option value=""> Seleccione una opcion </option>
+                ${opciones} 
+            </select>
+        </div>
+        
+    `, (event) => { almacenarDiaItinerario(event, event.target); });
 
     console.log("Itinerario enviado al backend...");
     console.log(envio);
@@ -475,89 +464,25 @@ function finalizarItinerario(email, itinerario)
     console.log(itinerariosCreados);
 }
 
-/**
- * Recibe la informacion del itinerario del usuario a travez de prompts y lo genera
- */
-function crearUnItinerario(){
-    let atracciones = solicitarAtracciones();
+function generarItinerario(){
+    itinerario = new Itinerario();
+    opcionesAtraccion = [];
 
-    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
-    let listaOpciones = ["x"];
-    
-    // genera las opciones habilitadas y la lista para el prompt con formato *numero* - *descripcion*
-    let promptAtracciones = "";
-    for(let i = 0; i < atracciones.length; i++){
-        listaOpciones.push("" + (i + 1));
-        promptAtracciones = promptAtracciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
+    const atracciones = filtroAtracciones.arrayAtracciones.map(atraccion => {return atraccion.nombre});
+    for(let i = 0; i < atracciones.lenght; i++){
+        opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
     }
+    opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);
 
+    generarMenuItinerario(listaDias[0], opcionesAtraccion);
 
-    // itera sobre los dias, generando un itinerario de atracciones ordenado por dias
-    const resultado = []
-    for(let i = 0; i < listaDias.length; i++){
-        const promptTxt = `
-            Seleccione las atracciones que desea agregar a su itinerario en el dia ${listaDias[i]} (ingrese X si no desea ninguna):\n
-        `.concat(promptAtracciones);
-
-        let respuesta;
-        while(true){
-            respuesta = promptSeleccionMultiple(promptTxt, listaOpciones);
-            
-            //si eligio la opcion "x" junto a otras, avisa del error
-            if(respuesta.filter(item => item.toLowerCase() == "x").length != 0 && respuesta.length > 1){
-                alert("La opcion X debe ingresarse sola");
-            } else break;
-        }
-        
-
-        if(!(respuesta[0] == "x")){
-            let comentario = prompt("Escriba un comentario/recordatorio para las actividades del dia (deje vacio si no desea agregarlo)");
-            
-            resultado.push({"dia": listaDias[i], "atracciones": respuesta, "comentario": comentario});
-        }
-    }
-    
-    let correo = promptCorreoElectronico();
-    alert("Itinerario generado con exito, pronto sera enviado a su correo");
-    
-    finalizarItinerario(correo, resultado);
+    // generar el itinerario y envialo por email (no de verdad) 
 }
-
-/**
- * Menu de usuario para la seleccion de flujos
- */
-function menuDeUsuario(){
-    const opcionElegida = prompt(`
-        Seleccione la opcion deseada\n
-        1 - Completar formulario de busqueda\n
-        2 - Subscribirse a Newsletter\n
-        3 - Crea una reserva\n
-        4 - Crea tu itinerario
-        `
-    );
-
-    switch (opcionElegida) {
-        case "1": {
-            generarBusqueda();
-            break;
-        }
-        case "2": {
-            subscribirNewsletter();
-            break;
-        }
-        case "3": {
-            crearUnaReserva()
-            break;
-        }
-        case "4": {
-            crearUnItinerario()
-            break;
-        }
-        default:{
-            alert("La opcion elegida no es valida, por favor reingrese su eleccion")
-        }
-    }
-}
+const botonItinerario = document.getElementById("btn-itinerario");
+botonItinerario.addEventListener("click", generarItinerario);
 
 
-window.onload = menuDeUsuario;
+
+
+
+document.getElementById("1234").addEventListener("click", generarMenuReserva);
