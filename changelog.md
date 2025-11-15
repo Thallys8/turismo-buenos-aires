@@ -3,12 +3,24 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+- [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
+PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed  
 
 ### Fixed  
 
----
+---  
+
+## [Release Entrega Obligatoria Nº 4] - 2025-11-14   
+
+### Added  
+- [feature/dev-storage] Creó el js/utils/storage.js  
+PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (Coordinador / DevOps + Tester QA).  
+
+### Changed  
+
+### Fixed  
 
 ## [Release Entrega Obligatoria Nº 3] - 2025-10-24
 
@@ -21,16 +33,28 @@ PR: [#83](https://github.com/Thallys8/turismo-buenos-aires/pull/83) @Thallys8 (A
 PR: [#81](https://github.com/Thallys8/turismo-buenos-aires/pull/81) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 - [feature/devjs-implementacion-flujos-javascript] Se implemento los cuatro flujos en javascript  
 PR: [#79](https://github.com/Thallys8/turismo-buenos-aires/pull/79) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
-- [feature/dev-html-avanzado-implementacion-elementos] Se agrgó las capturas de pantalla feltantes  
+- [feature/dev-html-avanzado-implementacion-elementos] Se agregó las capturas de pantalla feltantes  
 PR: [#86](https://github.com/Thallys8/turismo-buenos-aires/pull/86) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).  
 
 ### Changed 
+- [feature/correcciones-codigo-js-release] correcciones extra en el codigo, nuevas funciones y objetos  
+PR: [#94](https://github.com/Thallys8/turismo-buenos-aires/pull/94) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/HTMLyCSS-actualizacion-nuevas-funcionalidades] Actualizo el html y css para reflejar los nuevos flujos  
 PR: [#84](https://github.com/Thallys8/turismo-buenos-aires/pull/84) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/correccion-release-diagramas-uml] Correción de los diagrams UML  
+PR: [#91](https://github.com/Thallys8/turismo-buenos-aires/pull/91) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer). 
+- [feature/correccion-release-test-jasmine] Correción parcial de los códigod de las pruebas Jasmine.  
+PR: [#92](https://github.com/Thallys8/turismo-buenos-aires/pull/92) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).
 
 ### Fixed
 - [feature/devjs-implementacion-flujos-javascript] Corrijo el nombre de script.js para que sea correcto y agrego comentarios al codigo  
 PR: [#80](https://github.com/Thallys8/turismo-buenos-aires/pull/80) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/correccion-release-diagramas-uml] Correción de los diagrams UML  
+PR: [#91](https://github.com/Thallys8/turismo-buenos-aires/pull/91) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer). 
+- [feature/correccion-release-test-jasmine] Correción parcial de los códigod de las pruebas Jasmine.  
+PR: [#92](https://github.com/Thallys8/turismo-buenos-aires/pull/92) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer).
+- [feature/correccion-release-diagramas-uml] Correción de los diagrams UML  
+PR: [#93](https://github.com/Thallys8/turismo-buenos-aires/pull/93) @Thallys8 (Arquitecto de Diagramas de Actividades y Tester JavaScript / QA Engineer). 
 
 ## [Release Parcial Nº 1] - 2025-10-06
 
