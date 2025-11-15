@@ -27,6 +27,7 @@ class ConstructorHTML {
         const contenedor = document.createElement("div");
         contenedor.className = "panel-con-fondo";
         const formulario = document.createElement("form");
+        formulario.className = "panel-con-fondo-frente";
         formulario.addEventListener("submit", nuevoOnSubmit);
 
         contenedor.appendChild(formulario);
@@ -46,8 +47,10 @@ class ConstructorHTML {
         return contenedor;
     }
     crearPopUpSimple( nuevoInnerHtml ){
+        const fondo = document.createElement("div");
+        fondo.className = "panel-con-fondo";
         const contenedor = document.createElement("div");
-        contenedor.className = "panel-con-fondo";
+        contenedor.className = "panel-con-fondo-frente";
 
         const boton = document.createElement("button")
         boton.addEventListener("click", () => { contenedor.remove(); });
@@ -56,7 +59,8 @@ class ConstructorHTML {
         contenedor.innerHTML = nuevoInnerHtml;
         contenedor.appendChild(boton);
 
-        return contenedor;
+        fondo.appendChild(contenedor);
+        return fondo;
     }
 }
 

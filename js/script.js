@@ -1,8 +1,8 @@
 
-import constructorHTML from './ConstructorHTML.js';
-import filtroAtracciones from './FiltroAtracciones.js';
-import conexionAlamacen from './ConexionAlmacen.js';
-import Itinerario from './Itinerario.js';
+import constructorHTML from './models/ConstructorHTML.js';
+import filtroAtracciones from './models/FiltroAtracciones.js';
+import conexionAlamacen from './models/ConexionAlmacen.js';
+import Itinerario from './models/Itinerario.js';
 
 // esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion
 function concretarReserva(event, formulario){
@@ -29,7 +29,7 @@ function concretarReserva(event, formulario){
 }
 function generarMenuReserva(event){
     const idAtraccion = event.target.value;
-    const diasDisponibles = filtroAtracciones.solicitarDisponibilidad(idAtraccion);
+    const diasDisponibles = conexionAlamacen.solicitarDisponibilidad(idAtraccion);
 
     console.log(diasDisponibles);
     if(diasDisponibles.length > 0){
@@ -142,16 +142,14 @@ let itinerario;
 
 function almacenarDiaItinerario(event, formulario){
     event.preventDefault();
-
-    const datosFormulario = new FormData(formulario);
-    itinerario.cargarDiaItinerario(datosFormulario);
+    itinerario.cargarDiaItinerario(formulario);
 
     formulario.parentElement.remove();
     
     if(itinerario.estaCompleto())
         conexionAlamacen.ingresarInformacionItinerario(itinerario);
     else
-        generarMenuItinerario(listaDias[itinerario.length], opcionesAtraccion);
+        generarMenuItinerario(itinerario.diaEnProceso(), opcionesAtraccion);
 };
 function generarMenuItinerario(dia, opciones){
     const nuevoElemento = constructorHTML.crearPopUpFormulario(`
