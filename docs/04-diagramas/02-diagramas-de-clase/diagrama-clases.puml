@@ -39,12 +39,13 @@ class Itinerario{
 
     {method} +cargarDiaItinerario( DataForm datosFormulario ) : void
     {method} +estaCompleto() : HTMLElement
-    {method} +toJSON()() : void
+    {method} +toJSON() : void
+    {method} +almacenarElemento() : void
 }
 
 FiltroAtracciones --> Validador
 FiltroAtracciones --> ConexionAlmacen
 ConstructorHTML --> FiltroAtracciones
 ConstructorHTML --* TarjetaAtraccion
-ConexionAlmacen --> Itinerario
+Itinerario --> ConexionAlmacen
 @enduml
