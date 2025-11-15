@@ -1,0 +1,51 @@
+@startuml
+class ConexionAlmacen {
+    {field} -urlAlmacenamiento : string
+
+    {method} +solicitarInformacionAtracciones() : object[]
+    {method} +ingresarInformacionNewsletter(object nuevaInfo) : void
+    {method} +ingresarInformacionSubscripciones(object nuevaInfo) : void
+    {method} +ingresarInformacionReservas(object nuevaInfo) : void
+}
+
+
+class ConstructorHTML {
+    {method} +crearAtracciones( object criterios, function callbackReserva) : HTMLElement[]
+    {method} +crearPopUpFormulario( string nuevoInnerHtml, function nuevoOnSubmit) : HTMLElement
+    {method} +crearPopUpSimple( string nuevoInnerHtml) : HTMLElement
+}
+
+class FiltroAtracciones {
+    {method} +buscarAtracciones(Number momento, Number horario, Number actividad, Number grupo) : object[]
+}
+class Validador {
+    {field} -emailRegEx : string   
+
+    {method} +esEmail(string email) : boolean
+    {method} +algunValorExiste( Number[] ArrayChequeado, Number[] ValoresBuscados)
+}
+
+class TarjetaAtraccion{
+    {field} -elementoHTML : HTMLElement
+
+    {method} +fromJSON( datosJSON, callbackReserva ) : HTMLElement
+    {method} +getHTML() : HTMLElement
+    {method} -crearHTML() : void
+}
+
+class Itinerario{
+    {static} -listaDias : string[]
+    {field} -itinerario : HTMLElement
+
+    {method} +cargarDiaItinerario( DataForm datosFormulario ) : void
+    {method} +estaCompleto() : HTMLElement
+    {method} +toJSON() : void
+    {method} +almacenarElemento() : void
+}
+
+FiltroAtracciones --> Validador
+FiltroAtracciones --> ConexionAlmacen
+ConstructorHTML --> FiltroAtracciones
+ConstructorHTML --* TarjetaAtraccion
+Itinerario --> ConexionAlmacen
+@enduml
