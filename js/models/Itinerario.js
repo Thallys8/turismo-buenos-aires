@@ -4,7 +4,7 @@ class Itinerario{
     listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     itinerario = [];
 
-    cargarDiaItinerario( datosFormulario ){
+    cargarDiaItinerario( formulario ){
         const datosFormulario = new FormData(formulario);
         const datosItinerario = {
             dia: datosFormulario.get("dia"),
@@ -14,10 +14,13 @@ class Itinerario{
             tarde: { eleccion: datosFormulario.get("tarde"), comentario: datosFormulario.get("tarde-comentario")},
             noche: { eleccion: datosFormulario.get("noche"), comentario: datosFormulario.get("noche-comentario")}
         };
-        itinerario.push(datosItinerario);
+        this.itinerario.push(datosItinerario);
     }
     estaCompleto(){
-        return this.itinerario.length < this.listaDias.length
+        return this.itinerario.length === this.listaDias.length
+    }
+    diaEnProceso(){
+        return this.listaDias[this.itinerario.length]
     }
 
     toJSON(){
