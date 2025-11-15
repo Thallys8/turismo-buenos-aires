@@ -1,6 +1,5 @@
 
 import constructorHTML from './models/ConstructorHTML.js';
-import filtroAtracciones from './models/FiltroAtracciones.js';
 import conexionAlamacen from './models/ConexionAlmacen.js';
 import Itinerario from './models/Itinerario.js';
 
@@ -67,6 +66,18 @@ function generarMenuReserva(event){
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
 
+function HandlerSubmitBusqueda(parametros){
+    
+    const elementosHTML = constructorHTML.crearAtracciones(parametros, generarMenuReserva);
+
+    // destruye todos los elementos contenidos y agrega los nuevos
+    while (listaActividades.firstChild) {
+        listaActividades.removeChild(listaActividades.firstChild);
+    }
+    elementosHTML.forEach(elemento => {
+        listaActividades.appendChild(elemento);
+    });
+}
 function formularioSubmit(event){
     event.preventDefault();
 
@@ -83,19 +94,28 @@ function formularioSubmit(event){
     const horario = [formData.get("horario")];
     const actividad = [formData.get("tipo-actividad")];
     const grupo = [formData.get("tipo-grupo")];
-    
-    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
-    const elementosHTML = constructorHTML.crearAtracciones(parametros, generarMenuReserva);
 
-    // destruye todos los elementos contenidos y agrega los nuevos
-    while (listaActividades.firstChild) {
-        listaActividades.removeChild(listaActividades.firstChild);
-    }
-    elementosHTML.forEach(elemento => {
-        listaActividades.appendChild(elemento);
-    });
+    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
+    HandlerSubmitBusqueda(parametros);
 }
 formularioAvanzado.addEventListener('submit', formularioSubmit);
+
+const maxTipos = 10;
+const opciones = [];
+for (var i = 0; i <= maxTipos; i++) {
+    opciones.push(i);
+}
+function onclickAtraccionesDia(){
+    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
+    HandlerSubmitBusqueda(parametros);
+}
+function onclickAtraccionesNoche(){
+    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
+    HandlerSubmitBusqueda(parametros);
+}
+document.getElementById("atracciones-noche-elegir").addEventListener("click", onclickAtraccionesNoche);
+document.getElementById("atracciones-dia-elegir").addEventListener("click", onclickAtraccionesDia);
+
 
 function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
@@ -225,7 +245,6 @@ function generarItinerario(){
 }
 const botonItinerario = document.getElementById("btn-itinerario");
 botonItinerario.addEventListener("click", generarItinerario);
-
 
 // para agregar informacion inicial si no existe
 
