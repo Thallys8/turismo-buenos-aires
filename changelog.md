@@ -3,8 +3,6 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
-- [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
-PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Changed  
 
@@ -16,7 +14,9 @@ PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Co
 
 ### Added  
 - [feature/dev-storage] Creó el js/utils/storage.js  
-PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (Coordinador / DevOps + Tester QA).  
+PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (Coordinador / DevOps + Tester QA + Desarrollador JS Local y Session Storage ). 
+- [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
+PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
 
 ### Changed  
 
