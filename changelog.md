@@ -25,6 +25,8 @@ PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (C
 PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
 - [feature/coord-devops-cuarta-entrega] Actualización de changelog y Readme  
 PR: [#103](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
+- [feature/tester-qa-specs] Se creó el códigos de models.spec y storage.spec, y se editó editado el test-runner.html   
+PR: [#112](https://github.com/Thallys8/turismo-buenos-aires/pull/112) @Thallys8 (Coordinador / DevOps + Tester QA + Desarrollador JS Local y Session Storage ). 
 
 ### Changed  
 
