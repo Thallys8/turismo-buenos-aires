@@ -6,7 +6,12 @@ import Itinerario from './models/Itinerario.js';
 // para simular que hay algo en el storage
 import storage from "./utils/storage.js";
 
-// esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion
+/**
+ * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
+ * Recibe la informacion de la reserva, la envia a almacenar y genera un popup avisando de su registro
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
+ */
 function concretarReserva(event, formulario){
     event.preventDefault();
 
@@ -29,6 +34,11 @@ function concretarReserva(event, formulario){
     `);
     document.body.appendChild(nuevoPopUp);
 }
+
+/**
+ * Genera el menu HTML para que el usuario pueda generar una reserva en la atraccion especifica
+ * @param {Event} event Evento de click en boton (este debe tener un value={id de la atraccion})
+ */
 function generarMenuReserva(event){
     const atraccion = event.target.value;
     const diasDisponibles = conexionAlamacen.solicitarDisponibilidad(atraccion);
@@ -66,6 +76,11 @@ function generarMenuReserva(event){
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
 
+/**
+ * Recibe los parametros de busqueda y solicita las atracciones que los cumplan.
+ * Generando las tarjetas nuevas en la web 
+ * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
+ */
 function HandlerSubmitBusqueda(parametros){
     
     const elementosHTML = constructorHTML.crearAtracciones(parametros, generarMenuReserva);
@@ -78,6 +93,11 @@ function HandlerSubmitBusqueda(parametros){
         listaActividades.appendChild(elemento);
     });
 }
+
+/**
+ * Recibe el submit del formulario de busqueda y genera el FormData
+ * @param {Event} event 
+ */
 function formularioSubmit(event){
     event.preventDefault();
 
@@ -99,15 +119,26 @@ function formularioSubmit(event){
 }
 formularioAvanzado.addEventListener('submit', formularioSubmit);
 
+// genera una lista con el numero de opciones [1...10]
 const maxTipos = 10;
 const opciones = [];
 for (var i = 0; i <= maxTipos; i++) {
     opciones.push(i);
 }
+
+/**
+ * Funcion para manejar los clicks al boton diurno, simulando hacer un submit del formulario de busqueda
+ * Con un solo criterio
+ */
 function onclickAtraccionesDia(){
     const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
     HandlerSubmitBusqueda(parametros);
 }
+
+/**
+ * Funcion para manejar los clicks al boton nocturno, simulando hacer un submit del formulario de busqueda
+ * Con un solo criterio
+ */
 function onclickAtraccionesNoche(){
     const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
     HandlerSubmitBusqueda(parametros);
@@ -115,7 +146,12 @@ function onclickAtraccionesNoche(){
 document.getElementById("atracciones-noche-elegir").addEventListener("click", onclickAtraccionesNoche);
 document.getElementById("atracciones-dia-elegir").addEventListener("click", onclickAtraccionesDia);
 
-
+/**
+ * Recibe el formulario HTML con la informacion de la informacion, almacenandolo y
+ * generando un aviso de subscripcion correcta
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
+ */
 function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
@@ -130,6 +166,12 @@ function concretarSubscripcionNews( event, formulario ){
     `);
     document.body.appendChild(nuevoPopUp);
 }
+
+/**
+ * Genera el formulario HTML para ingresar los datos de subscripcion a la newsletter
+ * y lo presenta en el DOM
+ * @param {Event} event evento de click
+ */
 function subscripcionNewsletter(event){
 
     // generar html para nuevo formulario de subscripcion
@@ -162,6 +204,12 @@ const listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"
 let opcionesAtraccion = [];
 let itinerario;
 
+/**
+ * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
+ * y si este esta completo, lo almacena
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
+ */
 function almacenarDiaItinerario(event, formulario){
     event.preventDefault();
     itinerario.cargarDiaItinerario(formulario);
@@ -173,6 +221,12 @@ function almacenarDiaItinerario(event, formulario){
     else
         generarMenuItinerario(itinerario.diaEnProceso(), opcionesAtraccion);
 };
+
+/**
+ * Genera el HTML necesario para ingresar el itinerario y lo agrega al DOM
+ * @param {String} dia El nombre del dia referenciado actualmente
+ * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
+ */
 function generarMenuItinerario(dia, opciones){
     const nuevoElemento = constructorHTML.crearPopUpFormulario(`
         <p> itinerario para el dia ${dia} </p>
@@ -223,6 +277,10 @@ function generarMenuItinerario(dia, opciones){
     document.body.appendChild(nuevoElemento);
 }
 
+/**
+ * Funcion de inicio para la generacion del itinerario, genera el setup inicial 
+ * y solicita crear la pantalla que continuara con la creacion
+ */
 function generarItinerario(){
     itinerario = new Itinerario();
     opcionesAtraccion = [];
@@ -243,8 +301,10 @@ function generarItinerario(){
 const botonItinerario = document.getElementById("btn-itinerario");
 botonItinerario.addEventListener("click", generarItinerario);
 
-// para agregar informacion inicial si no existe
 
+
+// ---------------------------------------------
+// para agregar informacion inicial si no existe
 if(storage.obtener("atracciones") === null){
     fetch("../../assets/datosmock.json")
         .then(response => {
@@ -258,3 +318,4 @@ if(storage.obtener("atracciones") === null){
             storage.guardar("atracciones", json, "local");
         });
 }
+// ---------------------------------------------

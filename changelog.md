@@ -29,6 +29,8 @@ PR: [#103](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (D
 PR: [#112](https://github.com/Thallys8/turismo-buenos-aires/pull/112) @Thallys8 (Coordinador / DevOps + Tester QA + Desarrollador JS Local y Session Storage ). 
 
 ### Changed  
+- [feature/devjs-correcciones-documentacion] Se expandio y corrigio la documentacion de las funciones y clases  
+PR: [#115](https://github.com/Thallys8/turismo-buenos-aires/pull/115) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Fixed  
 - [feature/dev-js-correcciones] Correcciones en el codigo js y clases  
