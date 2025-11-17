@@ -1,15 +1,34 @@
 
+/**
+ * Representa una tarjeta HTML para una atraccion turistica
+ */
 class TarjetaAtraccion{
     elementoHTML;
 
+    /**
+     * Recibe datos en formato de objeto JSON y crea el html de la tarjeta utilizandolos 
+     * @param {JSON} datosJSON Los datos en formato de objeto JSON
+     * @param {Function} callbackReserva Callback para el boton de reserva
+     * @returns {HTMLElement} El elemento HTML
+     */
     fromJSON( datosJSON, callbackReserva ){
         this.crearHTML(datosJSON, callbackReserva);
         return this.elementoHTML;
     };
+
+    /**
+     * Permite acceder al HTML de la tarjeta
+     * @returns {HTMLElement} El elemento HTML
+     */
     getHTML(){
         return this.elementoHTML;
     }
 
+    /**
+     * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
+     * @param {*} datosAtraccion Los datos de la atraccion
+     * @param {*} callback Callback para el boton de reserva
+     */
     crearHTML( datosAtraccion, callback ){
         this.elementoHTML = document.createElement("article");
         this.elementoHTML.className = "tarjeta col-6 container";

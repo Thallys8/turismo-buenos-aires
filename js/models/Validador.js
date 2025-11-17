@@ -1,9 +1,11 @@
 
+/**
+ * Contiene funciones de validacion para diferentes datos o procesos
+ */
 class Validador{
 
     /**
      * Verifica si un arreglo contiene o no al menos un valor presente en otro
-     * 
      * @param {Number[]} ArrayChequeado - El arreglo que almacena los valores aceptados
      * @param {Number[]} ValoresBuscados - El arreglo de los valores a buscar
      * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
@@ -17,7 +19,7 @@ class Validador{
     }
 
     /**
-     * Cheque que el string recibido representa a un email valido
+     * Chequea que el string recibido representa a un email valido
      * @param {string} email El email ingresado por el usuario 
      * @returns {Boolean} valor de verdad por si es un email o no
      */

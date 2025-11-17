@@ -1,6 +1,9 @@
 import filtroAtracciones from "./FiltroAtracciones.js";
 import TarjetaAtraccion from "./TarjetaAtraccion.js";
 
+/**
+ * Se encarga de contruir los elementos HTML mas complejos
+ */
 class ConstructorHTML {
 
     /**
@@ -25,9 +28,18 @@ class ConstructorHTML {
         return nuevasTarjetas;
     }
 
+    /**
+     * Crea un popup con un formulario, con el formato recibido como parametro
+     * @param {String} nuevoInnerHtml formato y contenido 
+     * @param {Function} nuevoOnSubmit callback para usar durante el submit
+     * @returns {HTMLElement} El popup creado 
+     */
     crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
+        // contenedor que da el fondo semi-transparente
         const contenedor = document.createElement("div");
         contenedor.className = "panel-con-fondo";
+
+        // funciona formulario y panel
         const formulario = document.createElement("form");
         formulario.className = "panel-con-fondo-frente";
         formulario.addEventListener("submit", nuevoOnSubmit);
@@ -48,9 +60,18 @@ class ConstructorHTML {
 
         return contenedor;
     }
+
+    /**
+     * Crea un popup mas simple y sin interaccion, para generar avisos o respuestas
+     * @param {String} nuevoInnerHtml formato y contenido
+     * @returns {HTMLElement} El popup creado
+     */
     crearPopUpSimple( nuevoInnerHtml ){
+        // contenedor que da el fondo semi-transparente
         const fondo = document.createElement("div");
         fondo.className = "panel-con-fondo";
+
+        // funciona como panel
         const contenedor = document.createElement("div");
         contenedor.className = "panel-con-fondo-frente";
 

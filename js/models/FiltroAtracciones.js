@@ -1,5 +1,9 @@
 import conexionAlmacen from "./ConexionAlmacen.js";
 import validador from "./Validador.js"
+
+/**
+ * Se encarga de almacenar y ejecutar filtros para la informacion almacenada
+ */
 class FiltroAtracciones {
 
     /**
