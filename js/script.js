@@ -306,7 +306,7 @@ botonItinerario.addEventListener("click", generarItinerario);
 // ---------------------------------------------
 // para agregar informacion inicial si no existe
 if(storage.obtener("atracciones") === null){
-    fetch("../../assets/datosmock.json")
+    fetch("assets/datosmock.json")
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
