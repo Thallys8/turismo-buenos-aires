@@ -13,10 +13,9 @@ class Itinerario{
      */
     cargarDiaItinerario( formulario ){
         const datosFormulario = new FormData(formulario);
-
-        var datosItinerario = {};
-        datosFormulario.forEach(function(value, key){
-            datosItinerario[key] = value;
+        const datosItinerario = Array.from(datosFormulario).reduce( (objeto, [id, valor]) => {
+            objeto[id] = valor;
+            return objeto;
         });
 
         this.itinerario.push(datosItinerario);

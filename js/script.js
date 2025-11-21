@@ -1,10 +1,14 @@
 
-import constructorHTML from './models/ConstructorHTML.js';
-import conexionAlamacen from './models/ConexionAlmacen.js';
+import ConexionAlamacen from './models/ConexionAlmacen.js';
+import FiltroAtracciones from './models/FiltroAtracciones.js';
 import Itinerario from './models/Itinerario.js';
+import Reserva from './models/Reserva.js';
 
 // para simular que hay algo en el storage
 import storage from "./utils/storage.js";
+
+const conexionAlamacen = new ConexionAlamacen();
+const filtroAtracciones = new FiltroAtracciones();
 
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
@@ -15,22 +19,23 @@ import storage from "./utils/storage.js";
 function concretarReserva(event, formulario){
     event.preventDefault();
 
-    const datosFormulario = new FormData(formulario);
+    const datos = Array.from( new FormData(formulario) );
 
-    conexionAlamacen.ingresarInformacionReservas(datosFormulario);
-
+    const reserva = new Reserva();
+    reserva.guardarReserva(datos);
+    
     formulario.parentElement.remove();
-    let precio = 0; //TODO calcular precio
 
-    let nuevoPopUp = constructorHTML.crearPopUpSimple(`
+    let datosReserva = reserva.obtenerReserva();
+    let nuevoPopUp = crearPopUpSimple(`
         <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
         <ul>
-            <li> Atraccion: ${datosFormulario.get("atraccion")} </li>
-            <li> Personas: ${datosFormulario.get("visitantes")} </li>
-            <li> Dias: ${datosFormulario.get("disponibilidad")} </li>
-            <li> Contacto: ${datosFormulario.get("email")} </li>
+            <li> Atraccion: ${datosReserva["atraccion"]} </li>
+            <li> Personas: ${datosReserva["visitantes"]} </li>
+            <li> Dias: ${datosReserva["disponibilidad"]} </li>
+            <li> Contacto: ${datosReserva["email"]} </li>
         </ul>
-        <p> Pronto sera contactado en su correo, debera abonar $${precio} </p>
+        <p> Pronto sera contactado en su correo, debera abonar $${datosReserva["precio"]} </p>
     `);
     document.body.appendChild(nuevoPopUp);
 }
@@ -45,14 +50,12 @@ function generarMenuReserva(event){
 
     if(diasDisponibles.length > 0){
         // crea los elementos opcion para el selector
-        const opcionesDisponibilidad = [];
-        for(let i = 0; i < diasDisponibles.length; i++){
+        const opcionesDisponibilidad = diasDisponibles.map( dia =>{
+            console.log(`<option value="${dia}"> ${dia} </option>`);
+            return `<option value="${dia}"> ${dia} </option>`;
+        });
 
-            console.log(`<option value="${i}"> ${diasDisponibles[i]} </option>`);
-            opcionesDisponibilidad.push(`<option value="${diasDisponibles[i]}"> ${diasDisponibles[i]} </option>`);
-        }
-
-        const nuevoElemento = constructorHTML.crearPopUpFormulario( `
+        const nuevoElemento = crearPopUpFormulario( `
             <input type="hidden" name="atraccion" value="${atraccion}">
 
             <label for="disponibilidad"> Seleccione una de los dias disponibles</label>
@@ -81,17 +84,28 @@ const listaActividades = document.getElementById("lista-de-actividades");
  * Generando las tarjetas nuevas en la web 
  * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
  */
-function HandlerSubmitBusqueda(parametros){
+function handlerSubmitBusqueda(parametros){
     
-    const elementosHTML = constructorHTML.crearAtracciones(parametros, generarMenuReserva);
+    const elementosHTML = crearAtracciones(parametros, generarMenuReserva);
 
     // destruye todos los elementos contenidos y agrega los nuevos
     while (listaActividades.firstChild) {
         listaActividades.removeChild(listaActividades.firstChild);
     }
-    elementosHTML.forEach(elemento => {
-        listaActividades.appendChild(elemento);
-    });
+
+    console.log(elementosHTML);
+    if(elementosHTML.length > 0 ){
+        elementosHTML.forEach(elemento => {
+            listaActividades.appendChild(elemento);
+        });
+    }
+    else{
+        let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
+        listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
+    }
+    
+
+    listaActividades.scrollIntoView();
 }
 
 /**
@@ -115,7 +129,7 @@ function formularioSubmit(event){
     const grupo = [formData.get("tipo-grupo")];
 
     const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
-    HandlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros);
 }
 formularioAvanzado.addEventListener('submit', formularioSubmit);
 
@@ -132,7 +146,7 @@ for (var i = 0; i <= maxTipos; i++) {
  */
 function onclickAtraccionesDia(){
     const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
-    HandlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros);
 }
 
 /**
@@ -141,7 +155,7 @@ function onclickAtraccionesDia(){
  */
 function onclickAtraccionesNoche(){
     const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
-    HandlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros);
 }
 document.getElementById("atracciones-noche-elegir").addEventListener("click", onclickAtraccionesNoche);
 document.getElementById("atracciones-dia-elegir").addEventListener("click", onclickAtraccionesDia);
@@ -160,7 +174,7 @@ function concretarSubscripcionNews( event, formulario ){
 
     formulario.parentElement.remove();
 
-    let nuevoPopUp = constructorHTML.crearPopUpSimple(`
+    let nuevoPopUp = crearPopUpSimple(`
         <p> Subscripcion exitosa! Recibira la confirmacion en su correo </p>
         <p> Correo: ${datosFormulario.get("email")}
     `);
@@ -176,7 +190,7 @@ function subscripcionNewsletter(event){
 
     // generar html para nuevo formulario de subscripcion
     // este nuevo html se encarga de la validacion
-    const nuevoElemento = constructorHTML.crearPopUpFormulario(`
+    const nuevoElemento = crearPopUpFormulario(`
         <label for="nombre"> Ingrese su nombre completo </label>
         <input required type="text" name="nombre" id="nombre">
 
@@ -204,6 +218,49 @@ const listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"
 let opcionesAtraccion = [];
 let itinerario;
 
+function popUpItinerarioCompleto(){
+
+    let datosItinerario = itinerario.getItinerario();
+    console.log(datosItinerario);
+    let htmlDatosDeTabla = datosItinerario.reduce( (objeto, dia) => {
+        objeto.push( `
+            <tr>
+                <td> ${dia["dia"]} </td>
+                <td> ${dia["mañana"]} </td>
+                <td> ${dia["media-mañana"]} </td>
+                <td> ${dia["media-tarde"]} </td>
+                <td> ${dia["tarde"]} </td>
+                <td> ${dia["noche"]} </td>
+            </tr>
+        `);
+
+        return objeto;
+    }, []);
+
+    const popup = crearPopUpSimple(`
+        <div class="container-fluid text-center">
+            <h2> Itinerario </h2>
+            <p> Tu itinerario se creo exitosamente </p>
+            
+            <table class="table">
+                <thead>
+                    <th> Dia </th>
+                    <th> Mañana </th>
+                    <th> Media mañana </th>
+                    <th> Media tarde </th>
+                    <th> Tarde </th>
+                    <th> Noche </th>
+                </thead>
+                <tbody>
+                    ${htmlDatosDeTabla.join(" ")}
+                </tbody>
+            </table>
+        </div>
+    `);
+
+    document.body.appendChild(popup);
+}
+
 /**
  * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
  * y si este esta completo, lo almacena
@@ -212,14 +269,18 @@ let itinerario;
  */
 function almacenarDiaItinerario(event, formulario){
     event.preventDefault();
-    itinerario.cargarDiaItinerario(formulario);
+    itinerario.cargarDiaItinerario( Array.from(new FormData(formulario)) );
 
     formulario.parentElement.remove();
     
-    if(itinerario.estaCompleto())
+    if(itinerario.estaCompleto()){
+        popUpItinerarioCompleto();
         conexionAlamacen.ingresarInformacionItinerario(itinerario);
-    else
+    }
+    else{
         generarMenuItinerario(itinerario.diaEnProceso(), opcionesAtraccion);
+    }
+        
 };
 
 /**
@@ -228,7 +289,7 @@ function almacenarDiaItinerario(event, formulario){
  * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
  */
 function generarMenuItinerario(dia, opciones){
-    const nuevoElemento = constructorHTML.crearPopUpFormulario(`
+    const nuevoElemento = crearPopUpFormulario(`
         <p> itinerario para el dia ${dia} </p>
         <input type="hidden" name="dia" value="${dia}">
 
@@ -287,7 +348,7 @@ function generarItinerario(){
 
     const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
     
-    const atracciones = datosAtracciones.datos.map(atraccion => {return atraccion.titulo});
+    const atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
 
     for(let i = 0; i < atracciones.length; i++){
         opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
@@ -301,7 +362,127 @@ function generarItinerario(){
 const botonItinerario = document.getElementById("btn-itinerario");
 botonItinerario.addEventListener("click", generarItinerario);
 
+/**
+ * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
+ * @param {*} datosAtraccion Los datos de la atraccion
+ * @param {*} callback Callback para el boton de reserva
+ */
+function crearTarjetaHTML( datosAtraccion, callback ){
+    let elementoHTML = document.createElement("article");
+    elementoHTML.className = "tarjeta col-6 container";
 
+    elementoHTML.innerHTML = `
+        <div class="row h-md-100">
+            <hgroup class="col-12">
+                <h3>${datosAtraccion.titulo}</h3>
+                <p>${datosAtraccion.subtitulo}</p>
+            </hgroup>
+            <p class="col-12">${datosAtraccion.descripcion}</p>
+
+            <details class="col-12">
+                <summary>Horarios</summary>
+                <p>${datosAtraccion.horarios}</p>
+            </details>
+            <label class="direccion-label col-12">Direccion</label> <br>
+            <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"
+                width="180"
+                height="150"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${datosAtraccion.promptMaps}">
+            </iframe>
+
+            <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
+        </div>
+
+        <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
+    `;
+
+    const button = elementoHTML.querySelector('.reservar-btn');
+    button.addEventListener('click', (event) => {
+        callback(event);
+    });
+
+    return elementoHTML;
+}
+/**
+ * Crea las tarjetas de las atraciones utilizando la informacion almacenada
+ * @param {object} criterios parametros de las atracciones deseadas
+ * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
+ * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
+*/
+function crearAtracciones( criterios, callbackReserva )
+{
+    const nuevasTarjetas = [];
+    const listaDatos = filtroAtracciones.buscarAtracciones(
+        criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
+    );
+    listaDatos.forEach( atraccion => {
+        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva) );
+    });
+
+    return nuevasTarjetas;
+}
+
+/**
+ * Crea un popup con un formulario, con el formato recibido como parametro
+ * @param {String} nuevoInnerHtml formato y contenido 
+ * @param {Function} nuevoOnSubmit callback para usar durante el submit
+ * @returns {HTMLElement} El popup creado 
+ */
+function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
+    // contenedor que da el fondo semi-transparente
+    const contenedor = document.createElement("div");
+    contenedor.className = "panel-con-fondo";
+
+    // funciona formulario y panel
+    const formulario = document.createElement("form");
+    formulario.className = "panel-con-fondo-frente";
+    formulario.addEventListener("submit", nuevoOnSubmit);
+
+    contenedor.appendChild(formulario);
+
+    const boton = document.createElement("button")
+    boton.addEventListener("click", () => { contenedor.remove(); });
+    boton.innerText = "Cerrar";
+
+    const botonSubmit = document.createElement("button")
+    botonSubmit.type = "submit";
+    botonSubmit.innerText = "Finalizar";
+
+    formulario.innerHTML = nuevoInnerHtml;
+    formulario.appendChild(botonSubmit);
+    formulario.appendChild(boton);
+
+    return contenedor;
+}
+
+/**
+ * Crea un popup mas simple y sin interaccion, para generar avisos o respuestas
+ * @param {String} nuevoInnerHtml formato y contenido
+ * @returns {HTMLElement} El popup creado
+ */
+function crearPopUpSimple( nuevoInnerHtml ){
+    // contenedor que da el fondo semi-transparente
+    const fondo = document.createElement("div");
+    fondo.className = "panel-con-fondo";
+
+    // funciona como panel
+    const contenedor = document.createElement("div");
+    contenedor.className = "panel-con-fondo-frente";
+
+    const boton = document.createElement("button")
+    boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
+    boton.innerText = "Cerrar";
+
+    contenedor.innerHTML = nuevoInnerHtml;
+    contenedor.appendChild(boton);
+
+    fondo.appendChild(contenedor);
+    return fondo;
+}
 
 // ---------------------------------------------
 // para agregar informacion inicial si no existe
