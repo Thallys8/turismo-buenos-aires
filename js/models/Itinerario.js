@@ -1,22 +1,25 @@
-import conexionAlmacen from "./ConexionAlmacen.js";
 
 /**
  * Representa un itinerario de viaje generado por el usuario
  */
-class Itinerario{
-    listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-    itinerario = [];
+export default class Itinerario{
+    listaDias; 
+    itinerario;
+    
+    constructor(){
+        this.listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];;
+        this.itinerario = [];
+    }
 
     /**
      * Permite cargar un dia en el itinerario
-     * @param {HTMLElement} formulario Contiene las selecciones del usuario
+     * @param {Array<(string, any)>} keyValueArray Contiene las selecciones del usuario
      */
-    cargarDiaItinerario( formulario ){
-        const datosFormulario = new FormData(formulario);
-        const datosItinerario = Array.from(datosFormulario).reduce( (objeto, [id, valor]) => {
+    cargarDiaItinerario( keyValueArray ){
+        const datosItinerario = keyValueArray.reduce((objeto, [id, valor]) => {
             objeto[id] = valor;
             return objeto;
-        });
+        }, {});
 
         this.itinerario.push(datosItinerario);
     }
@@ -37,6 +40,10 @@ class Itinerario{
         return this.listaDias[this.itinerario.length]
     }
 
+    getItinerario(){
+        return this.itinerario;
+    }
+
     /**
      * Retorna los datos del itinerario en formato JSON
      * @returns {JSON} un string json
@@ -46,5 +53,3 @@ class Itinerario{
         return JSON.stringify({ datos: this.itinerario });
     }
 }
-
-export default Itinerario;

@@ -2,19 +2,22 @@
 /**
  * Contiene funciones de validacion para diferentes datos o procesos
  */
-class Validador{
+export default class Validador{
+
+    constructor(){
+
+    }
 
     /**
      * Verifica si un arreglo contiene o no al menos un valor presente en otro
-     * @param {Number[]} ArrayChequeado - El arreglo que almacena los valores aceptados
-     * @param {Number[]} ValoresBuscados - El arreglo de los valores a buscar
+     * @param {Number[]} arrayChequeado - El arreglo que almacena los valores aceptados
+     * @param {Number[]} valoresBuscados - El arreglo de los valores a buscar
      * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
      */
-    algunValorExiste(ArrayChequeado, ValoresBuscados){
-        const chequeadoEnNumero = ArrayChequeado.map(valor => Number(valor));
-        const buscadoEnNumero = ValoresBuscados.map(valor => Number(valor));
+    algunValorExiste(arrayChequeado, valoresBuscados){
+        const chequeadoEnNumero = arrayChequeado.map(valor => Number(valor));
+        const buscadoEnNumero = valoresBuscados.map(valor => Number(valor));
 
-        console.log(ArrayChequeado + "   " + ValoresBuscados)
         return buscadoEnNumero.some(value => chequeadoEnNumero.includes(value));
     }
 
@@ -28,6 +31,3 @@ class Validador{
         return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email)
     }
 }
-
-const validador = new Validador();
-export default validador;

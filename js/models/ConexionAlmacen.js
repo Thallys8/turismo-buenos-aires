@@ -1,21 +1,42 @@
 import managerAlmacenamiento from "../utils/storage.js";
-import Itinerario from "./Itinerario.js";
+import Itinerario from "./Itinerario.js"; // para un jsdoc
 
 /**
  * Maneja las conexiones con el almacenamiento interno en storage.js
  */
-class ConexionAlamacen { 
-    keyAtracciones = "atracciones";
-    keyItinerarios = "itinerarios";
-    keyNewsletter = "newsletter";
-    keyReservas = "reservas";
+export default class ConexionAlamacen {
+    keys = {
+        atracciones: "atracciones",
+        itinerarios: "itinerarios",
+        newsletter: "newsletter",
+        reservas: "reservas"
+    }
+
+    constructor(){
+        for( let llave of Object.keys(this.keys)){
+            if (!this.existeClave(llave))
+                managerAlmacenamiento.guardar(llave, { datos: []}, "local");
+        }
+    }
+
+    /**
+     * Chequea si la clave especificada existe en el almacenamiento
+     * @param {String} clave 
+     * @returns {Boolean} Valor de verdad
+     */
+    existeClave( clave ){
+        let respuesta = managerAlmacenamiento.obtener(clave);
+        return ( respuesta !== undefined && respuesta );
+    }
+
 
     /**
      * Devuelve la informacion de las atracciones disponibles en el sistema
      * @returns {JSON} objeto JSON con los datos de todas las atracciones
      */
     solicitarInformacionAtracciones(){
-        return managerAlmacenamiento.obtener(this.keyAtracciones, "local");
+        let respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
+        return respuesta.datos;
     }
 
     /**
@@ -39,27 +60,23 @@ class ConexionAlamacen {
     }
 
     /**
-     * Agrega un elemento a alguna clave en storage.js si existe.
-     * Sino la crea como nueva
-     * @param {*} clave 
-     * @param {*} valor 
-     * @param {*} propiedad 
+     * Agrega un elemento a alguna clave en storage.js si existe
+     * @param {String} clave 
+     * @param {any} valor 
      */
-    agregarLocalArrayActualizable(clave, valor, propiedad){
-        let datos = managerAlmacenamiento.obtener(clave, "local");
+    agregarLocalArrayActualizable(clave, valor){
+        const respuesta = managerAlmacenamiento.obtener(clave, "local");
 
-        if(datos !== null){
-            let arrayDatos = datos.datos;
+        if(respuesta !== undefined && respuesta){
+            const arrayDatos = respuesta.datos;
 
-            if( arrayDatos !== null){
-                arrayDatos.append(valor);
-                datos.subscripciones = arrayDatos;
+            if( arrayDatos !== null && arrayDatos){
+                console.log(respuesta);
+                arrayDatos.push(valor);
+                respuesta.datos = arrayDatos;
                 
-                managerAlmacenamiento.actualizar(datos);
+                managerAlmacenamiento.actualizar(clave, respuesta, "local");
             }
-        }
-        else{ 
-            managerAlmacenamiento.guardar(clave, valor, "local");
         }
     }
 
@@ -68,7 +85,7 @@ class ConexionAlamacen {
      * @param {DataForm} form Datos en formato DataForm 
      * @returns {JSON} objeto JSON con los datos del formulario
      */
-    DataFormToJSON(form){
+    dataFormToJSON(form){
         var json = {};
         form.forEach(function(value, key){
             json[key] = value;
@@ -82,8 +99,8 @@ class ConexionAlamacen {
      * @param {DataForm} subscripcionForm FormData con los datos de la subscripcion
      */
     ingresarInformacionNewsletter( subscripcionForm ){
-        const subscripcion = this.DataFormToJSON(subscripcionForm);
-        this.agregarLocalArrayActualizable(this.keyNewsletter, subscripcion, "subscripciones");
+        const subscripcion = this.dataFormToJSON(subscripcionForm);
+        this.agregarLocalArrayActualizable(this.keys.newsletter, subscripcion);
     }
 
     /**
@@ -92,7 +109,7 @@ class ConexionAlamacen {
      */
     ingresarInformacionItinerario( itinerarioObj ){
         const itinerario = itinerarioObj.toJSON();
-        this.agregarLocalArrayActualizable(this.keyItinerarios, itinerario, "generados");
+        this.agregarLocalArrayActualizable(this.keys.itinerarios, itinerario);
     }
 
     /**
@@ -100,10 +117,7 @@ class ConexionAlamacen {
      * @param {DataForm} reservaForm
      */
     ingresarInformacionReservas( reservaForm ){
-        const reserva = this.DataFormToJSON(reservaForm);
-        this.agregarLocalArrayActualizable(this.keyReservas, reserva, "generados");
+        const reserva = this.dataFormToJSON(reservaForm);
+        this.agregarLocalArrayActualizable(this.keys.reservas, reserva);
     }
 }
-
-const conexionAlamacen = new ConexionAlamacen();
-export default conexionAlamacen;

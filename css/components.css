@@ -315,8 +315,8 @@ footer img{
 }
 .panel-con-fondo-frente{
     background: #eeeeee;
-    width: 50vw;
-    height: 50vh;
+    width: 55vw;
+    height: 58vh;
 
     display: flex;
     flex-direction: column;

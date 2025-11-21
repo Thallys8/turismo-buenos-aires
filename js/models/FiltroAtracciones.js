@@ -1,10 +1,17 @@
-import conexionAlmacen from "./ConexionAlmacen.js";
-import validador from "./Validador.js"
+import ConexionAlmacen from "./ConexionAlmacen.js";
+import Validador from "./Validador.js"
 
 /**
  * Se encarga de almacenar y ejecutar filtros para la informacion almacenada
  */
-class FiltroAtracciones {
+export default class FiltroAtracciones {
+    validador;
+    conexionAlmacen;
+
+    constructor(){
+        this.validador = new Validador();
+        this.conexionAlmacen = new ConexionAlmacen();
+    }
 
     /**
      * Solicita al backend que devuelva las atracciones que cumplen con los requisitos
@@ -16,21 +23,30 @@ class FiltroAtracciones {
      * @returns {Object[]} Las atracciones que cumplan con los parametros
      */
     buscarAtracciones(momento, horario, actividad, grupo){
-        const arrayAtracciones = conexionAlmacen.solicitarInformacionAtracciones().datos;
+        const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
 
         let atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
-            let momentoOk = validador.algunValorExiste(momento, atraccion.momento);
-            let horarioOk = validador.algunValorExiste(horario, atraccion.horario);
-            let actividadOk = validador.algunValorExiste(actividad, atraccion.actividad);
-            let grupoOk = validador.algunValorExiste(grupo, atraccion.grupo);
+            let momentoOk = this.validador.algunValorExiste(momento, atraccion.momento);
+            let horarioOk = this.validador.algunValorExiste(horario, atraccion.horario);
+            let actividadOk = this.validador.algunValorExiste(actividad, atraccion.actividad);
+            let grupoOk = this.validador.algunValorExiste(grupo, atraccion.grupo);
 
-            console.log(momentoOk + " " + horarioOk + " " + actividadOk + " " + grupoOk);
             return momentoOk && horarioOk && actividadOk && grupoOk;
         });
 
         return atraccionesFiltradas;
     }
-}
 
-const filtroAtracciones = new FiltroAtracciones();
-export default filtroAtracciones;
+    buscarAtraccionPorNombre( nombre ){
+        const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
+
+        let busqueda = arrayAtracciones.filter( atraccion => {
+            atraccion.titulo = nombre;
+        });
+
+        if(busqueda.length > 0){
+            return busqueda[0];
+        }
+        return null; 
+    }
+}
