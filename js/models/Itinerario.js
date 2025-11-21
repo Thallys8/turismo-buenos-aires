@@ -40,6 +40,10 @@ export default class Itinerario{
         return this.listaDias[this.itinerario.length]
     }
 
+    /**
+     * Retorna los datos del itinerario
+     * @returns {Array<Object>}
+     */
     getItinerario(){
         return this.itinerario;
     }

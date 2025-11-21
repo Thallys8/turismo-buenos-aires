@@ -5,14 +5,16 @@ import Itinerario from "./Itinerario.js"; // para un jsdoc
  * Maneja las conexiones con el almacenamiento interno en storage.js
  */
 export default class ConexionAlamacen {
-    keys = {
+    keys;
+
+    constructor(){
+        keys = {
         atracciones: "atracciones",
         itinerarios: "itinerarios",
         newsletter: "newsletter",
         reservas: "reservas"
-    }
-
-    constructor(){
+        };
+        
         for( let llave of Object.keys(this.keys)){
             if (!this.existeClave(llave))
                 managerAlmacenamiento.guardar(llave, { datos: []}, "local");

@@ -37,6 +37,11 @@ export default class FiltroAtracciones {
         return atraccionesFiltradas;
     }
 
+    /**
+     * Busca la atraccion segun el nombre recibido como parametro
+     * @param {String} nombre 
+     * @returns {object} Los datos de la atraccion o null
+     */
     buscarAtraccionPorNombre( nombre ){
         const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
 

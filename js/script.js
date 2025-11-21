@@ -218,6 +218,9 @@ const listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"
 let opcionesAtraccion = [];
 let itinerario;
 
+/**
+ * Pop up para mostrar la informacion del itinerario generado
+ */
 function popUpItinerarioCompleto(){
 
     let datosItinerario = itinerario.getItinerario();
@@ -483,20 +486,3 @@ function crearPopUpSimple( nuevoInnerHtml ){
     fondo.appendChild(contenedor);
     return fondo;
 }
-
-// ---------------------------------------------
-// para agregar informacion inicial si no existe
-if(storage.obtener("atracciones") === null){
-    fetch("assets/datosmock.json")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json(); // Parse the JSON data
-        })
-        .then(json => {
-            storage.guardar("atracciones", json, "local");
-        });
-}
-// ---------------------------------------------
