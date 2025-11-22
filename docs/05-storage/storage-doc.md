@@ -6,10 +6,10 @@ Se usa para guardar información que debe permanecer aunque el usuario cierre el
 
 | Dato                       | Ejemplo                     | Motivo                     |
 | -------------------------- | --------------------------- | -------------------------- |
-| Última reserva realizada   | `"app:reserva:ultima"`      | Recuperarla después        |
-| Último itinerario generado | `"app:itinerario:reciente"` | Mostrar resumen al usuario |
-| Preferencias de búsqueda   | `"app:busqueda:filtros"`    | Mantener filtros usados    |
-| Email del usuario          | `"app:usuario:email"`       | Autocompletar formularios  |
+| Datos de atracciones   | `"atracciones"`      | Facilitar su acceso        |
+| Itinerarios | `"itinerarios"` | Son sus itinerarios generados |
+| Reservas   | `"newsletter"`    | Son sus reservas generadas    |
+| Subscripciones             | `"reservas"`       | Son sus subscripciones al newsletter  |
 
 
 ### sessionStorage (solo durante la sesión/pestaña actual)
@@ -18,23 +18,20 @@ Se usa para datos temporales, sensibles o que no deben persistir.
 
 | Dato                           | Ejemplo                 | Motivo                    |
 | ------------------------------ | ----------------------- | ------------------------- |
-| Estado temporal del flujo      | `"app:flow:estado"`     | Continuar paso actual     |
-| Selecciones de itinerario      | `"app:itinerario:temp"` | Antes de finalizar        |
-| Datos parciales de formularios | `"app:form:temp"`       | Evitar pérdida accidental |
+|                                |                         |                           |
 
 
 
 ## Estructura de claves
 
-Las claves siguen la estructura: app:<modulo>:<nombre>  
+Las claves siguen la estructura: "nombre"
 
 | Clave | Tipo de almacenamiento | Descripcion |
 |--------|------------------------|--------------|
-| `app:user:email` | localStorage | Información personal del usuario  |
-| `app:reserva:ultima` | localStorage | Información con los dates de una reserva creada |
-| `app:busqueda:filtros` | sessionStorage | Filtros de pa lpagina usados para selecionar una atracción |
-| `app:itinerario:reciente` | localStorage | Creado por el usuario despues de selecionar los una atración |
-| `app:itinerario:temp` | sessionStorage | Información selecionada por el usuario pero no guardada |
+| `atracciones` | localStorage | Información de las atracciones  |
+| `itinerarios` | localStorage | Datos del itinerario en formato JSON |
+| `newsletter` | sessionStorage | Datos de las subscripciones en formato JSON |
+| `reservas` | localStorage | Datos de las reservas en formato JSON |
 
 
 
@@ -93,52 +90,66 @@ Usuário ingresa su correo y informa sus preferencias, así podemos usar esa inf
 | Persistencia               | ✔️ Permanece al cerrar el navegador              | ❌ Se borra al cerrar pestaña            |
 | Se comparte entre pestañas | ✔️ Sí                                            | ❌ No                                    |
 | Ideal para                 | Datos del usuario, últimas reservas, itinerarios | Flujos temporales, estados transitorios |
-| Ejemplo clave              | `"app:reserva:ultima"`                           | `"app:flow:estado"`                     |
+| Ejemplo clave              | `"reservas"`                           | `"sin ejemplo"`                     |
 
 
 ## Ejemplos reales de uso
 
-### Guardar una reserva
+### Guardar un elemento en su clave correspondiente
 
 ```js
-// Guardar una reserva creada por el usuario.  
-Storage.guardar("app:reserva:ultima", {
-    atraccion: "3",
-    grupo: 2,
-    dias: ["jueves"],
-    email: "usuario@test.com"
-});
+// Guardar un elemento en almacenamiento local.  [ConexionAlmacen.js : 69]
+agregarLocalArrayActualizable(clave, valor){
+  const respuesta = managerAlmacenamiento.obtener(clave, "local");
+
+  if(respuesta !== undefined && respuesta){
+    const arrayDatos = respuesta.datos;
+
+    if( arrayDatos !== null && arrayDatos){
+      arrayDatos.push(valor);
+      respuesta.datos = arrayDatos;
+          
+      managerAlmacenamiento.actualizar(clave, respuesta, "local");
+    }
+  }
+}
 ```
 
-### Obtener un itinerario reciente
-
-```js
-// Obtener el último itinerario creado por el usuario.  
-const itinerario = StorageUtil.obtener("app:itinerario:reciente");
-console.log(itinerario);
-```
-
-### Actualizar preferencias del usuario
+### Guardado de claves iniciales
  
 ```js
-// Actualizar la lista de proferencias del usuario. 
-const usuario = StorageUtil.obtener("app:user:email");
-StorageUtil.actualizar("app:user:email", "nuevo@mail.com");
+// Guarda las claves inicialmente [ConexionAlmacen.js : 10]
+constructor(){
+  this.keys = {
+    atracciones: "atracciones",
+    itinerarios: "itinerarios",
+    newsletter: "newsletter",
+    reservas: "reservas"
+  };
+          
+  for( let llave of Object.keys(this.keys)){
+    if (!this.existeClave(llave))
+      managerAlmacenamiento.guardar(llave, { datos: []}, "local");
+  }
+}
 ```
 
-### Lista de todas las reservas almacenadas
+### Almacenamiento de newsletter, itinerario o reservas
 
 ```js
-// Listar las reservas almacenadas en local.  
-const claves = StorageUtil.listar("app:reserva:");
-console.log(claves);
-```
+// Proceso de almacenamiento para una newsletter, itinerario o reserva [ConexionAlmacen.js : 102]
+ingresarInformacionNewsletter( subscripcionForm ){
+  const subscripcion = this.dataFormToJSON(subscripcionForm);
+  this.agregarLocalArrayActualizable(this.keys.newsletter, subscripcion);
+}
 
-### Limpiar todo sessionStorage
-```js
-// Limpia datos permanentes
-StorageUtil.limpiar('local');
+ingresarInformacionItinerario( itinerarioObj ){
+  const itinerario = itinerarioObj.toJSON();
+  this.agregarLocalArrayActualizable(this.keys.itinerarios, itinerario);
+}
 
-// Limpia datos de sesión
-StorageUtil.limpiar('session');
+ingresarInformacionReservas( reservaForm ){
+  const reserva = this.dataFormToJSON(reservaForm);
+  this.agregarLocalArrayActualizable(this.keys.reservas, reserva);
+}
 ```

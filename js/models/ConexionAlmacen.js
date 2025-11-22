@@ -1,14 +1,16 @@
 import managerAlmacenamiento from "../utils/storage.js";
-import Itinerario from "./Itinerario.js"; // para un jsdoc
+import Itinerario from "./Itinerario.js"; // solo para un jsdoc
+import Semana from "./Semana.js";
 
 /**
  * Maneja las conexiones con el almacenamiento interno en storage.js
  */
 export default class ConexionAlamacen {
+    semana;
     keys;
 
     constructor(){
-        keys = {
+        this.keys = {
         atracciones: "atracciones",
         itinerarios: "itinerarios",
         newsletter: "newsletter",
@@ -19,6 +21,8 @@ export default class ConexionAlamacen {
             if (!this.existeClave(llave))
                 managerAlmacenamiento.guardar(llave, { datos: []}, "local");
         }
+
+        this.semana = new Semana();
     }
 
     /**
@@ -50,7 +54,7 @@ export default class ConexionAlamacen {
         
         // solicitar disponibilidad al almacenamiento
 
-        let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+        let listaDias = this.semana.getDias();
         
         // 50/50 de si el dia tiene cupos disponibles o no
         let disponibilidad = [];
@@ -73,7 +77,6 @@ export default class ConexionAlamacen {
             const arrayDatos = respuesta.datos;
 
             if( arrayDatos !== null && arrayDatos){
-                console.log(respuesta);
                 arrayDatos.push(valor);
                 respuesta.datos = arrayDatos;
                 
@@ -88,10 +91,10 @@ export default class ConexionAlamacen {
      * @returns {JSON} objeto JSON con los datos del formulario
      */
     dataFormToJSON(form){
-        var json = {};
-        form.forEach(function(value, key){
-            json[key] = value;
-        });
+        const json = Array.from(form).reduce( (objeto, [key, value]) => {
+            objeto[key] = value;
+            return objeto;
+        }, {});
 
         return json;
     }

@@ -1,13 +1,14 @@
+import Semana from "./Semana";
 
 /**
  * Representa un itinerario de viaje generado por el usuario
  */
 export default class Itinerario{
-    listaDias; 
+    semana;
     itinerario;
     
     constructor(){
-        this.listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];;
+        this.semana = new Semana();
         this.itinerario = [];
     }
 
@@ -29,7 +30,7 @@ export default class Itinerario{
      * @returns {Boolean} Si el itinerario esta completo o no
      */
     estaCompleto(){
-        return this.itinerario.length === this.listaDias.length
+        return this.itinerario.length === this.semana.getDias().length
     }
 
     /**
@@ -37,7 +38,7 @@ export default class Itinerario{
      * @returns {String} El dia que se esta cargando actualmente
      */
     diaEnProceso(){
-        return this.listaDias[this.itinerario.length]
+        return this.semana.getDias(this.itinerario.length);
     }
 
     /**

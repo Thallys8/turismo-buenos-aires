@@ -49,7 +49,7 @@ export default class Reserva{
      * @returns {Number} el precio
      */
     calcularPrecio(reserva){
-        let atraccion = this.filtroAtracciones.buscarAtraccionPorNombre(this.datosReserva.atraccion);
+        let atraccion = this.filtroAtracciones.buscarAtraccionPorNombre(reserva.atraccion);
         
         if(atraccion){
             let precio = (atraccion.precio * reserva.disponibilidad) * reserva.visitantes;

@@ -3,12 +3,14 @@ import ConexionAlamacen from './models/ConexionAlmacen.js';
 import FiltroAtracciones from './models/FiltroAtracciones.js';
 import Itinerario from './models/Itinerario.js';
 import Reserva from './models/Reserva.js';
+import Semana from './models/Semana.js';
 
 // para simular que hay algo en el storage
 import storage from "./utils/storage.js";
 
 const conexionAlamacen = new ConexionAlamacen();
 const filtroAtracciones = new FiltroAtracciones();
+const semana = new Semana();
 
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
@@ -213,8 +215,6 @@ function subscripcionNewsletter(event){
 const botonNewsletter = document.getElementById("btn-newsletter");
 botonNewsletter.addEventListener("click", subscripcionNewsletter);
 
-
-const listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
 let opcionesAtraccion = [];
 let itinerario;
 
@@ -358,7 +358,7 @@ function generarItinerario(){
     }
     opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);
 
-    generarMenuItinerario(listaDias[0], opcionesAtraccion);
+    generarMenuItinerario(semana.getDias(0), opcionesAtraccion);
 
     // generar el itinerario y envialo por email (no de verdad) 
 }
