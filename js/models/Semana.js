@@ -6,14 +6,14 @@ export default class Semana{
     dias;
 
     constructor(){
-        dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+        this.dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     }
 
     /**
      * Devuelve los dias de una semana completa
      * @returns {string[]} Los dias de la semana
      */
-    getDias(){
+    getSemana(){
         return this.dias;
     };
 
@@ -23,7 +23,7 @@ export default class Semana{
      * @returns {string} dia especifico
      */
     getDias( posicion){
-        if(posicion > 0 && posicion < this.dias.length)
+        if(posicion >= 0 && posicion < this.dias.length)
             return this.dias[posicion];
     }
 }

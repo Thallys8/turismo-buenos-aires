@@ -1,4 +1,4 @@
-import Semana from "./Semana";
+import Semana from "./Semana.js";
 
 /**
  * Representa un itinerario de viaje generado por el usuario
@@ -30,7 +30,8 @@ export default class Itinerario{
      * @returns {Boolean} Si el itinerario esta completo o no
      */
     estaCompleto(){
-        return this.itinerario.length === this.semana.getDias().length
+        let dias = this.semana.getSemana();
+        return this.itinerario.length === dias.length
     }
 
     /**

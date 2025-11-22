@@ -52,7 +52,7 @@ class Reserva {
 class Semana {
     {field} -dias : string[]
 
-    {method} +getDias() : string[]
+    {method} +getSemana() : string[]
     {method} +getDias(Number posicion) : string
 
 }
