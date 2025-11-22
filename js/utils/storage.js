@@ -10,9 +10,19 @@ const StorageUtil = {
     guardar(clave, valor, tipo = "local") {
         try {
             const storage = tipo === "session" ? sessionStorage : localStorage;
-            storage.setItem(clave, JSON.stringify(valor));
+
+            let tamaño = new TextEncoder().encode(valor).length
+
+            if(tamaño < 200){
+                storage.setItem(clave, JSON.stringify(valor));
+            }
+            else throw new Error(`El archivo es mas grande que los 200 bytes permitidos`);
         } catch (error) {
-            console.error(`Error guardando '${clave}' en ${tipo}Storage:`, error);
+            if (error.name === 'QuotaExceededError') {
+                console.error('Se exedio el espacion de almacenamiento disponible. por favor, liberar espacio');
+            } else {
+                console.error(`Error guardando '${clave}' en ${tipo}Storage:`, error);
+            }
         }
     },
 
