@@ -16,13 +16,18 @@ export default class ConexionAlamacen {
         newsletter: "newsletter",
         reservas: "reservas"
         };
-        
+        this.generarClaves();
+        this.semana = new Semana();
+    }
+
+    /**
+     * Genera las claves dentro del almacenamiento
+     */
+    generarClaves(){
         for( let llave of Object.keys(this.keys)){
             if (!this.existeClave(llave))
                 managerAlmacenamiento.guardar(llave, { datos: []}, "local");
         }
-
-        this.semana = new Semana();
     }
 
     /**
@@ -38,11 +43,11 @@ export default class ConexionAlamacen {
 
     /**
      * Devuelve la informacion de las atracciones disponibles en el sistema
-     * @returns {JSON} objeto JSON con los datos de todas las atracciones
+     * @returns {Array<object>} los datos de todas las atracciones
      */
     solicitarInformacionAtracciones(){
         let respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
-        return respuesta.datos;
+        return respuesta.datos || [];
     }
 
     /**
@@ -54,7 +59,7 @@ export default class ConexionAlamacen {
         
         // solicitar disponibilidad al almacenamiento
 
-        let listaDias = this.semana.getDias();
+        let listaDias = this.semana.getSemana();
         
         // 50/50 de si el dia tiene cupos disponibles o no
         let disponibilidad = [];

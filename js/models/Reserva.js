@@ -11,6 +11,7 @@ export default class Reserva{
         this.conexionAlamacen = new ConexionAlmacen();
         this.filtroAtracciones = new FiltroAtracciones();
         this.keysObligatorias = ["atraccion", "visitantes", "disponibilidad", "email"];
+        this.datosReserva = {};
     }
 
     /**
@@ -19,17 +20,17 @@ export default class Reserva{
      */
     guardarReserva( keyValueArray ){
         const resultado = keyValueArray.reduce((objeto, [id, valor]) => {
-            if(this.keysObligatorias.includes(key)){
+            if(this.keysObligatorias.includes(id)){
                 objeto[id] = valor;
             };
             return objeto;
         }, {});
         
 
-        if(resultado.length === this.datosReserva.length){
-            resultado["precio"] = this.calcularPrecio(resultado).
+        if( Object.keys(resultado).length === this.keysObligatorias.length){
+            resultado["precio"] = this.calcularPrecio(resultado);
             this.datosReserva = resultado;
-            conexionAlamacen.ingresarInformacionReservas(datos);
+            conexionAlamacen.ingresarInformacionReservas(this.datosReserva);
         }
         else{
             // error en los datos ingresados

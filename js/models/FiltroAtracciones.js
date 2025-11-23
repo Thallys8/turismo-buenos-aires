@@ -24,16 +24,19 @@ export default class FiltroAtracciones {
      */
     buscarAtracciones(momento, horario, actividad, grupo){
         const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
+        let atraccionesFiltradas = [];
 
-        let atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
-            let momentoOk = this.validador.algunValorExiste(momento, atraccion.momento);
-            let horarioOk = this.validador.algunValorExiste(horario, atraccion.horario);
-            let actividadOk = this.validador.algunValorExiste(actividad, atraccion.actividad);
-            let grupoOk = this.validador.algunValorExiste(grupo, atraccion.grupo);
+        console.log(arrayAtracciones);
+        if(arrayAtracciones != null && arrayAtracciones){
+            atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
+                let momentoOk = this.validador.algunValorExiste(momento, atraccion.momento);
+                let horarioOk = this.validador.algunValorExiste(horario, atraccion.horario);
+                let actividadOk = this.validador.algunValorExiste(actividad, atraccion.actividad);
+                let grupoOk = this.validador.algunValorExiste(grupo, atraccion.grupo);
 
-            return momentoOk && horarioOk && actividadOk && grupoOk;
-        });
-
+                return momentoOk && horarioOk && actividadOk && grupoOk;
+            });
+        }
         return atraccionesFiltradas;
     }
 

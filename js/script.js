@@ -5,12 +5,12 @@ import Itinerario from './models/Itinerario.js';
 import Reserva from './models/Reserva.js';
 import Semana from './models/Semana.js';
 
-// para simular que hay algo en el storage
-import storage from "./utils/storage.js";
-
 const conexionAlamacen = new ConexionAlamacen();
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
+
+const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
+const listaActividades = document.getElementById("lista-de-actividades");
 
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
@@ -78,36 +78,41 @@ function generarMenuReserva(event){
     }
 }
 
-const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
-const listaActividades = document.getElementById("lista-de-actividades");
 
 /**
  * Recibe los parametros de busqueda y solicita las atracciones que los cumplan.
  * Generando las tarjetas nuevas en la web 
  * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
  */
-function handlerSubmitBusqueda(parametros){
-    
-    const elementosHTML = crearAtracciones(parametros, generarMenuReserva);
+function handlerSubmitBusqueda(parametros, listaActividades){
+    let elementosHTML = [];
+
+    const valoresNulos = Array.from(parametros).filter( value =>{
+        if ( !(value != null && value) )
+            return value;
+    });
+    if(valoresNulos.length == 0)
+        elementosHTML = crearAtracciones(parametros, generarMenuReserva);
 
     // destruye todos los elementos contenidos y agrega los nuevos
-    while (listaActividades.firstChild) {
-        listaActividades.removeChild(listaActividades.firstChild);
-    }
+    
+    if(listaActividades != null && listaActividades){
+        while (listaActividades.firstChild) {
+            listaActividades.removeChild(listaActividades.firstChild);
+        }
 
-    console.log(elementosHTML);
-    if(elementosHTML.length > 0 ){
+        if(elementosHTML.length > 0 ){
         elementosHTML.forEach(elemento => {
             listaActividades.appendChild(elemento);
         });
-    }
-    else{
-        let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
-        listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
-    }
-    
+        }
+        else{
+            let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
+            listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
+        }
 
-    listaActividades.scrollIntoView();
+        listaActividades.scrollIntoView();
+    }
 }
 
 /**
@@ -131,9 +136,10 @@ function formularioSubmit(event){
     const grupo = [formData.get("tipo-grupo")];
 
     const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
-    handlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
-formularioAvanzado.addEventListener('submit', formularioSubmit);
+if (formularioAvanzado != null && formularioAvanzado) 
+    formularioAvanzado.addEventListener('submit', formularioSubmit);
 
 // genera una lista con el numero de opciones [1...10]
 const maxTipos = 10;
@@ -148,7 +154,7 @@ for (var i = 0; i <= maxTipos; i++) {
  */
 function onclickAtraccionesDia(){
     const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
-    handlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
 
 /**
@@ -157,10 +163,15 @@ function onclickAtraccionesDia(){
  */
 function onclickAtraccionesNoche(){
     const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
-    handlerSubmitBusqueda(parametros);
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
-document.getElementById("atracciones-noche-elegir").addEventListener("click", onclickAtraccionesNoche);
-document.getElementById("atracciones-dia-elegir").addEventListener("click", onclickAtraccionesDia);
+const btnNoche = document.getElementById("atracciones-noche-elegir");
+const btnDia = document.getElementById("atracciones-dia-elegir");
+
+if(btnNoche != null && btnNoche)
+    btnNoche.addEventListener("click", onclickAtraccionesNoche);
+if(btnDia != null && btnDia)
+    btnDia.addEventListener("click", onclickAtraccionesDia);
 
 /**
  * Recibe el formulario HTML con la informacion de la informacion, almacenandolo y
@@ -213,7 +224,8 @@ function subscripcionNewsletter(event){
     // con los datos del formulario, generar subscripcion
 }
 const botonNewsletter = document.getElementById("btn-newsletter");
-botonNewsletter.addEventListener("click", subscripcionNewsletter);
+if(botonNewsletter != null && botonNewsletter) 
+    botonNewsletter.addEventListener("click", subscripcionNewsletter);
 
 let opcionesAtraccion = [];
 let itinerario;
@@ -351,7 +363,9 @@ function generarItinerario(){
 
     const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
     
-    const atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
+    let atracciones = [];
+    if(datosAtracciones != null && datosAtracciones) 
+        atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
 
     for(let i = 0; i < atracciones.length; i++){
         opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
@@ -363,7 +377,8 @@ function generarItinerario(){
     // generar el itinerario y envialo por email (no de verdad) 
 }
 const botonItinerario = document.getElementById("btn-itinerario");
-botonItinerario.addEventListener("click", generarItinerario);
+if(botonItinerario != null && botonItinerario) 
+    botonItinerario.addEventListener("click", generarItinerario);
 
 /**
  * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
@@ -485,4 +500,52 @@ function crearPopUpSimple( nuevoInnerHtml ){
 
     fondo.appendChild(contenedor);
     return fondo;
+}
+
+// Exponer funciones y objetos para testing
+console.log('✅ script.js cargado correctamente');
+
+if (typeof window !== 'undefined') {
+    // Funciones principales
+    window.handlerSubmitBusqueda = handlerSubmitBusqueda;
+    window.formularioSubmit = formularioSubmit;
+    window.onclickAtraccionesDia = onclickAtraccionesDia;
+    window.onclickAtraccionesNoche = onclickAtraccionesNoche;
+    
+    // Funciones de reserva
+    window.concretarReserva = concretarReserva;
+    window.generarMenuReserva = generarMenuReserva;
+    
+    // Funciones de newsletter
+    window.concretarSubscripcionNews = concretarSubscripcionNews;
+    window.subscripcionNewsletter = subscripcionNewsletter;
+    
+    // Funciones de itinerario
+    window.almacenarDiaItinerario = almacenarDiaItinerario;
+    window.generarMenuItinerario = generarMenuItinerario;
+    window.generarItinerario = generarItinerario;
+    window.popUpItinerarioCompleto = popUpItinerarioCompleto;
+    
+    // Funciones helper de creación HTML
+    window.crearAtracciones = crearAtracciones;
+    window.crearTarjetaHTML = crearTarjetaHTML;
+    window.crearPopUpFormulario = crearPopUpFormulario;
+    window.crearPopUpSimple = crearPopUpSimple;
+    
+    // Instancias globales
+    window.formularioAvanzado = formularioAvanzado;
+    window.listaActividades = listaActividades;
+    window.conexionAlamacen = conexionAlamacen;
+    window.filtroAtracciones = filtroAtracciones;
+    window.semana = semana;
+    
+    console.log('✅ Funciones expuestas:', {
+        handlerSubmitBusqueda: typeof window.handlerSubmitBusqueda,
+        concretarReserva: typeof window.concretarReserva,
+        generarMenuReserva: typeof window.generarMenuReserva,
+        concretarSubscripcionNews: typeof window.concretarSubscripcionNews,
+        generarItinerario: typeof window.generarItinerario,
+        conexionAlamacen: typeof window.conexionAlamacen,
+        filtroAtracciones: typeof window.filtroAtracciones
+    });
 }
