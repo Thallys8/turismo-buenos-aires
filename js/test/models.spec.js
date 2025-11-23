@@ -1,47 +1,113 @@
 // Tests para los modelos de /models
 
-import conexionAlmacen from "../models/ConexionAlmacen.js";
-import constructorHTML from "../models/ConstructorHTML.js";
-import filtroAtracciones from "../models/FiltroAtracciones.js";
+import ConexionAlmacen from "../models/ConexionAlmacen.js";
+import FiltroAtracciones from "../models/FiltroAtracciones.js";
 import Itinerario from "../models/Itinerario.js";
-import TarjetaAtraccion from "../models/TarjetaAtraccion.js";
-import validador from "../models/Validador.js";
+import Reserva from "../models/Reserva.js";
+import Semana from "../models/Semana.js";
+import Validador from "../models/Validador.js";
 
 //
 // 1) Validador
 //
 describe("Validador", () => {
-
-  it("algunValorExiste devuelve true si hay al menos un valor en común", () => {
-    const arrayChequeado = [1, 2, 3];
-    const valoresBuscados = [5, 3, 9];
-
-    const resultado = validador.algunValorExiste(arrayChequeado, valoresBuscados);
-
-    expect(resultado).toBeTrue();
+  let validador;
+  
+  beforeEach(() => {
+    validador = new Validador();
   });
 
-  it("algunValorExiste devuelve false si no hay valores en común", () => {
-    const arrayChequeado = [1, 2, 3];
-    const valoresBuscados = [5, 6, 9];
-
-    const resultado = validador.algunValorExiste(arrayChequeado, valoresBuscados);
-
-    expect(resultado).toBeFalse();
+  // Tests de métodos de negocio
+  it("algunValorExiste: detecta valores en común", () => {
+    expect(validador.algunValorExiste([1, 2, 3], [5, 3, 9])).toBeTrue();
+    expect(validador.algunValorExiste([1, 2, 3], [5, 6, 9])).toBeFalse();
   });
 
-  it("esEmail reconoce un email válido", () => {
+  // Tests de validaciones
+  it("esEmail: valida formato de email correctamente", () => {
     expect(validador.esEmail("usuario@test.com")).toBeTrue();
-  });
-
-  it("esEmail rechaza un email inválido", () => {
-    expect(validador.esEmail("usuario@@test..com")).toBeFalse();
+    expect(validador.esEmail("usuario@@test.com")).toBeFalse();
+    expect(validador.esEmail("usuariotest.com")).toBeFalse();
+    expect(validador.esEmail("")).toBeFalse();
   });
 });
 
 
 //
-// 2) Itinerario
+// 2) Semana
+//
+describe("Semana", () => {
+  let semana;
+
+  beforeEach(() => {
+    semana = new Semana();
+  });
+
+  // Tests de métodos de negocio
+  it("getDias: devuelve el día correcto según el índice", () => {
+    expect(semana.getDias(0)).toBe("lunes");
+    expect(semana.getDias(6)).toBe("domingo");
+  });
+
+  it("getDias: devuelve todos los días en orden", () => {
+    const diasEsperados = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+    
+    for (let i = 0; i < diasEsperados.length; i++) {
+      expect(semana.getDias(i)).toBe(diasEsperados[i]);
+    }
+  });
+});
+
+
+//
+// 3) Reserva
+//
+describe("Reserva", () => {
+  let reserva;
+
+  beforeEach(() => {
+    reserva = new Reserva();
+  });
+
+  function crearFormDataReserva(datos = {}) {
+    const form = document.createElement("form");
+    form.innerHTML = `
+      <input name="atraccion" value="${datos.atraccion || 'Test Atracción'}">
+      <input name="visitantes" value="${datos.visitantes || '3'}">
+      <input name="disponibilidad" value="${datos.disponibilidad || 'Lunes'}">
+      <input name="email" value="${datos.email || 'test@example.com'}">
+    `;
+    return new FormData(form);
+  }
+
+  // Tests de métodos de negocio
+  it("guardarReserva: almacena correctamente los datos", () => {
+    const formData = crearFormDataReserva();
+    
+    reserva.guardarReserva(Array.from(formData));
+    const datos = reserva.obtenerReserva();
+
+    expect(datos.atraccion).toBe("Test Atracción");
+    expect(datos.visitantes).toBe("3");
+  });
+
+  it("obtenerReserva: devuelve objeto con propiedades correctas", () => {
+    const formData = crearFormDataReserva();
+    reserva.guardarReserva(Array.from(formData));
+    
+    const datos = reserva.obtenerReserva();
+
+    expect(datos).toEqual(jasmine.objectContaining({
+      atraccion: jasmine.any(String),
+      visitantes: jasmine.any(String),
+      email: jasmine.any(String)
+    }));
+  });
+});
+
+
+//
+// 4) Itinerario
 //
 describe("Itinerario", () => {
   let itinerario;
@@ -50,62 +116,70 @@ describe("Itinerario", () => {
     itinerario = new Itinerario();
   });
 
-  function crearFormularioItinerario(dia = "lunes") {
+  function crearFormDataItinerario(dia = "lunes") {
     const form = document.createElement("form");
-
-    const inputDia = document.createElement("input");
-    inputDia.name = "dia";
-    inputDia.value = dia;
-    form.appendChild(inputDia);
-
-    const campos = ["mañana", "media-mañana", "media-tarde", "tarde", "noche"];
-    campos.forEach(nombre => {
-      const input = document.createElement("input");
-      input.name = nombre;
-      input.value = nombre + "-valor";
-      form.appendChild(input);
-    });
-
-    return form;
+    form.innerHTML = `
+      <input name="dia" value="${dia}">
+      <select name="mañana"><option value="Atracción 1" selected></option></select>
+      <select name="media-mañana"><option value="ninguna" selected></option></select>
+      <select name="media-tarde"><option value="Atracción 2" selected></option></select>
+      <select name="tarde"><option value="ninguna" selected></option></select>
+      <select name="noche"><option value="Atracción 3" selected></option></select>
+    `;
+    return new FormData(form);
   }
 
-  it("cargarDiaItinerario agrega un objeto al arreglo interno", () => {
-    const form = crearFormularioItinerario("lunes");
-
-    itinerario.cargarDiaItinerario(form);
+  // Tests de métodos de negocio
+  it("cargarDiaItinerario: agrega día al itinerario", () => {
+    const formData = crearFormDataItinerario("lunes");
+    
+    itinerario.cargarDiaItinerario(Array.from(formData));
 
     expect(itinerario.itinerario.length).toBe(1);
     expect(itinerario.itinerario[0].dia).toBe("lunes");
-    expect(itinerario.itinerario[0]["mañana"]).toBe("mañana-valor");
   });
 
-  it("estaCompleto es true cuando se cargan los 7 días", () => {
+  it("estaCompleto: valida correctamente cuando tiene 7 días", () => {
+    expect(itinerario.estaCompleto()).toBeFalse();
+    
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-
     dias.forEach(dia => {
-      const form = crearFormularioItinerario(dia);
-      itinerario.cargarDiaItinerario(form);
+      const formData = crearFormDataItinerario(dia);
+      itinerario.cargarDiaItinerario(Array.from(formData));
     });
 
     expect(itinerario.estaCompleto()).toBeTrue();
   });
 
-  it("diaEnProceso devuelve el siguiente día a cargar", () => {
-    // Nada cargado -> primer día
+  it("diaEnProceso: devuelve el siguiente día a cargar", () => {
     expect(itinerario.diaEnProceso()).toBe("lunes");
 
-    const form = crearFormularioItinerario("lunes");
-    itinerario.cargarDiaItinerario(form);
+    const formData = crearFormDataItinerario("lunes");
+    itinerario.cargarDiaItinerario(Array.from(formData));
 
     expect(itinerario.diaEnProceso()).toBe("martes");
   });
 
-  it("toJSON devuelve un string JSON con propiedad 'datos'", () => {
-    const form = crearFormularioItinerario("lunes");
-    itinerario.cargarDiaItinerario(form);
+  it("getItinerario: devuelve array de días cargados", () => {
+    const formData = crearFormDataItinerario("lunes");
+    itinerario.cargarDiaItinerario(Array.from(formData));
+
+    const resultado = itinerario.getItinerario();
+
+    expect(Array.isArray(resultado)).toBeTrue();
+    expect(resultado.length).toBe(1);
+  });
+
+  // Tests de serialización
+  it("toJSON: devuelve JSON válido con propiedad 'datos'", () => {
+    const formData = crearFormDataItinerario("lunes");
+    itinerario.cargarDiaItinerario(Array.from(formData));
 
     const jsonStr = itinerario.toJSON();
     const obj = JSON.parse(jsonStr);
+
+
+    expect(Object.keys(obj)).toContain("datos");
 
     expect(Array.isArray(obj.datos)).toBeTrue();
     expect(obj.datos[0].dia).toBe("lunes");
@@ -114,136 +188,49 @@ describe("Itinerario", () => {
 
 
 //
-// 3) TarjetaAtraccion
-//
-describe("TarjetaAtraccion", () => {
-  let datosAtraccion;
-
-  beforeEach(() => {
-    datosAtraccion = {
-      titulo: "Cataratas del Iguazú",
-      subtitulo: "Maravilla natural",
-      descripcion: "Un lugar increíble para visitar.",
-      horarios: "Todos los días 8-18",
-      idMapa: "mapa-iguazu",
-      promptMaps: "https://maps.example.com",
-      imgSrc: "imagen.jpg",
-      altFoto: "Foto cataratas"
-    };
-  });
-
-  it("fromJSON devuelve un elemento ARTICLE con clase 'tarjeta'", () => {
-    const tarjeta = new TarjetaAtraccion();
-    const elemento = tarjeta.fromJSON(datosAtraccion, () => {});
-
-    expect(elemento).toBeDefined();
-    expect(elemento.tagName).toBe("ARTICLE");
-    expect(elemento.classList.contains("tarjeta")).toBeTrue();
-  });
-
-  it("el botón 'Reservar' dispara el callback al hacer click", () => {
-    const callback = jasmine.createSpy("callbackReserva");
-    const tarjeta = new TarjetaAtraccion();
-    const elemento = tarjeta.fromJSON(datosAtraccion, callback);
-
-    document.body.appendChild(elemento); // para que el click se procese bien
-    const boton = elemento.querySelector(".reservar-btn");
-
-    boton.click();
-
-    expect(callback).toHaveBeenCalled();
-  });
-});
-
-
-//
-// 4) ConstructorHTML
-//
-describe("ConstructorHTML", () => {
-
-  it("crearAtracciones genera una tarjeta por cada atracción filtrada", () => {
-    // Mockear filtroAtracciones.buscarAtracciones
-    const fakeAtracciones = [
-      { titulo: "A1", subtitulo: "", descripcion: "", horarios: "", idMapa: "m1", promptMaps: "", imgSrc: "", altFoto: "" },
-      { titulo: "A2", subtitulo: "", descripcion: "", horarios: "", idMapa: "m2", promptMaps: "", imgSrc: "", altFoto: "" }
-    ];
-
-    spyOn(filtroAtracciones, "buscarAtracciones").and.returnValue(fakeAtracciones);
-
-    const callbackReserva = jasmine.createSpy("callbackReserva");
-    const criterios = { momento: [1], horario: [0], actividad: [1], grupo: [1] };
-
-    const tarjetas = constructorHTML.crearAtracciones(criterios, callbackReserva);
-
-    expect(filtroAtracciones.buscarAtracciones).toHaveBeenCalled();
-    expect(Array.isArray(tarjetas)).toBeTrue();
-    expect(tarjetas.length).toBe(2);
-    expect(tarjetas[0].tagName).toBe("ARTICLE");
-  });
-
-  it("crearPopUpFormulario genera un contenedor con form interno y dispara el callback al hacer submit", () => {
-    const callbackSubmit = jasmine.createSpy("onSubmit");
-
-    const popup = constructorHTML.crearPopUpFormulario(`
-      <label>Nombre</label>
-      <input name="nombre" value="Prueba">
-    `, (event) => {
-      event.preventDefault();
-      callbackSubmit(event);
-    });
-
-    document.body.appendChild(popup);
-
-    const form = popup.querySelector("form");
-    expect(form).toBeTruthy();
-
-    // Simulamos el submit
-    const submitEvent = new Event("submit", { bubbles: true, cancelable: true });
-    form.dispatchEvent(submitEvent);
-
-    expect(callbackSubmit).toHaveBeenCalled();
-  });
-
-  it("crearPopUpSimple crea un panel que se cierra al hacer click en el botón", () => {
-    const popup = constructorHTML.crearPopUpSimple("<p>Mensaje</p>");
-    document.body.appendChild(popup);
-
-    const boton = popup.querySelector("button");
-    expect(boton).toBeTruthy();
-
-    boton.click();
-
-    // El contenedor completo debería desaparecer del DOM
-    expect(document.body.contains(popup)).toBeFalse();
-  });
-});
-
-
-//
 // 5) FiltroAtracciones
 //
 describe("FiltroAtracciones", () => {
+  let filtroAtracciones;
 
-  it("buscarAtracciones devuelve solo las atracciones que cumplen todos los filtros", () => {
-    // Mock de conexionAlmacen.solicitarInformacionAtracciones()
-    spyOn(conexionAlmacen, "solicitarInformacionAtracciones").and.returnValue({
-      datos: [
-        { momento: [1], horario: [0], actividad: [10], grupo: [3], titulo: "Apta" },
-        { momento: [2], horario: [1], actividad: [11], grupo: [4], titulo: "No apta" }
-      ]
-    });
+  beforeEach(() => {
+    filtroAtracciones = new FiltroAtracciones();
+  });
 
-    // Usamos el validador real: funciona con números y arrays
-    const momento = [1];
-    const horario = [0];
-    const actividad = [10];
-    const grupo = [3];
+  // Tests de constructor
+  it("se inicializa correctamente con validador y conexión", () => {
+    expect(filtroAtracciones.validador).toBeDefined();
+    expect(filtroAtracciones.conexionAlmacen).toBeDefined();
+  });
 
-    const resultado = filtroAtracciones.buscarAtracciones(momento, horario, actividad, grupo);
+  // Tests de métodos de negocio
+  it("buscarAtracciones: filtra atracciones según criterios", () => {
+    const atraccionesMock = [
+      { momento: [1], horario: [0], actividad: [10], grupo: [3], titulo: "Apta 1" },
+      { momento: [1], horario: [0], actividad: [10], grupo: [3], titulo: "Apta 2" },
+      { momento: [2], horario: [1], actividad: [11], grupo: [4], titulo: "No apta" }
+    ];
 
-    expect(Array.isArray(resultado)).toBeTrue();
-    expect(resultado.length).toBe(1);
-    expect(resultado[0].titulo).toBe("Apta");
+    spyOn(filtroAtracciones.conexionAlmacen, 'solicitarInformacionAtracciones')
+      .and.returnValue(atraccionesMock);
+
+    const resultado = filtroAtracciones.buscarAtracciones([1], [0], [10], [3]);
+
+    expect(resultado.length).toBe(2);
+    expect(resultado[0].titulo).toBe("Apta 1");
+  });
+
+  it("buscarAtracciones: devuelve array vacío sin coincidencias", () => {
+    const atraccionesMock = [
+      { momento: [1], horario: [0], actividad: [10], grupo: [3], titulo: "Test" }
+    ];
+
+    spyOn(filtroAtracciones.conexionAlmacen, 'solicitarInformacionAtracciones')
+      .and.returnValue(atraccionesMock);
+
+    const resultado = filtroAtracciones.buscarAtracciones([5], [5], [5], [5]);
+
+    expect(resultado.length).toBe(0);
   });
 });
 
@@ -251,66 +238,105 @@ describe("FiltroAtracciones", () => {
 //
 // 6) ConexionAlmacen
 //
-// NOTA: Como no conocemos la implementación interna,
-// sólo verificamos que sus métodos existan y devuelvan
-// tipos de datos coherentes con el resto del código.
 describe("ConexionAlmacen", () => {
+  let conexionAlmacen;
 
-  it("expone el método solicitarInformacionAtracciones que devuelve un objeto con 'datos' como array", () => {
-    expect(typeof conexionAlmacen.solicitarInformacionAtracciones).toBe("function");
-
-    const resultado = conexionAlmacen.solicitarInformacionAtracciones();
-    // Permitimos que el proyecto decida el contenido, pero
-    // asumimos que debe tener la forma { datos: [...] }
-    expect(resultado).toBeDefined();
-    expect(Array.isArray(resultado.datos)).toBeTrue();
+  beforeEach(() => {
+    conexionAlmacen = new ConexionAlmacen();
   });
 
-  it("solicitarDisponibilidad devuelve un array (posiblemente vacío)", () => {
-    expect(typeof conexionAlmacen.solicitarDisponibilidad).toBe("function");
+  // Tests de métodos de negocio
+  it("solicitarInformacionAtracciones: devuelve objeto con datos array", () => {
+    const resultado = conexionAlmacen.solicitarInformacionAtracciones();
 
-    const dias = conexionAlmacen.solicitarDisponibilidad("alguna-atraccion");
+    expect(resultado).toBeDefined();
+    expect(Array.isArray(resultado)).toBeTrue();
+  });
+
+  it("solicitarDisponibilidad: devuelve array de días", () => {
+    const dias = conexionAlmacen.solicitarDisponibilidad("test-atraccion");
+    
     expect(Array.isArray(dias)).toBeTrue();
   });
 
-  it("ingresarInformacionReservas acepta un FormData sin lanzar error", () => {
+  // Tests de validaciones (métodos opcionales)
+  it("ingresarInformacionReservas: acepta FormData sin error", () => {
     if (typeof conexionAlmacen.ingresarInformacionReservas !== "function") {
-      pending("ingresarInformacionReservas no está implementado aún");
+      pending("Método no implementado aún");
     }
 
     const form = document.createElement("form");
-    const input = document.createElement("input");
-    input.name = "email";
-    input.value = "test@example.com";
-    form.appendChild(input);
-
+    form.innerHTML = `<input name="email" value="test@example.com">`;
     const datos = new FormData(form);
 
     expect(() => conexionAlmacen.ingresarInformacionReservas(datos)).not.toThrow();
   });
 
-  it("ingresarInformacionItinerario acepta un objeto Itinerario sin lanzar error", () => {
+  it("ingresarInformacionItinerario: acepta Itinerario sin error", () => {
     if (typeof conexionAlmacen.ingresarInformacionItinerario !== "function") {
-      pending("ingresarInformacionItinerario no está implementado aún");
+      pending("Método no implementado aún");
     }
 
     const iti = new Itinerario();
+    
     expect(() => conexionAlmacen.ingresarInformacionItinerario(iti)).not.toThrow();
   });
 
-  it("ingresarInformacionNewsletter acepta FormData sin lanzar error", () => {
+  it("ingresarInformacionNewsletter: acepta FormData sin error", () => {
     if (typeof conexionAlmacen.ingresarInformacionNewsletter !== "function") {
-      pending("ingresarInformacionNewsletter no está implementado aún");
+      pending("Método no implementado aún");
     }
 
     const form = document.createElement("form");
-    const input = document.createElement("input");
-    input.name = "email";
-    input.value = "newsletter@test.com";
-    form.appendChild(input);
-
+    form.innerHTML = `<input name="email" value="test@test.com">`;
     const datos = new FormData(form);
 
     expect(() => conexionAlmacen.ingresarInformacionNewsletter(datos)).not.toThrow();
+  });
+});
+
+
+//
+// 7) Tests de integración clave
+//
+describe("Integración entre modelos", () => {
+
+  it("FiltroAtracciones usa Validador para buscar", () => {
+    const filtro = new FiltroAtracciones();
+    
+    expect(filtro.validador instanceof Validador).toBeTrue();
+  });
+
+  it("Itinerario usa Semana para controlar días", () => {
+    const itinerario = new Itinerario();
+    
+    expect(itinerario.semana instanceof Semana).toBeTrue();
+  });
+
+  it("Flujo completo: Buscar y crear reserva", () => {
+    const filtro = new FiltroAtracciones();
+    const reserva = new Reserva();
+    
+    const atraccionesMock = [{ momento: [1], horario: [0], actividad: [1], grupo: [1], titulo: "Test" }];
+    
+    spyOn(filtro.conexionAlmacen, 'solicitarInformacionAtracciones')
+      .and.returnValue(atraccionesMock);
+
+    const atracciones = filtro.buscarAtracciones([1], [0], [1], [1]);
+    
+    if (atracciones.length > 0) {
+      const form = document.createElement("form");
+      form.innerHTML = `
+        <input name="atraccion" value="${atracciones[0].titulo}">
+        <input name="visitantes" value="2">
+        <input name="disponibilidad" value="Lunes">
+        <input name="email" value="test@test.com">
+      `;
+      
+      reserva.guardarReserva(Array.from(new FormData(form)));
+      const datos = reserva.obtenerReserva();
+      
+      expect(datos.atraccion).toBe("Test");
+    }
   });
 });

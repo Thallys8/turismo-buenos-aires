@@ -24,8 +24,14 @@ describe("StorageUtil", () => {
         sessionMock = crearMockStorage();
 
         // reemplazar los storages reales con mocks
-        window.localStorage = localMock;
-        window.sessionStorage = sessionMock;
+        //window.localStorage = localMock;
+        //window.sessionStorage = sessionMock;
+
+        spyOn(window.localStorage, "getItem").and.callFake(key => store[key] || null);
+        spyOn(window.localStorage, "setItem").and.callFake((key, value) => store[key] = value);
+        spyOn(window.localStorage, "removeItem").and.callFake(key => delete store[key]);
+        spyOn(window.localStorage, "clear").and.callFake(() => store = {});
+        spyOn(window.localStorage, "key").and.callFake(i => Object.keys(store)[i] || null);
     });
 
     // =============================================================
