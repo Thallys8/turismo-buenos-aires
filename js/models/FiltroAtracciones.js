@@ -26,7 +26,6 @@ export default class FiltroAtracciones {
         const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
         let atraccionesFiltradas = [];
 
-        console.log(arrayAtracciones);
         if(arrayAtracciones != null && arrayAtracciones){
             atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
                 let momentoOk = this.validador.algunValorExiste(momento, atraccion.momento);

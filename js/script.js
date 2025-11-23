@@ -131,9 +131,11 @@ function formularioSubmit(event){
     if (formData.get("finde")  === "2")
         momento.push(2);
 
-    const horario = [formData.get("horario")];
-    const actividad = [formData.get("tipo-actividad")];
-    const grupo = [formData.get("tipo-grupo")];
+    if(momento.length == 0) momento.push(1, 2);
+
+    const horario = [...formData.get("horario")];
+    const actividad = [...formData.get("tipo-actividad")];
+    const grupo = [...formData.get("tipo-grupo")];
 
     const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
     handlerSubmitBusqueda(parametros, listaActividades);
@@ -502,9 +504,6 @@ function crearPopUpSimple( nuevoInnerHtml ){
     return fondo;
 }
 
-// Exponer funciones y objetos para testing
-console.log('✅ script.js cargado correctamente');
-
 if (typeof window !== 'undefined') {
     // Funciones principales
     window.handlerSubmitBusqueda = handlerSubmitBusqueda;
@@ -538,14 +537,4 @@ if (typeof window !== 'undefined') {
     window.conexionAlamacen = conexionAlamacen;
     window.filtroAtracciones = filtroAtracciones;
     window.semana = semana;
-    
-    console.log('✅ Funciones expuestas:', {
-        handlerSubmitBusqueda: typeof window.handlerSubmitBusqueda,
-        concretarReserva: typeof window.concretarReserva,
-        generarMenuReserva: typeof window.generarMenuReserva,
-        concretarSubscripcionNews: typeof window.concretarSubscripcionNews,
-        generarItinerario: typeof window.generarItinerario,
-        conexionAlamacen: typeof window.conexionAlamacen,
-        filtroAtracciones: typeof window.filtroAtracciones
-    });
 }
