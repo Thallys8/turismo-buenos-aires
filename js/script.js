@@ -309,6 +309,11 @@ function almacenarDiaItinerario(formulario) {
     conexionAlamacen.ingresarInformacionItinerario(itinerario);
 }
 
+/**
+ * Actualiza las tabs segun el dia elegido
+ * @param {HTMLElement} contenedor 
+ * @param {HTMLElement[]} opciones 
+ */
 function actualizarTabs(contenedor, opciones) {
     const checkboxes = contenedor.querySelectorAll('input[name="dias"]:checked');
     const diasSeleccionados = Array.from(checkboxes).map(cb => cb.value);
