@@ -346,3 +346,8 @@ footer img{
     border-radius: 1em 1em 0 0;
     padding: 0.5em 1.2em;
 }
+
+.email-error{
+    margin-bottom: 0.5em;
+    color: red;
+}

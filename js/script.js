@@ -4,6 +4,7 @@ import FiltroAtracciones from './models/FiltroAtracciones.js';
 import Itinerario from './models/Itinerario.js';
 import Reserva from './models/Reserva.js';
 import Semana from './models/Semana.js';
+import Validador from './models/Validador.js';
 
 const conexionAlamacen = new ConexionAlamacen();
 const filtroAtracciones = new FiltroAtracciones();
@@ -184,7 +185,14 @@ if(btnDia != null && btnDia)
 function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
+    const validador = new Validador();
 
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(datosFormulario.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
+    }
+    emailError.textContent = "";
     conexionAlamacen.ingresarInformacionNewsletter( datosFormulario );
 
     formulario.parentElement.remove();
@@ -224,6 +232,7 @@ function subscripcionNewsletter(event){
 
         <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
         <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+        <span id="email-error" class="email-error"></span>
         
     `, (event) => { concretarSubscripcionNews(event, event.target); });
 
