@@ -1,563 +1,677 @@
 
+import ConexionAlamacen from './models/ConexionAlmacen.js';
+import FiltroAtracciones from './models/FiltroAtracciones.js';
+import Itinerario from './models/Itinerario.js';
+import Reserva from './models/Reserva.js';
+import Semana from './models/Semana.js';
+import Validador from './models/Validador.js';
 
-// ---- Informacion para pruebas o simular el backend ----
-const subscripcionesNewsletter = [
+const conexionAlamacen = new ConexionAlamacen();
+const filtroAtracciones = new FiltroAtracciones();
+const semana = new Semana();
 
-];
-const reservasGeneradas = [
-
-];
-const itinerariosCreados = [
-
-];
-const atraccionTuristica = [
-    {
-        nombre: "Rosedal de palermo",
-        imgSrc: "./assets/rosedales.webp",
-        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+botanico,buenos+aires",
-        momento: [1],
-        horario: [1],
-        actividad: [3],
-        grupo: [1, 2, 3],
-        precio: 10000
-    },
-    {
-        nombre: "Jardin Japones",
-        imgSrc: "./assets/japones.webp",
-        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires",
-        momento: [1],
-        horario: [1],
-        actividad: [1, 3],
-        grupo: [1, 2, 3],
-        precio: 7000
-    },
-    {
-        nombre: "Rey de Copas Bar",
-        imgSrc: "./assets/bar.webp",
-        promptMaps: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=bar+rey+de+copas,buenos+aires",
-        momento: [1, 2],
-        horario: [2],
-        actividad: [1, 4],
-        grupo: [2, 3],
-        precio: 0
-    }
-];
-// ----------------------------------------------------------------
-
-
-
-
-// ---- Funciones utiles ------------------------------------------
+const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
+const listaActividades = document.getElementById("lista-de-actividades");
 
 /**
- * Permite la seleccion de una unica opcion, corroborando que este dentro de las propuestas
- *
- * @param {String[]} promptTxt - El prompt que se muestra al usuario
- * @param {String[]} opciones - Las opciones permitidas (debe ser completamente igual y numerica)
- * @returns {String} La opcion que eligio el usuario
+ * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
+ * Recibe la informacion de la reserva, la envia a almacenar y genera un popup avisando de su registro
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
  */
-function promptSeleccionUnica(promptTxt, opciones){
-    let elegido = "";
+function concretarReserva(event, formulario){
+    event.preventDefault();
 
-    while(true){
-        let respuesta = prompt(promptTxt);
+    const formData = new FormData(formulario);
+    const datos = Array.from(formData);
 
-        // si la respuesta tiene mas de un caracter, se rechaza
-        if(respuesta.length = 1){
-            elegido = respuesta
-            break;
-        } else alert("Ingrese una sola opcion");
+    const validador = new Validador();
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(formData.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
     }
 
-    return elegido;
+
+    const reserva = new Reserva();
+    reserva.guardarReserva(datos);
+    
+    formulario.parentElement.remove();
+
+    let datosReserva = reserva.obtenerReserva();
+    let nuevoPopUp = crearPopUpSimple(`
+        <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
+        <ul>
+            <li> Atraccion: ${datosReserva["atraccion"]} </li>
+            <li> Personas: ${datosReserva["visitantes"]} </li>
+            <li> Dias: ${datosReserva["disponibilidad"]} </li>
+            <li> Contacto: ${datosReserva["email"]} </li>
+        </ul>
+        <p> Pronto sera contactado en su correo, debera abonar $${datosReserva["precio"]} </p>
+    `);
+    document.body.appendChild(nuevoPopUp);
 }
 
 /**
- * Valida los datos ingresados en los prompts multiples
- * @param {string} respuesta 
- * @param {string[]} opciones 
- * @returns {boolean} si es una respuesta valida
+ * Genera el menu HTML para que el usuario pueda generar una reserva en la atraccion especifica
+ * @param {Event} event Evento de click en boton (este debe tener un value={id de la atraccion})
  */
-function validacionPrompts( respuesta, elegido ){
+function generarMenuReserva(event){
+    const atraccion = event.target.value;
+    const diasDisponibles = conexionAlamacen.solicitarDisponibilidad(atraccion);
 
-    if( respuesta === null || respuesta === undefined){
-        return false;
-    }
+    if(diasDisponibles.length > 0){
+        // crea los elementos opcion para el selector
+        const opcionesDisponibilidad = diasDisponibles.map( dia =>{
+            console.log(`<option value="${dia}"> ${dia} </option>`);
+            return `<option value="${dia}"> ${dia} </option>`;
+        });
 
-    // si hubo opciones rechazadas, avisa cuales
-    let valoresInvalidos = respuesta.split(",").length > elegido.length;
-    if(valoresInvalidos)
-        alert(`Existen opciones invalidas en la solicitud: ${respuesta.split(",").filter(opcion => !elegido.includes(opcion)).toString()}`);
-        
-    // si no hubo opciones validas, avisa
-    if(elegido.length > 0 && !valoresInvalidos){
-        return true;
+        const nuevoElemento = crearPopUpFormulario( `
+            <input type="hidden" name="atraccion" value="${atraccion}">
+
+            <label class="form-label" for="disponibilidad"> Seleccione una de los dias disponibles</label>
+            <select required class="form-control mb-4 w-75" name="disponibilidad" id="disponibilidad">
+                <option value=""> Seleccione una opcion </option>
+                ${opcionesDisponibilidad.join(" ")}
+            </select>
+
+            <label class="form-label" for="visitantes"> ¿Cuantas personas van a asistir? </label>
+            <input required class="form-control mb-4 w-75" type="number" name="visitantes" id="visitantes">
+
+            <label for="email" class="form-label mt-4"> Ingrese su email de contacto </label>
+            <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+            <span id="email-error" class="email-error"></span>
+
+        `, (event) => { concretarReserva(event, event.target); } );
+
+        document.body.appendChild(nuevoElemento);
     }
-    return false;
 }
+
+
 /**
- * Permite la seleccion de multiples opciones, corroborando que este dentro de las propuestas
- *
- * @param {String[]} promptTxt - El prompt que se muestra al usuario
- * @param {String[]} opciones - Las opciones permitidas (debe ser completamente igual y numerica)
- * @returns {String[]} Las opciones que eligio el usuario
+ * Recibe los parametros de busqueda y solicita las atracciones que los cumplan.
+ * Generando las tarjetas nuevas en la web 
+ * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
  */
-function promptSeleccionMultiple(promptTxt, opciones){
-    let elegido = [];
+function handlerSubmitBusqueda(parametros, listaActividades){
+    let elementosHTML = [];
 
-    while(true){
-        let respuesta = prompt(promptTxt);
+    const valoresNulos = Array.from(parametros).filter( value =>{
+        if ( !(value != null && value) )
+            return value;
+    });
+    if(valoresNulos.length == 0)
+        elementosHTML = crearAtracciones(parametros, generarMenuReserva);
 
-        // divide por coma > borra espacios en blanco > filtra para saber si las opciones son correctas
-        if(respuesta)
-            elegido = respuesta.split(",").map(opcion => opcion.trim()).filter(opcion => opciones.includes(opcion));
-
-        let esValido = validacionPrompts(respuesta, elegido);
-        if(esValido){
-            break;
+    // destruye todos los elementos contenidos y agrega los nuevos
+    
+    if(listaActividades != null && listaActividades){
+        while (listaActividades.firstChild) {
+            listaActividades.removeChild(listaActividades.firstChild);
         }
-        else alert("Por favor, seleccione una opcion");
-    }
 
-    return elegido;
-}
-
-/**
- * 
- * @param {string} email El email ingresado por el usuario 
- * @returns {Boolean} valor de verdad por si es un email o no
- */
-function esUnEmail( email ){
-    // REGEX para emails: https://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=email
-    return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email)
-}
-/**
- * Permite ingresar un email, corroborando que sea un formato valido 
- */
-function promptCorreoElectronico(){
-    while(true){
-        let respuesta = prompt("Ingresa tu correo electronico");
-
-        let esEmail = esUnEmail(respuesta);
-        if(!esEmail){
-            alert("El formato del email no es correcto");
-        } 
-        else return respuesta;
-    }
-    
-}
-
-// ----------------------------------------------------------------
-
-// ---- Flujo 1: Buscar atracciones segun informacion ingresada en el formulario ----
-
-/**
- * Verifica si un arreglo contiene o no al menos un valor presente en otro
- * 
- * @param {Number[]} arrayChequeado - El arreglo que almacena los valores aceptados
- * @param {Number[]} valoresBuscados - El arreglo de los valores a buscar
- * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
- */
-function algunValorExiste(arrayChequeado, valoresBuscados){
-    let chequeadoNumero = arrayChequeado.map( valor => {return parseInt(valor)});
-    let valoresNumero = valoresBuscados.map( valor => {return parseInt(valor)});
-
-    return valoresNumero.some(value => chequeadoNumero.includes(value));
-}
-
-/**
- * Solicita al backend que devuelva las atracciones que cumplen con los requisitos
- * 
- * @param {String[]} momento - Los momentos de la semana seleccionados
- * @param {String[]} horario - Los horarios del dia seleccionados
- * @param {String[]} actividad - Los tipos de actividades seleccionados
- * @param {String[]} grupo - Los tipos de grupos seleccionados
- * @returns {Object[]} Las atracciones que cumplan con los parametros
- */
-function buscarAtracciones(momento, horario, actividad, grupo){
-    const solicitud = { "momento": momento, "horario": horario, "actividad": actividad, "grupo": grupo}
-
-    console.log(`Enviando la siguiente solicitud al backend...`);
-    console.log(solicitud);
-
-    // simulacion de la busqueda en el listado de atracciones
-    let arrayAtracciones = solicitarAtracciones();
-    let atraccionesFiltradas = [];
-    arrayAtracciones.forEach(atraccion => {
-        let momentoOk = algunValorExiste(solicitud.momento, atraccion.momento);
-        let horarioOk = algunValorExiste(solicitud.horario, atraccion.horario);
-        let actividadOk = algunValorExiste(solicitud.actividad, atraccion.actividad);
-        let grupoOk = algunValorExiste(solicitud.grupo, atraccion.grupo);
-    
-        if(momentoOk && horarioOk && actividadOk && grupoOk) { 
-            atraccionesFiltradas.push(atraccion);
+        if(elementosHTML.length > 0 ){
+        elementosHTML.forEach(elemento => {
+            listaActividades.appendChild(elemento);
+        });
         }
-    });
+        else{
+            let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
+            listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
+        }
 
-    console.log("Estos elementos cumplen con los criterios: ");
-    console.log(atraccionesFiltradas);
-    return atraccionesFiltradas;
-}
-
-/**
- * Consulta y recibe los parametros por parte del usuario y busca las atracciones que los cumplan todos 
- */
-function generarBusqueda(){
-    const opcionesMomento = ["1", "2"];
-    const promptMomento = `
-        ¿En que momento de la semana? (para ingresar varias opciones, separe con coma)\n
-        1 - durante la semana\n
-        2 - durante el fin de semana
-    `;
-    const opcionesHorario = ["1", "2"];
-    const promptHorario = `
-        ¿En que momento del dia?\n
-        1 - me gusta salir de dia\n
-        2 - me gusta salir de noche
-    `;
-    const opcionesActividad = ["1", "2", "3", "4"];
-    const promptActividad = `
-        ¿Que tipo de actividad te interesa?\n
-        1 - Deporte\n
-        2 - Fiesta\n
-        3 - Cultura\n
-        4 - Relajacion
-    `;
-    const opcionesGrupo = ["1", "2", "3", "4"];
-    const promptGrupo = `
-        ¿Con quien te gustaria ir?\n
-        1 - familia\n
-        2 - amigos\n
-        3 - parejas\n
-        4 - desconocidos
-    `;
-
-    const respuestaMomento = promptSeleccionMultiple(promptMomento, opcionesMomento);
-    const respuestaHorario = promptSeleccionMultiple(promptHorario, opcionesHorario);
-    const respuestaActividad = promptSeleccionMultiple(promptActividad, opcionesActividad);
-    const respuestaGrupo = promptSeleccionMultiple(promptGrupo, opcionesGrupo);
-    
-    buscarAtracciones(respuestaMomento, respuestaHorario, respuestaActividad, respuestaGrupo);
-}
-
-// ----------------------------------------------------------------
-
-
-
-
-// ---- Flujo 2: Subscripcion a newsletter ------------------------
-
-/**
- * Solicita al backend que agregue al nuevo subscriptor para futuros avisos de la newsletter
- * 
- * @param {String} nombreCompleto - el nombre completo del nuevo subscriptor
- * @param {String[]} intereses - Los temas de interes del nuevo subscriptor
- * @param {String} email - El email de contacto para el nuevo subscriptor
- */
-function finalizarSubscripcion(nombreCompleto, intereses, email){
-    solicitud = { "nombreCompleto": nombreCompleto, "intereses": intereses, "email": email};
-
-    console.log("Almacenando la subscripcion en el backend...");
-    console.log(solicitud);
-
-    let yaExiste = false;
-    subscripcionesNewsletter.forEach(sub => {
-        if(sub.email.toLowerCase() == solicitud.email.toLowerCase()) {
-            yaExiste = true; 
-        };
-    });
-    if(!yaExiste) {
-        subscripcionesNewsletter.push(solicitud);
-    }
-    else { 
-        alert("El email ya esta subscripto"); 
+        listaActividades.scrollIntoView();
     }
 }
 
 /**
- * Solicita los datos del usuario, corrobora que sean correctos y lo subscribe a la newsletter
+ * Recibe el submit del formulario de busqueda y genera el FormData
+ * @param {Event} event 
  */
-function subscribirNewsletter(){
-    let nombreCompleto = prompt("¿Como es tu nombre completo?");
+function formularioSubmit(event){
+    event.preventDefault();
 
-    const opcionesIntereses = ["1", "2", "3"];
-    const promptIntereses = `
-        ¿En que te querrias mantener actualizado? (para ingresar varias opciones, separe con coma)\n
-        1 - noticias\n
-        2 - eventos\n
-        3 - ofertas
-    `;
-    let intereses = promptSeleccionMultiple(promptIntereses, opcionesIntereses); 
+    const formData = new FormData(formularioAvanzado);
+
+    const momento = [];
     
-    let correoElectronico = promptCorreoElectronico();
+    if (formData.get("semana") === "1")  
+        momento.push(1);
+    if (formData.get("finde")  === "2")
+        momento.push(2);
 
-    alert("Subscripcion exitosa! Recibira la confirmacion en su correo");
-    finalizarSubscripcion(nombreCompleto, intereses, correoElectronico);
+    if(momento.length == 0) momento.push(1, 2);
+
+    const horario = [...formData.get("horario")];
+    const actividad = [...formData.get("tipo-actividad")];
+    const grupo = [...formData.get("tipo-grupo")];
+
+    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
+if (formularioAvanzado != null && formularioAvanzado) 
+    formularioAvanzado.addEventListener('submit', formularioSubmit);
 
-// ----------------------------------------------------------------
-
-
-
-
-// ---- Flujo 3: Creacion de tarjetas y carga de la informacion en web ----
-
-/**
- * Solicita al backend que devuelva la disponibilidad de una atraccion
- * 
- * @param {String} atraccion - la atraccion solicitada
- */
-function solicitarDisponibilidad(atraccion){
-
-    console.log("Solicitando disponibilidad de la atraccion al backend...");
-    console.log(atraccion);
-    
-    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-    
-    // 50/50 de si el dia tiene cupos disponibles o no
-    let disponibilidad = [];
-    listaDias.forEach(dia => { 
-        if(Math.random() < 0.5) { disponibilidad.push(dia); } 
-    });
-
-    return disponibilidad;
+// genera una lista con el numero de opciones [1...10]
+const maxTipos = 10;
+const opciones = [];
+for (var i = 0; i <= maxTipos; i++) {
+    opciones.push(i);
 }
 
 /**
- * Solicita al backend que devuelva las atracciones almacenadas en el sistema
- * 
- * @returns {Object[]} Una lista de atracciones, que contienen sus datos 
+ * Funcion para manejar los clicks al boton diurno, simulando hacer un submit del formulario de busqueda
+ * Con un solo criterio
  */
-function solicitarAtracciones(){
-
-    console.log("Solicitando atracciones al backend...");
-    
-    let respuesta = atraccionTuristica;
-    console.log("Respuesta recibida:");
-    console.log(respuesta);
-
-    return respuesta;
+function onclickAtraccionesDia(){
+    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
 
 /**
- * Envia al backend la informacion de la nueva reserva
- * 
- * @param {String} respuestaAtraccion La atraccion donde se quiere reservar 
- * @param {Integer} respuestaGrupo La cantidad de personas en el grupo
- * @param {String[]} respuestaDias La cantidad de dias para reservar 
- * @param {String} respuestaEmail El email de contacto para la reserva 
+ * Funcion para manejar los clicks al boton nocturno, simulando hacer un submit del formulario de busqueda
+ * Con un solo criterio
  */
-function concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail){
-    const datosReserva = {
-        "atraccion": respuestaAtraccion, 
-        "grupo": respuestaGrupo, 
-        "dias": respuestaDias, 
-        "email": respuestaEmail
-    };
-
-    console.log("Enviando los datos de la reserva al backend...");
-    console.log(datosReserva);
-    reservasGeneradas.push(datosReserva);
-
-    console.log("Reserva Almacenada!");
-    console.log(reservasGeneradas);
+function onclickAtraccionesNoche(){
+    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
+    handlerSubmitBusqueda(parametros, listaActividades);
 }
+const btnNoche = document.getElementById("atracciones-noche-elegir");
+const btnDia = document.getElementById("atracciones-dia-elegir");
+
+if(btnNoche != null && btnNoche)
+    btnNoche.addEventListener("click", onclickAtraccionesNoche);
+if(btnDia != null && btnDia)
+    btnDia.addEventListener("click", onclickAtraccionesDia);
 
 /**
- * Calcula el precio de una atraccion = precio de la atraccion * cant. de dias * cant. de personas (grupo)
- * @param {object} atraccion 
- * @param {Number} cantDias 
- * @param {Number} cantPersonas 
- * @returns 
+ * Recibe el formulario HTML con la informacion de la informacion, almacenandolo y
+ * generando un aviso de subscripcion correcta
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
  */
-function calculadorPrecio(atraccion, cantDias, cantPersonas){
-    let precioAtraccion = atraccion.precio;
-    return (precioAtraccion * cantDias) * cantPersonas
-}
+function concretarSubscripcionNews( event, formulario ){
+    event.preventDefault();
+    const datosFormulario = new FormData(formulario);
+    const validador = new Validador();
 
-/**
- * convierte los dias de numeros a letras. Por ej: ["1", "3"] > ["lunes", "miercoles"]
- * @param {Number[]} respuestaDias 
- */
-function convertidorDeDias( respuestaDias ){
-    let diasEscritos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
-    let diasElegidos = "";
-    respuestaDias.forEach(numDia => { 
-        diasElegidos = diasElegidos.concat(diasEscritos[parseInt(numDia, 10)], " "); 
-    });
-    return diasElegidos;
-}
-/**
- * Permite al usuario crear una reserva, recibiendo su informacion y validandola
- */
-function crearUnaReserva()
-{
-    let opciones = [];
-    let promptOpciones = `
-        Seleccione la atraccion en la que quiera reservar (Solo una por solicitud):\n
-    `;
-    
-    let atracciones = solicitarAtracciones();
-
-    for(let i = 0; i < atracciones.length; i++){
-        opciones.push("" + (i + 1));
-        promptOpciones = promptOpciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(datosFormulario.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
     }
-    
-    let respuestaAtraccion = promptSeleccionUnica(promptOpciones, opciones)
+    emailError.textContent = "";
+    conexionAlamacen.ingresarInformacionNewsletter( datosFormulario );
 
-    let disponibilidad = solicitarDisponibilidad(respuestaAtraccion);
+    formulario.parentElement.remove();
 
-    let dias = [];
-    let promptDias = `
-        Seleccione uno de los dias disponibles para reservar una visita\n
-    `;
-    for(let i = 0; i < disponibilidad.length; i++){
-        dias.push("" + (i + 1));
-        promptDias = promptDias.concat( `${i + 1} - ${disponibilidad[i]} \n`);
-    }
+    let nuevoPopUp = crearPopUpSimple(`
+        <p> Subscripcion exitosa! Recibira la confirmacion en su correo </p>
+        <p> Correo: ${datosFormulario.get("email")}
+    `);
+    document.body.appendChild(nuevoPopUp);
+}
 
-    let respuestaDias = promptSeleccionMultiple(promptDias, dias);
+/**
+ * Genera el formulario HTML para ingresar los datos de subscripcion a la newsletter
+ * y lo presenta en el DOM
+ * @param {Event} event evento de click
+ */
+function subscripcionNewsletter(event){
 
-    // Recibe del usuario el numero de personas en el grupo (si no es numerico, entonces rechaza)
-    let respuestaGrupo
-    while(true){
-        respuestaGrupo = prompt("¿Cuantas personas van a asistir?");
+    // generar html para nuevo formulario de subscripcion
+    // este nuevo html se encarga de la validacion
+    const nuevoElemento = crearPopUpFormulario(`
+        <label for="nombre" class="form-label "> Ingrese su nombre completo </label>
+        <input required type="text" name="nombre" id="nombre" class="form-control w-75">
 
-        const nuevoNumero = parseInt(respuestaGrupo, 10);
+        <label for="id-intereses" class="form-label mt-4"> ¿Que informacion le interesa? </label>
+        <ul class="list-group list-group-horizontal-md">
+            <li class="list-group-item">
+                <label class="form-label"> <input type="checkbox" name="noticias" value="1" class="form-check-input"> <span>Noticias</span></label>
+            </li>
+            <li class="list-group-item"><label class="form-label"> 
+                <input type="checkbox" name="eventos" value="2" class="form-check-input"> <span>Eventos</span></label>
+            </li>
+            <li class="list-group-item"><label class="form-label"> 
+                <input type="checkbox" name="ofertas" value="3" class="form-check-input"> <span>Ofertas</span></label>
+            </li>
+        </ul>
+
+        <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
+        <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+        <span id="email-error" class="email-error"></span>
         
-        if(!isNaN(nuevoNumero) && String(nuevoNumero) == respuestaGrupo){
-            break;
-        } alert("El elemento ingresado no es un numero entero");
-    }
+    `, (event) => { concretarSubscripcionNews(event, event.target); });
 
+    document.body.appendChild(nuevoElemento);
+    // con los datos del formulario, generar subscripcion
+}
+const botonNewsletter = document.getElementById("btn-newsletter");
+if(botonNewsletter != null && botonNewsletter) 
+    botonNewsletter.addEventListener("click", subscripcionNewsletter);
 
-    let respuestaEmail = promptCorreoElectronico();
+let opcionesAtraccion = [];
+let itinerario;
 
-    let precio = calculadorPrecio(atracciones[respuestaAtraccion], respuestaDias.length, respuestaGrupo);
+/**
+ * Pop up para mostrar la informacion del itinerario generado
+ */
+function popUpItinerarioCompleto(){
 
-    let diasElegidos = convertidorDeDias( respuestaDias );
+    let datosItinerario = itinerario.getItinerario();
+    console.log(datosItinerario);
+    let htmlDatosDeTabla = datosItinerario.reduce( (objeto, dia) => {
+        objeto.push( `
+            <tr>
+                <td> ${dia["dia"]} </td>
+                <td> ${dia["mañana"]} </td>
+                <td> ${dia["tarde"]} </td>
+                <td> ${dia["noche"]} </td>
+            </tr>
+        `);
 
-    alert(`
-        Todo listo! Ya tiene su reservacion con las siguientes caracteristicas:\n
-        - Atraccion: ${atracciones[respuestaAtraccion].nombre}\n
-        - Personas: ${respuestaGrupo}\n
-        - Dias: ${diasElegidos.trim()}\n
-        - Contacto: ${respuestaEmail}
-        Pronto sera contactado en su correo, debera abonar $${precio}
+        return objeto;
+    }, []);
+
+    const popup = crearPopUpSimple(`
+        <div class="container-fluid text-center">
+            <h2> Itinerario </h2>
+            <p> Tu itinerario se creo exitosamente. Sera enviado al correo: </p>
+            <p> ${datosItinerario.email}</p>
+            
+            <div class="container-fluid overflow-scroll" >
+                <table class="table" id="itinerario-creado">
+                    <thead>
+                        <th> Dia </th>
+                        <th> Mañana </th>
+                        <th> Tarde </th>
+                        <th> Noche </th>
+                    </thead>
+                    <tbody>
+                        ${htmlDatosDeTabla.join(" ")}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
     `);
 
-    concretarReserva(respuestaAtraccion, respuestaGrupo, respuestaDias, respuestaEmail);
-}
-
-// ----------------------------------------------------------------
-
-
-
-
-// ---- Flujo 4 Creacion de un itinerario: ------------------------
-
-/**
- * Envia al backend el nuevo itinerario generado
- * 
- * @param {String} email El correo electronico a donde enviar el itinerario 
- * @param {Object[]} itinerario El nuevo itinerario generado
- */
-function finalizarItinerario(email, itinerario)
-{
-    const envio = {"email": email, "itinerario": itinerario}
-
-    console.log("Itinerario enviado al backend...");
-    console.log(envio);
-    itinerariosCreados.push(envio);
-
-    console.log("Itinerario almacenado!");
-    console.log(itinerariosCreados);
+    document.body.appendChild(popup);
 }
 
 /**
- * Recibe la informacion del itinerario del usuario a travez de prompts y lo genera
+ * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
+ * y si este esta completo, lo almacena
+ * @param {Event} event 
+ * @param {HTMLElement} formulario 
  */
-function crearUnItinerario(){
-    let atracciones = solicitarAtracciones();
-
-    let listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"] 
-    let listaOpciones = ["x"];
+function almacenarDiaItinerario(formulario) {
+    const formData = new FormData(formulario);
+    const datosItinerario = { datos: []};
     
-    // genera las opciones habilitadas y la lista para el prompt con formato *numero* - *descripcion*
-    let promptAtracciones = "";
-    for(let i = 0; i < atracciones.length; i++){
-        listaOpciones.push("" + (i + 1));
-        promptAtracciones = promptAtracciones.concat( `${i + 1} - ${atracciones[i].nombre} \n`);
+    const validador = new Validador();
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(formData.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
     }
 
-
-    // itera sobre los dias, generando un itinerario de atracciones ordenado por dias
-    const resultado = []
-    for(let i = 0; i < listaDias.length; i++){
-        const promptTxt = `
-            Seleccione las atracciones que desea agregar a su itinerario en el dia ${listaDias[i]} (ingrese X si no desea ninguna):\n
-        `.concat(promptAtracciones);
-
-        let respuesta;
-        while(true){
-            respuesta = promptSeleccionMultiple(promptTxt, listaOpciones);
-            
-            //si eligio la opcion "x" junto a otras, avisa del error
-            if(respuesta.filter(item => item.toLowerCase() == "x").length != 0 && respuesta.length > 1){
-                alert("La opcion X debe ingresarse sola");
-            } else break;
+    const diasSeleccionados = Array.from(formulario.querySelectorAll('input[name="dias"]:checked'))
+        .map(cb => cb.value);
+    
+    diasSeleccionados.forEach(dia => {
+        const diaFinal = {
+            dia: dia,
+            mañana: formData.get(`${dia}-mañana`),
+            tarde: formData.get(`${dia}-tarde`),
+            noche: formData.get(`${dia}-noche`)
         }
+        datosItinerario.datos.push(diaFinal);
+    });
+    datosItinerario.email = formData.get("email");
+
+    formulario.parentElement.remove();
+
+    datosItinerario.datos.forEach( dia => {
+        itinerario.cargarDiaItinerario(dia);
+    });
+    itinerario.cargarEmail(datosItinerario.email);
+
+    popUpItinerarioCompleto();
+    conexionAlamacen.ingresarInformacionItinerario(itinerario);
+}
+
+/**
+ * Actualiza las tabs segun el dia elegido
+ * @param {HTMLElement} contenedor 
+ * @param {HTMLElement[]} opciones 
+ */
+function actualizarTabs(contenedor, opciones) {
+    const checkboxes = contenedor.querySelectorAll('input[name="dias"]:checked');
+    const diasSeleccionados = Array.from(checkboxes).map(cb => cb.value);
+    
+    const tabsContainer = contenedor.querySelector('#tabs-container');
+    const tabsHeader = contenedor.querySelector('#tabs-header');
+    const tabsContent = contenedor.querySelector('#tabs-content');
+    
+    if (diasSeleccionados.length === 0) {
+        tabsContainer.classList.remove('d-block');
+        tabsContainer.classList.add('d-none');
+        return;
+    }
+    tabsContainer.classList.remove('d-none');
+    tabsContainer.classList.add('d-block');
+    
+    // Crear pestañas
+    tabsHeader.innerHTML = diasSeleccionados.map((dia, index) => `
+        <button type="button" class="tab-btn ${index === 0 ? 'btn-tab-active' : ''}" data-dia="${dia}">
+            ${dia}
+        </button>
+    `).join('');
+
+    console.log(contenedor, opciones);
+    
+    const valoresElegidos = {};
+    const selects = tabsContent.querySelectorAll('select');
+    
+    selects.forEach(select => {
+        if(select.value) {
+            valoresElegidos[select.name] = select.value;
+        }
+    });
+
+    // Crear contenido de pestañas
+    tabsContent.innerHTML = diasSeleccionados.map((dia, index) => `
+        <div class="tab-content ${index === 0 ? 'd-block' : 'd-none'}" data-dia="${dia}" id="${dia}">
+            <label for="${dia}-mañana" class="form-label mt-2">Mañana</label>
+            <select required name="${dia}-mañana" class="form-select">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+            
+            <label for="${dia}-tarde" class="form-label mt-2">Tarde</label>
+            <select required name="${dia}-tarde" class="form-select">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+            
+            <label for="${dia}-noche" class="form-label mt-2">Noche</label>
+            <select required name="${dia}-noche" class="form-select mb-4">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+        </div>
+    `).join('');
+
+    Object.keys(valoresElegidos).map(name => {
+        const select = document.querySelector(`select[name="${name}"]`);
+        if(select) {
+            select.value = valoresElegidos[name];
+        }
+    });
+    
+    // Agregar eventos a las pestañas
+    const tabBtns = tabsHeader.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const dia = btn.dataset.dia;
+            
+            // Actualizar botones
+            tabBtns.forEach(b => {
+                b.classList.remove('btn-tab-active');
+            });
+            btn.classList.add('btn-tab-active');
+            
+            // Mostrar contenido correspondiente
+            const contents = tabsContent.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('d-block');
+                content.classList.remove('d-none');
+                content.classList.add(content.dataset.dia === dia ? 'd-block' : 'd-none');
+            });
+        });
+    });
+}
+
+/**
+ * Genera el HTML necesario para ingresar el itinerario y lo agrega al DOM
+ * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
+ */
+function generarMenuItinerario(opciones) {
+    const diasSemana = semana.getSemana();
+    
+    // Crear checkboxes para seleccionar días
+    const checkboxesDias = diasSemana.map(dia => `
+        <li class="col-6 col-md-2 flex-nowrap">
+            <label class="form-label">
+                <input type="checkbox" name="dias" value="${dia}" class="form-check-input">
+                ${dia}
+            </label>
+        </li>
+    `).join('');
+
+    const nuevoElemento = crearPopUpFormulario(`
+        <h2>Armar itinerario semanal</h2>
         
+        <div class="container-fluid">
+            <strong>Seleccioná los días:</strong>
+            <div class="container">
+                <ul class="list-unstyled row mb-4">
+                    ${checkboxesDias}
+                </ul>
+            </div>
+        </div>
 
-        if(!(respuesta[0] == "x")){
-            let comentario = prompt("Escriba un comentario/recordatorio para las actividades del dia (deje vacio si no desea agregarlo)");
+        <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
+        <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+        <span id="email-error" class="email-error"></span>
+
+        <div id="tabs-container">
+            <div id="tabs-header" >
+            </div>
             
-            resultado.push({"dia": listaDias[i], "atracciones": respuesta, "comentario": comentario});
-        }
-    }
-    
-    let correo = promptCorreoElectronico();
-    alert("Itinerario generado con exito, pronto sera enviado a su correo");
-    
-    finalizarItinerario(correo, resultado);
+            <div id="tabs-content">
+            </div>
+        </div>
+    `, (event) => { 
+        event.preventDefault();
+        almacenarDiaItinerario(event.target); 
+    });
+
+    // Agregar evento para los checkboxes
+    const checkboxes = nuevoElemento.querySelectorAll('input[name="dias"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            actualizarTabs(nuevoElemento, opciones);
+        });
+    });
+
+    document.body.appendChild(nuevoElemento);
 }
 
 /**
- * Menu de usuario para la seleccion de flujos
+ * Funcion de inicio para la generacion del itinerario, genera el setup inicial 
+ * y solicita crear la pantalla que continuara con la creacion
  */
-function menuDeUsuario(){
-    const opcionElegida = prompt(`
-        Seleccione la opcion deseada\n
-        1 - Completar formulario de busqueda\n
-        2 - Subscribirse a Newsletter\n
-        3 - Crea una reserva\n
-        4 - Crea tu itinerario
-        `
-    );
+function generarItinerario(){
+    itinerario = new Itinerario();
+    opcionesAtraccion = [];
 
-    switch (opcionElegida) {
-        case "1": {
-            generarBusqueda();
-            break;
-        }
-        case "2": {
-            subscribirNewsletter();
-            break;
-        }
-        case "3": {
-            crearUnaReserva()
-            break;
-        }
-        case "4": {
-            crearUnItinerario()
-            break;
-        }
-        default:{
-            alert("La opcion elegida no es valida, por favor reingrese su eleccion")
-        }
+    const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
+    
+    let atracciones = [];
+    if(datosAtracciones != null && datosAtracciones) 
+        atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
+
+    for(let i = 0; i < atracciones.length; i++){
+        opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
     }
+    opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
+
+    generarMenuItinerario(opcionesAtraccion);
+
+    // generar el itinerario y envialo por email (no de verdad) 
+}
+const botonItinerario = document.getElementById("btn-itinerario");
+if(botonItinerario != null && botonItinerario) 
+    botonItinerario.addEventListener("click", generarItinerario);
+
+/**
+ * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
+ * @param {*} datosAtraccion Los datos de la atraccion
+ * @param {*} callback Callback para el boton de reserva
+ */
+function crearTarjetaHTML( datosAtraccion, callback ){
+    let elementoHTML = document.createElement("article");
+    elementoHTML.className = "tarjeta col-6 container";
+
+    elementoHTML.innerHTML = `
+        <div class="row h-md-100">
+            <hgroup class="col-12">
+                <h3>${datosAtraccion.titulo}</h3>
+                <p>${datosAtraccion.subtitulo}</p>
+            </hgroup>
+            <p class="col-12">${datosAtraccion.descripcion}</p>
+
+            <details class="col-12">
+                <summary>Horarios</summary>
+                <p>${datosAtraccion.horarioAbierto || "No informado"}</p>
+            </details>
+            <label class="direccion-label col-12">Direccion</label> <br>
+            <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"
+                width="180"
+                height="150"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${datosAtraccion.promptMaps}">
+            </iframe>
+
+            <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
+        </div>
+
+        <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
+    `;
+
+    const button = elementoHTML.querySelector('.reservar-btn');
+    button.addEventListener('click', (event) => {
+        callback(event);
+    });
+
+    return elementoHTML;
+}
+/**
+ * Crea las tarjetas de las atraciones utilizando la informacion almacenada
+ * @param {object} criterios parametros de las atracciones deseadas
+ * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
+ * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
+*/
+function crearAtracciones( criterios, callbackReserva )
+{
+    const nuevasTarjetas = [];
+    const listaDatos = filtroAtracciones.buscarAtracciones(
+        criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
+    );
+    listaDatos.forEach( atraccion => {
+        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva) );
+    });
+
+    return nuevasTarjetas;
 }
 
+/**
+ * Crea un popup con un formulario, con el formato recibido como parametro
+ * @param {String} nuevoInnerHtml formato y contenido 
+ * @param {Function} nuevoOnSubmit callback para usar durante el submit
+ * @returns {HTMLElement} El popup creado 
+ */
+function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
+    // contenedor que da el fondo semi-transparente
+    const contenedor = document.createElement("div");
+    contenedor.className = "panel-con-fondo container-fluid row overflow-scroll";
 
-window.onload = menuDeUsuario;
+    // funciona formulario y panel
+    const formulario = document.createElement("form");
+    formulario.className = "panel-con-fondo-frente col-10 col-md-6";
+    formulario.addEventListener("submit", nuevoOnSubmit);
+
+    contenedor.appendChild(formulario);
+
+    const boton = document.createElement("button")
+    boton.addEventListener("click", () => { contenedor.remove(); });
+    boton.innerText = "Cerrar";
+
+    const botonSubmit = document.createElement("button")
+    botonSubmit.type = "submit";
+    botonSubmit.innerText = "Finalizar";
+
+    formulario.innerHTML = nuevoInnerHtml;
+    formulario.appendChild(botonSubmit);
+    formulario.appendChild(boton);
+
+    return contenedor;
+}
+
+/**
+ * Crea un popup mas simple y sin interaccion, para generar avisos o respuestas
+ * @param {String} nuevoInnerHtml formato y contenido
+ * @returns {HTMLElement} El popup creado
+ */
+function crearPopUpSimple( nuevoInnerHtml ){
+    // contenedor que da el fondo semi-transparente
+    const fondo = document.createElement("div");
+    fondo.className = "panel-con-fondo";
+
+    // funciona como panel
+    const contenedor = document.createElement("div");
+    contenedor.className = "panel-con-fondo-frente";
+
+    const boton = document.createElement("button")
+    boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
+    boton.innerText = "Cerrar";
+
+    contenedor.innerHTML = nuevoInnerHtml;
+    contenedor.appendChild(boton);
+
+    fondo.appendChild(contenedor);
+    return fondo;
+}
+
+if (typeof window !== 'undefined') {
+    // Funciones principales
+    window.handlerSubmitBusqueda = handlerSubmitBusqueda;
+    window.formularioSubmit = formularioSubmit;
+    window.onclickAtraccionesDia = onclickAtraccionesDia;
+    window.onclickAtraccionesNoche = onclickAtraccionesNoche;
+    
+    // Funciones de reserva
+    window.concretarReserva = concretarReserva;
+    window.generarMenuReserva = generarMenuReserva;
+    
+    // Funciones de newsletter
+    window.concretarSubscripcionNews = concretarSubscripcionNews;
+    window.subscripcionNewsletter = subscripcionNewsletter;
+    
+    // Funciones de itinerario
+    window.almacenarDiaItinerario = almacenarDiaItinerario;
+    window.generarMenuItinerario = generarMenuItinerario;
+    window.generarItinerario = generarItinerario;
+    window.popUpItinerarioCompleto = popUpItinerarioCompleto;
+    
+    // Funciones helper de creación HTML
+    window.crearAtracciones = crearAtracciones;
+    window.crearTarjetaHTML = crearTarjetaHTML;
+    window.crearPopUpFormulario = crearPopUpFormulario;
+    window.crearPopUpSimple = crearPopUpSimple;
+    
+    // Instancias globales
+    window.formularioAvanzado = formularioAvanzado;
+    window.listaActividades = listaActividades;
+    window.conexionAlamacen = conexionAlamacen;
+    window.filtroAtracciones = filtroAtracciones;
+    window.semana = semana;
+}

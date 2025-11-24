@@ -1,0 +1,69 @@
+@startuml
+class ConexionAlmacen {
+    {field} -keys : object
+
+    {method} -existeClave(string clave) : object[]
+    {method} -agregarLocalArrayActualizable() : void
+    {method} -dataFormToJson() : object
+
+    {method} +solicitarInformacionAtracciones() : object[]
+    {method} +solicitarDisponibilidad() : string[]
+    {method} +ingresarInformacionNewsletter(object nuevaInfo) : void
+    {method} +ingresarInformacionSubscripciones(object nuevaInfo) : void
+    {method} +ingresarInformacionReservas(object nuevaInfo) : void
+}
+
+class FiltroAtracciones {
+    {field} -validador: Validador
+    {field} -conexionAlmacen : ConexionAlmacen
+
+    {method} +buscarAtracciones(Number momento, Number horario, Number actividad, Number grupo) : object[]
+    {method} +buscarAtraccionesPorNombre(string nombre) : object
+}
+class Validador {
+    {field} -emailRegEx : string   
+
+    {method} +esEmail(string email) : boolean
+    {method} +algunValorExiste( Number[] ArrayChequeado, Number[] ValoresBuscados) : boolean
+}
+
+class Itinerario{
+    {static} -listaDias : string[]
+    {field} -itinerario : object
+
+    {method} +cargarDiaItinerario( DataForm datosFormulario ) : void
+    {method} +estaCompleto() : Boolean
+    {method} +diaEnProceso() : Boolean
+    {method} +toJSON() : void
+    {method} +getItinerario() : object[]
+    {method} +cargarEmail(string email) : void
+}
+
+class Reserva {
+    {field} -conexionAlamacen : ConexionAlamacen 
+    {field} -filtroAtracciones : FiltroAtracciones
+    {field} -keysObligatorias : string[]
+    {field} -datosReserva : object
+
+    {method} guardarReserva( (string, any)[] keyValueArray ) : void 
+    {method} calcularPrecio( object reserva) : Number
+    {method} obtenerReserva() : object
+}
+
+class Semana {
+    {field} -dias : string[]
+
+    {method} +getSemana() : string[]
+    {method} +getDias(Number posicion) : string
+
+}
+
+Reserva "muchos" --> "1" ConexionAlmacen : utiliza
+Reserva "muchos" --> "1" FiltroAtracciones : utiliza
+
+FiltroAtracciones "1" --> "1" Validador : utiliza
+FiltroAtracciones "1" --> "1" ConexionAlmacen : utiliza
+
+Itinerario "muchos" --> "1" Semana : utiliza
+ConexionAlmacen "1" --> "1" Semana : utiliza
+@enduml
