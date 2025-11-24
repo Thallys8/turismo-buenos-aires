@@ -327,7 +327,7 @@ footer img{
     align-items: center;
 }
 .panel-con-fondo-frente > button {
-    width: 25%;
+    width: 12em;
     padding: 0.5em;
     margin-bottom: 15px;
 }
@@ -345,5 +345,4 @@ footer img{
     background: transparent;
     border-radius: 1em 1em 0 0;
     padding: 0.5em 1.2em;
-    border-bottom: 0;
 }

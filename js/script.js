@@ -206,19 +206,24 @@ function subscripcionNewsletter(event){
     // generar html para nuevo formulario de subscripcion
     // este nuevo html se encarga de la validacion
     const nuevoElemento = crearPopUpFormulario(`
-        <label for="nombre"> Ingrese su nombre completo </label>
-        <input required type="text" name="nombre" id="nombre">
+        <label for="nombre" class="form-label "> Ingrese su nombre completo </label>
+        <input required type="text" name="nombre" id="nombre" class="form-control w-75">
 
-        <label for="id-intereses"> ¿Que informacion le interesa? </label>
-        <div id="id-intereses">
-            <label> <input type="checkbox" name="noticias" value="1" > <span>Noticias</span></label>
-            <label> <input type="checkbox" name="eventos" value="2" > <span>Eventos</span></label>
-            <label> <input type="checkbox" name="ofertas" value="3" > <span>Ofertas</span></label>
-        </div>
+        <label for="id-intereses" class="form-label mt-4"> ¿Que informacion le interesa? </label>
+        <ul class="list-group list-group-horizontal-md">
+            <li class="list-group-item">
+                <label class="form-label"> <input type="checkbox" name="noticias" value="1" class="form-check-input"> <span>Noticias</span></label>
+            </li>
+            <li class="list-group-item"><label class="form-label"> 
+                <input type="checkbox" name="eventos" value="2" class="form-check-input"> <span>Eventos</span></label>
+            </li>
+            <li class="list-group-item"><label class="form-label"> 
+                <input type="checkbox" name="ofertas" value="3" class="form-check-input"> <span>Ofertas</span></label>
+            </li>
+        </ul>
 
-        <label for="email"> Ingrese su correo electronico</label>
-        <input required type="email" name="email" id="email">
-
+        <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
+        <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
         
     `, (event) => { concretarSubscripcionNews(event, event.target); });
 
@@ -339,20 +344,20 @@ function actualizarTabs(contenedor, opciones) {
     // Crear contenido de pestañas
     tabsContent.innerHTML = diasSeleccionados.map((dia, index) => `
         <div class="tab-content" data-dia="${dia}" style="display: ${index === 0 ? 'block' : 'none'};">
-            <h3>Mañana</h3>
-            <select required name="${dia}-mañana" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+            <label for="${dia}-mañana" class="form-label mt-2">Mañana</label>
+            <select required name="${dia}-mañana" class="form-select">
                 <option value="">Seleccione una opción</option>
                 ${opciones}
             </select>
             
-            <h3>Tarde</h3>
-            <select required name="${dia}-tarde" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+            <label for="${dia}-tarde" class="form-label mt-2">Tarde</label>
+            <select required name="${dia}-tarde" class="form-select">
                 <option value="">Seleccione una opción</option>
                 ${opciones}
             </select>
             
-            <h3>Noche</h3>
-            <select required name="${dia}-noche" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+            <label for="${dia}-noche" class="form-label mt-2">Noche</label>
+            <select required name="${dia}-noche" class="form-select mb-4">
                 <option value="">Seleccione una opción</option>
                 ${opciones}
             </select>
@@ -393,24 +398,28 @@ function generarMenuItinerario(opciones) {
     
     // Crear checkboxes para seleccionar días
     const checkboxesDias = diasSemana.map(dia => `
-        <label style="display: inline-flex; align-items: center; margin-right: 20px;">
-            <input type="checkbox" name="dias" value="${dia}" style="margin-right: 5px;">
-            ${dia}
-        </label>
+        <li class="list-group-item">
+            <label class="form-label">
+                <input type="checkbox" name="dias" value="${dia}" class="form-check-input">
+                ${dia}
+            </label>
+        </li>
     `).join('');
 
     const nuevoElemento = crearPopUpFormulario(`
         <h2>Armar itinerario semanal</h2>
         
-        <div style="margin-bottom: 20px;">
+        <div>
             <strong>Seleccioná los días:</strong>
-            <div style="margin-top: 10px;">
-                ${checkboxesDias}
+            <div>
+                <ul class="list-group list-group-horizontal-md mb-4">
+                    ${checkboxesDias}
+                </ul>
             </div>
         </div>
 
-        <div id="tabs-container" style="display: none;">
-            <div id="tabs-header" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ccc;">
+        <div id="tabs-container">
+            <div id="tabs-header" >
             </div>
             
             <div id="tabs-content">
