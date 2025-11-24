@@ -29,13 +29,14 @@ class Validador {
 
 class Itinerario{
     {static} -listaDias : string[]
-    {field} -itinerario : HTMLElement
+    {field} -itinerario : object
 
     {method} +cargarDiaItinerario( DataForm datosFormulario ) : void
     {method} +estaCompleto() : Boolean
     {method} +diaEnProceso() : Boolean
     {method} +toJSON() : void
     {method} +getItinerario() : object[]
+    {method} +cargarEmail(string email) : void
 }
 
 class Reserva {

@@ -22,7 +22,16 @@ const listaActividades = document.getElementById("lista-de-actividades");
 function concretarReserva(event, formulario){
     event.preventDefault();
 
-    const datos = Array.from( new FormData(formulario) );
+    const formData = new FormData(formulario);
+    const datos = Array.from(formData);
+
+    const validador = new Validador();
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(formData.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
+    }
+
 
     const reserva = new Reserva();
     reserva.guardarReserva(datos);
@@ -61,17 +70,18 @@ function generarMenuReserva(event){
         const nuevoElemento = crearPopUpFormulario( `
             <input type="hidden" name="atraccion" value="${atraccion}">
 
-            <label for="disponibilidad"> Seleccione una de los dias disponibles</label>
-            <select required name="disponibilidad" id="disponibilidad">
+            <label class="form-label" for="disponibilidad"> Seleccione una de los dias disponibles</label>
+            <select required class="form-control mb-4 w-75" name="disponibilidad" id="disponibilidad">
                 <option value=""> Seleccione una opcion </option>
                 ${opcionesDisponibilidad.join(" ")}
             </select>
 
-            <label for="visitantes"> ¿Cuantas personas van a asistir? </label>
-            <input required type="number" name="visitantes" id="visitantes">
+            <label class="form-label" for="visitantes"> ¿Cuantas personas van a asistir? </label>
+            <input required class="form-control mb-4 w-75" type="number" name="visitantes" id="visitantes">
 
-            <label for="email"> Ingrese su email de contacto </label>
-            <input required type="email" name="email" id="email">
+            <label for="email" class="form-label mt-4"> Ingrese su email de contacto </label>
+            <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+            <span id="email-error" class="email-error"></span>
 
         `, (event) => { concretarReserva(event, event.target); } );
 
@@ -269,7 +279,8 @@ function popUpItinerarioCompleto(){
     const popup = crearPopUpSimple(`
         <div class="container-fluid text-center">
             <h2> Itinerario </h2>
-            <p> Tu itinerario se creo exitosamente </p>
+            <p> Tu itinerario se creo exitosamente. Sera enviado al correo: </p>
+            <p> ${datosItinerario.email}</p>
             
             <table class="table">
                 <thead>
@@ -298,6 +309,13 @@ function almacenarDiaItinerario(formulario) {
     const formData = new FormData(formulario);
     const datosItinerario = { datos: []};
     
+    const validador = new Validador();
+    const emailError = document.getElementById("email-error");
+    if(!(validador.esEmail(formData.get("email")))){
+        emailError.textContent = "El email ingresado no es valido";
+        return;
+    }
+
     const diasSeleccionados = Array.from(formulario.querySelectorAll('input[name="dias"]:checked'))
         .map(cb => cb.value);
     
@@ -310,15 +328,15 @@ function almacenarDiaItinerario(formulario) {
         }
         datosItinerario.datos.push(diaFinal);
     });
-    console.log(diasSeleccionados);
-    console.log(datosItinerario);
+    datosItinerario.email = formData.get("email");
+
     formulario.parentElement.remove();
 
     datosItinerario.datos.forEach( dia => {
-        console.log(dia);
         itinerario.cargarDiaItinerario(dia);
     });
-    
+    itinerario.cargarEmail(datosItinerario.email);
+
     popUpItinerarioCompleto();
     conexionAlamacen.ingresarInformacionItinerario(itinerario);
 }
@@ -345,14 +363,14 @@ function actualizarTabs(contenedor, opciones) {
     
     // Crear pestañas
     tabsHeader.innerHTML = diasSeleccionados.map((dia, index) => `
-        <button type="button" class="tab-btn ${index === 0 ? 'active' : ''}" data-dia="${dia}">
+        <button type="button" class="tab-btn ${index === 0 ? 'btn-tab-active' : ''}" data-dia="${dia}">
             ${dia}
         </button>
     `).join('');
     
     // Crear contenido de pestañas
     tabsContent.innerHTML = diasSeleccionados.map((dia, index) => `
-        <div class="tab-content" data-dia="${dia}" style="display: ${index === 0 ? 'block' : 'none'};">
+        <div class="tab-content ${index === 0 ? 'd-block' : 'd-none'}" data-dia="${dia}">
             <label for="${dia}-mañana" class="form-label mt-2">Mañana</label>
             <select required name="${dia}-mañana" class="form-select">
                 <option value="">Seleccione una opción</option>
@@ -381,13 +399,9 @@ function actualizarTabs(contenedor, opciones) {
             
             // Actualizar botones
             tabBtns.forEach(b => {
-                b.style.background = '#f0f0f0';
-                b.style.borderBottom = 'none';
-                b.classList.remove('active');
+                b.classList.remove('btn-tab-active');
             });
-            btn.style.background = '#fff';
-            btn.style.borderBottom = '3px solid #4a7c59';
-            btn.classList.add('active');
+            btn.classList.add('btn-tab-active');
             
             // Mostrar contenido correspondiente
             const contents = tabsContent.querySelectorAll('.tab-content');
@@ -403,7 +417,7 @@ function actualizarTabs(contenedor, opciones) {
  * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
  */
 function generarMenuItinerario(opciones) {
-    const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const diasSemana = semana.getSemana();
     
     // Crear checkboxes para seleccionar días
     const checkboxesDias = diasSemana.map(dia => `
@@ -425,6 +439,10 @@ function generarMenuItinerario(opciones) {
                     ${checkboxesDias}
                 </ul>
             </div>
+
+            <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
+            <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+            <span id="email-error" class="email-error"></span>
         </div>
 
         <div id="tabs-container">

@@ -351,3 +351,8 @@ footer img{
     margin-bottom: 0.5em;
     color: red;
 }
+
+.btn-tab-active{
+    background: #fff;
+    border-bottom: 3px solid #4a7c59;
+}

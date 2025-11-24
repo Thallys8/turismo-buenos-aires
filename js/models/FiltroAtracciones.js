@@ -48,7 +48,7 @@ export default class FiltroAtracciones {
         const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
 
         let busqueda = arrayAtracciones.filter( atraccion => {
-            atraccion.titulo = nombre;
+            return atraccion.titulo.normalize() === nombre.normalize();
         });
 
         if(busqueda.length > 0){

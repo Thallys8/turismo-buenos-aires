@@ -22,6 +22,14 @@ export default class Itinerario{
     }
 
     /**
+     * Permite asociar un email al itinerario
+     * @param {String} email 
+     */
+    cargarEmail( email ){
+        this.itinerario.email = email;
+    }
+
+    /**
      * Evalua si es que el itinerario se encuentra completo o faltan dias
      * @returns {Boolean} Si el itinerario esta completo o no
      */

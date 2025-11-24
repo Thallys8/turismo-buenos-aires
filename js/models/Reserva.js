@@ -52,10 +52,10 @@ export default class Reserva{
     calcularPrecio(reserva){
         let atraccion = this.filtroAtracciones.buscarAtraccionPorNombre(reserva.atraccion);
         
-        if(atraccion){
-            let precio = (atraccion.precio * reserva.disponibilidad) * reserva.visitantes;
+        if(atraccion != null && atraccion){
+            let precio = (atraccion.precio * reserva.disponibilidad.length) * reserva.visitantes;
             return precio;
         }
-        else return NaN;
+        else return "No se pudo calcular";
     }
 }
