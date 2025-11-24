@@ -355,11 +355,10 @@ function actualizarTabs(contenedor, opciones) {
     const tabsContent = contenedor.querySelector('#tabs-content');
     
     if (diasSeleccionados.length === 0) {
-        tabsContainer.style.display = 'none';
+        tabsContainer.classList.add('d-none');
         return;
     }
-    
-    tabsContainer.style.display = 'block';
+    tabsContainer.classList.add('d-block');
     
     // Crear pestañas
     tabsHeader.innerHTML = diasSeleccionados.map((dia, index) => `
@@ -368,9 +367,18 @@ function actualizarTabs(contenedor, opciones) {
         </button>
     `).join('');
     
+    const valoresElegidos = {};
+    const selects = tabsContent.querySelectorAll('select');
+    
+    selects.forEach(select => {
+        if(select.value) {
+            valoresElegidos[select.name] = select.value;
+        }
+    });
+
     // Crear contenido de pestañas
     tabsContent.innerHTML = diasSeleccionados.map((dia, index) => `
-        <div class="tab-content ${index === 0 ? 'd-block' : 'd-none'}" data-dia="${dia}">
+        <div class="tab-content ${index === 0 ? 'd-block' : 'd-none'}" data-dia="${dia}" id="${dia}">
             <label for="${dia}-mañana" class="form-label mt-2">Mañana</label>
             <select required name="${dia}-mañana" class="form-select">
                 <option value="">Seleccione una opción</option>
@@ -390,6 +398,13 @@ function actualizarTabs(contenedor, opciones) {
             </select>
         </div>
     `).join('');
+
+    Object.keys(valoresElegidos).map(name => {
+        const select = document.querySelector(`select[name="${name}"]`);
+        if(select) {
+            select.value = valoresElegidos[name];
+        }
+    });
     
     // Agregar eventos a las pestañas
     const tabBtns = tabsHeader.querySelectorAll('.tab-btn');
@@ -406,7 +421,9 @@ function actualizarTabs(contenedor, opciones) {
             // Mostrar contenido correspondiente
             const contents = tabsContent.querySelectorAll('.tab-content');
             contents.forEach(content => {
-                content.style.display = content.dataset.dia === dia ? 'block' : 'none';
+                content.classList.remove('d-block');
+                content.classList.remove('d-none');
+                content.classList.add(content.dataset.dia === dia ? 'd-block' : 'd-none');
             });
         });
     });
@@ -439,11 +456,11 @@ function generarMenuItinerario(opciones) {
                     ${checkboxesDias}
                 </ul>
             </div>
-
-            <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
-            <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
-            <span id="email-error" class="email-error"></span>
         </div>
+
+        <label for="email" class="form-label mt-4"> Ingrese su correo electronico</label>
+        <input required type="email" name="email" id="email" class="form-control mb-4 w-75">
+        <span id="email-error" class="email-error"></span>
 
         <div id="tabs-container">
             <div id="tabs-header" >

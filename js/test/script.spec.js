@@ -141,9 +141,11 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
       <input type="checkbox" name="noticias" value="1" checked>
       <input type="checkbox" name="eventos" value="2" checked>
       <input name="email" value="juan@example.com">
+      <span id="email-error" class="email-error"></span>
     `;
     
     const parentElement = document.createElement('div');
+
     parentElement.appendChild(mockFormulario);
     document.body.appendChild(parentElement);
     
