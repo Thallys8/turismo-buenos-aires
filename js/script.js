@@ -244,8 +244,6 @@ function popUpItinerarioCompleto(){
             <tr>
                 <td> ${dia["dia"]} </td>
                 <td> ${dia["mañana"]} </td>
-                <td> ${dia["media-mañana"]} </td>
-                <td> ${dia["media-tarde"]} </td>
                 <td> ${dia["tarde"]} </td>
                 <td> ${dia["noche"]} </td>
             </tr>
@@ -263,8 +261,6 @@ function popUpItinerarioCompleto(){
                 <thead>
                     <th> Dia </th>
                     <th> Mañana </th>
-                    <th> Media mañana </th>
-                    <th> Media tarde </th>
                     <th> Tarde </th>
                     <th> Noche </th>
                 </thead>
@@ -284,73 +280,149 @@ function popUpItinerarioCompleto(){
  * @param {Event} event 
  * @param {HTMLElement} formulario 
  */
-function almacenarDiaItinerario(event, formulario){
-    event.preventDefault();
-    itinerario.cargarDiaItinerario( Array.from(new FormData(formulario)) );
-
-    formulario.parentElement.remove();
+function almacenarDiaItinerario(formulario) {
+    const formData = new FormData(formulario);
+    const datosItinerario = { datos: []};
     
-    if(itinerario.estaCompleto()){
-        popUpItinerarioCompleto();
-        conexionAlamacen.ingresarInformacionItinerario(itinerario);
+    const diasSeleccionados = Array.from(formulario.querySelectorAll('input[name="dias"]:checked'))
+        .map(cb => cb.value);
+    
+    diasSeleccionados.forEach(dia => {
+        const diaFinal = {
+            dia: dia,
+            mañana: formData.get(`${dia}-mañana`),
+            tarde: formData.get(`${dia}-tarde`),
+            noche: formData.get(`${dia}-noche`)
+        }
+        datosItinerario.datos.push(diaFinal);
+    });
+    console.log(diasSeleccionados);
+    console.log(datosItinerario);
+    formulario.parentElement.remove();
+
+    datosItinerario.datos.forEach( dia => {
+        console.log(dia);
+        itinerario.cargarDiaItinerario(dia);
+    });
+    
+    popUpItinerarioCompleto();
+    conexionAlamacen.ingresarInformacionItinerario(itinerario);
+}
+
+function actualizarTabs(contenedor, opciones) {
+    const checkboxes = contenedor.querySelectorAll('input[name="dias"]:checked');
+    const diasSeleccionados = Array.from(checkboxes).map(cb => cb.value);
+    
+    const tabsContainer = contenedor.querySelector('#tabs-container');
+    const tabsHeader = contenedor.querySelector('#tabs-header');
+    const tabsContent = contenedor.querySelector('#tabs-content');
+    
+    if (diasSeleccionados.length === 0) {
+        tabsContainer.style.display = 'none';
+        return;
     }
-    else{
-        generarMenuItinerario(itinerario.diaEnProceso(), opcionesAtraccion);
-    }
-        
-};
+    
+    tabsContainer.style.display = 'block';
+    
+    // Crear pestañas
+    tabsHeader.innerHTML = diasSeleccionados.map((dia, index) => `
+        <button type="button" class="tab-btn ${index === 0 ? 'active' : ''}" data-dia="${dia}">
+            ${dia}
+        </button>
+    `).join('');
+    
+    // Crear contenido de pestañas
+    tabsContent.innerHTML = diasSeleccionados.map((dia, index) => `
+        <div class="tab-content" data-dia="${dia}" style="display: ${index === 0 ? 'block' : 'none'};">
+            <h3>Mañana</h3>
+            <select required name="${dia}-mañana" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+            
+            <h3>Tarde</h3>
+            <select required name="${dia}-tarde" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+            
+            <h3>Noche</h3>
+            <select required name="${dia}-noche" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <option value="">Seleccione una opción</option>
+                ${opciones}
+            </select>
+        </div>
+    `).join('');
+    
+    // Agregar eventos a las pestañas
+    const tabBtns = tabsHeader.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const dia = btn.dataset.dia;
+            
+            // Actualizar botones
+            tabBtns.forEach(b => {
+                b.style.background = '#f0f0f0';
+                b.style.borderBottom = 'none';
+                b.classList.remove('active');
+            });
+            btn.style.background = '#fff';
+            btn.style.borderBottom = '3px solid #4a7c59';
+            btn.classList.add('active');
+            
+            // Mostrar contenido correspondiente
+            const contents = tabsContent.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.style.display = content.dataset.dia === dia ? 'block' : 'none';
+            });
+        });
+    });
+}
 
 /**
  * Genera el HTML necesario para ingresar el itinerario y lo agrega al DOM
- * @param {String} dia El nombre del dia referenciado actualmente
  * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
  */
-function generarMenuItinerario(dia, opciones){
+function generarMenuItinerario(opciones) {
+    const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    
+    // Crear checkboxes para seleccionar días
+    const checkboxesDias = diasSemana.map(dia => `
+        <label style="display: inline-flex; align-items: center; margin-right: 20px;">
+            <input type="checkbox" name="dias" value="${dia}" style="margin-right: 5px;">
+            ${dia}
+        </label>
+    `).join('');
+
     const nuevoElemento = crearPopUpFormulario(`
-        <p> itinerario para el dia ${dia} </p>
-        <input type="hidden" name="dia" value="${dia}">
-
-        <div class="itinerario-fila">
-            <label for="mañana"> Mañana </label>
-            <select required name="mañana"> 
-                <option value=""> Seleccione una opcion </option>
-                ${opciones} 
-            </select>
-        </div>
+        <h2>Armar itinerario semanal</h2>
         
-        <div class="itinerario-fila">
-            <label for="media-mañana"> Media mañana </label>
-            <select required name="media-mañana"> 
-                <option value=""> Seleccione una opcion </option>
-                ${opciones} 
-            </select>
+        <div style="margin-bottom: 20px;">
+            <strong>Seleccioná los días:</strong>
+            <div style="margin-top: 10px;">
+                ${checkboxesDias}
+            </div>
         </div>
 
-        <div class="itinerario-fila">
-            <label for="media-tarde"> Media tarde </label>
-            <select required name="media-tarde"> 
-                <option value=""> Seleccione una opcion </option>
-                ${opciones} 
-            </select>
+        <div id="tabs-container" style="display: none;">
+            <div id="tabs-header" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ccc;">
+            </div>
+            
+            <div id="tabs-content">
+            </div>
         </div>
+    `, (event) => { 
+        event.preventDefault();
+        almacenarDiaItinerario(event.target); 
+    });
 
-        <div class="itinerario-fila">
-            <label for="tarde"> Tarde </label>
-            <select required name="tarde"> 
-                <option value=""> Seleccione una opcion </option>
-                ${opciones} 
-            </select>
-        </div>
-
-        <div class="itinerario-fila">
-            <label for="noche"> Tarde </label>
-            <select required name="noche"> 
-                <option value=""> Seleccione una opcion </option>
-                ${opciones} 
-            </select>
-        </div>
-        
-    `, (event) => { almacenarDiaItinerario(event, event.target); });
+    // Agregar evento para los checkboxes
+    const checkboxes = nuevoElemento.querySelectorAll('input[name="dias"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            actualizarTabs(nuevoElemento, opciones);
+        });
+    });
 
     document.body.appendChild(nuevoElemento);
 }
@@ -374,7 +446,7 @@ function generarItinerario(){
     }
     opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);
 
-    generarMenuItinerario(semana.getDias(0), opcionesAtraccion);
+    generarMenuItinerario(opcionesAtraccion);
 
     // generar el itinerario y envialo por email (no de verdad) 
 }
@@ -401,7 +473,7 @@ function crearTarjetaHTML( datosAtraccion, callback ){
 
             <details class="col-12">
                 <summary>Horarios</summary>
-                <p>${datosAtraccion.horarios}</p>
+                <p>${datosAtraccion.horarioAbierto || "No informado"}</p>
             </details>
             <label class="direccion-label col-12">Direccion</label> <br>
             <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"

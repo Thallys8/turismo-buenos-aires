@@ -316,10 +316,34 @@ footer img{
 .panel-con-fondo-frente{
     background: #eeeeee;
     width: 55vw;
-    height: 58vh;
+    height: fit-content;
+
+    padding: 2em 1em;
+    border-radius: 0.5em;
 
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+.panel-con-fondo-frente > button {
+    width: 25%;
+    padding: 0.5em;
+    margin-bottom: 15px;
+}
+.input-dia-itinerario{
+    display: inline-flex; 
+    align-items: center; 
+    margin-right: 20px;
+}
+#tabs-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.tab-btn{
+    background: transparent;
+    border-radius: 1em 1em 0 0;
+    padding: 0.5em 1.2em;
+    border-bottom: 0;
 }

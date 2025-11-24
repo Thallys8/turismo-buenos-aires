@@ -16,13 +16,9 @@ export default class Itinerario{
      * Permite cargar un dia en el itinerario
      * @param {Array<(string, any)>} keyValueArray Contiene las selecciones del usuario
      */
-    cargarDiaItinerario( keyValueArray ){
-        const datosItinerario = keyValueArray.reduce((objeto, [id, valor]) => {
-            objeto[id] = valor;
-            return objeto;
-        }, {});
-
-        this.itinerario.push(datosItinerario);
+    cargarDiaItinerario( dia ){
+        console.log(dia);
+        this.itinerario.push(dia);
     }
 
     /**
