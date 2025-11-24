@@ -148,6 +148,10 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
 
     parentElement.appendChild(mockFormulario);
     document.body.appendChild(parentElement);
+
+    const emailError = document.createElement("span");
+    emailError.id = "email-error";
+    document.body.appendChild(emailError);
     
     // Mock del evento
     mockEvent = jasmine.createSpyObj('event', ['preventDefault']);
@@ -156,6 +160,7 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
   afterEach(function() {
     // Limpiar popups
     document.querySelectorAll('.panel-con-fondo').forEach(el => el.remove());
+    document.getElementById("email-error").remove();
   });
 
   // --- FUNCIONALIDAD BÁSICA ---
@@ -398,15 +403,9 @@ describe("Flujo 4 - Creación de Itinerario", function() {
       window.generarItinerario();
     });
 
-    it("debe prevenir el comportamiento por defecto", function() {
-      window.almacenarDiaItinerario(mockEvent, mockFormulario);
-      
-      expect(mockEvent.preventDefault).toHaveBeenCalled();
-    });
-
     it("debe procesar el formulario sin errores", function() {
       expect(function() {
-        window.almacenarDiaItinerario(mockEvent, mockFormulario);
+        window.almacenarDiaItinerario(mockFormulario);
       }).not.toThrow();
     });
   });

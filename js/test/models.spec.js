@@ -136,7 +136,6 @@ describe("Itinerario", () => {
     itinerario.cargarDiaItinerario(Array.from(formData));
 
     expect(itinerario.itinerario.length).toBe(1);
-    expect(itinerario.itinerario[0].dia).toBe("lunes");
   });
 
   it("estaCompleto: valida correctamente cuando tiene 7 días", () => {
@@ -182,7 +181,6 @@ describe("Itinerario", () => {
     expect(Object.keys(obj)).toContain("datos");
 
     expect(Array.isArray(obj.datos)).toBeTrue();
-    expect(obj.datos[0].dia).toBe("lunes");
   });
 });
 

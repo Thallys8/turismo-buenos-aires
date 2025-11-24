@@ -15,10 +15,13 @@ export default class Validador{
      * @returns {Boolean} Si el arreglo contiene algun elemento de los buscados
      */
     algunValorExiste(arrayChequeado, valoresBuscados){
-        const chequeadoEnNumero = arrayChequeado.map(valor => Number(valor));
-        const buscadoEnNumero = valoresBuscados.map(valor => Number(valor));
+        if(arrayChequeado != null && arrayChequeado){
+            const chequeadoEnNumero = arrayChequeado.map(valor => Number(valor));
+            const buscadoEnNumero = valoresBuscados.map(valor => Number(valor));
 
-        return buscadoEnNumero.some(value => chequeadoEnNumero.includes(value));
+            return buscadoEnNumero.some(value => chequeadoEnNumero.includes(value));
+        }
+        return false;
     }
 
     /**

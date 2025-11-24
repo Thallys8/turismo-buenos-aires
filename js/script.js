@@ -282,17 +282,20 @@ function popUpItinerarioCompleto(){
             <p> Tu itinerario se creo exitosamente. Sera enviado al correo: </p>
             <p> ${datosItinerario.email}</p>
             
-            <table class="table">
-                <thead>
-                    <th> Dia </th>
-                    <th> Mañana </th>
-                    <th> Tarde </th>
-                    <th> Noche </th>
-                </thead>
-                <tbody>
-                    ${htmlDatosDeTabla.join(" ")}
-                </tbody>
-            </table>
+            <div class="container-fluid overflow-scroll" >
+                <table class="table" id="itinerario-creado">
+                    <thead>
+                        <th> Dia </th>
+                        <th> Mañana </th>
+                        <th> Tarde </th>
+                        <th> Noche </th>
+                    </thead>
+                    <tbody>
+                        ${htmlDatosDeTabla.join(" ")}
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     `);
 
@@ -355,9 +358,11 @@ function actualizarTabs(contenedor, opciones) {
     const tabsContent = contenedor.querySelector('#tabs-content');
     
     if (diasSeleccionados.length === 0) {
+        tabsContainer.classList.remove('d-block');
         tabsContainer.classList.add('d-none');
         return;
     }
+    tabsContainer.classList.remove('d-none');
     tabsContainer.classList.add('d-block');
     
     // Crear pestañas
@@ -366,6 +371,8 @@ function actualizarTabs(contenedor, opciones) {
             ${dia}
         </button>
     `).join('');
+
+    console.log(contenedor, opciones);
     
     const valoresElegidos = {};
     const selects = tabsContent.querySelectorAll('select');
@@ -438,7 +445,7 @@ function generarMenuItinerario(opciones) {
     
     // Crear checkboxes para seleccionar días
     const checkboxesDias = diasSemana.map(dia => `
-        <li class="list-group-item">
+        <li class="col-6 col-md-2 flex-nowrap">
             <label class="form-label">
                 <input type="checkbox" name="dias" value="${dia}" class="form-check-input">
                 ${dia}
@@ -449,10 +456,10 @@ function generarMenuItinerario(opciones) {
     const nuevoElemento = crearPopUpFormulario(`
         <h2>Armar itinerario semanal</h2>
         
-        <div>
+        <div class="container-fluid">
             <strong>Seleccioná los días:</strong>
-            <div>
-                <ul class="list-group list-group-horizontal-md mb-4">
+            <div class="container">
+                <ul class="list-unstyled row mb-4">
                     ${checkboxesDias}
                 </ul>
             </div>
@@ -502,7 +509,7 @@ function generarItinerario(){
     for(let i = 0; i < atracciones.length; i++){
         opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
     }
-    opcionesAtraccion.push(`<option value="ninguna"> Ninguna </option>`);
+    opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
 
     generarMenuItinerario(opcionesAtraccion);
 
@@ -585,11 +592,11 @@ function crearAtracciones( criterios, callbackReserva )
 function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
     // contenedor que da el fondo semi-transparente
     const contenedor = document.createElement("div");
-    contenedor.className = "panel-con-fondo";
+    contenedor.className = "panel-con-fondo container-fluid row overflow-scroll";
 
     // funciona formulario y panel
     const formulario = document.createElement("form");
-    formulario.className = "panel-con-fondo-frente";
+    formulario.className = "panel-con-fondo-frente col-10 col-md-6";
     formulario.addEventListener("submit", nuevoOnSubmit);
 
     contenedor.appendChild(formulario);

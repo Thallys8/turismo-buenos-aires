@@ -315,7 +315,6 @@ footer img{
 }
 .panel-con-fondo-frente{
     background: #eeeeee;
-    width: 55vw;
     height: fit-content;
 
     padding: 2em 1em;
@@ -340,6 +339,7 @@ footer img{
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 1em;
 }
 .tab-btn{
     background: transparent;
@@ -355,4 +355,8 @@ footer img{
 .btn-tab-active{
     background: #fff;
     border-bottom: 3px solid #4a7c59;
+}
+
+.itinerario-creado{
+    overflow: scroll;
 }
