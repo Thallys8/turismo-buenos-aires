@@ -3,6 +3,8 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+- [feature/dev-libreria-externa-AOS] Integracion de la libreria AOS al sistema
+PR: [#121](https://github.com/Thallys8/turismo-buenos-aires/pull/121) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas)
 
 ### Changed  
 

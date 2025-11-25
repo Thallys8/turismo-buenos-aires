@@ -1,4 +1,3 @@
-
 import ConexionAlamacen from './models/ConexionAlmacen.js';
 import FiltroAtracciones from './models/FiltroAtracciones.js';
 import Itinerario from './models/Itinerario.js';
@@ -12,6 +11,8 @@ const semana = new Semana();
 
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
+
+AOS.init();
 
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
@@ -524,10 +525,12 @@ if(botonItinerario != null && botonItinerario)
  * @param {*} datosAtraccion Los datos de la atraccion
  * @param {*} callback Callback para el boton de reserva
  */
-function crearTarjetaHTML( datosAtraccion, callback ){
+function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
     let elementoHTML = document.createElement("article");
     elementoHTML.className = "tarjeta col-6 container";
-
+    elementoHTML.setAttribute("data-aos", fadeStyle);
+    elementoHTML.setAttribute("data-aos-delay", "400");
+    
     elementoHTML.innerHTML = `
         <div class="row h-md-100">
             <hgroup class="col-12">
@@ -576,8 +579,11 @@ function crearAtracciones( criterios, callbackReserva )
     const listaDatos = filtroAtracciones.buscarAtracciones(
         criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
     );
+
+    let fadeStyle = "fade-right";
     listaDatos.forEach( atraccion => {
-        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva) );
+        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva, fadeStyle) );
+        fadeStyle = (fadeStyle === "fade-right") ? "fade-left" : "fade-right";
     });
 
     return nuevasTarjetas;
