@@ -315,11 +315,48 @@ footer img{
 }
 .panel-con-fondo-frente{
     background: #eeeeee;
-    width: 50vw;
-    height: 50vh;
+    height: fit-content;
+
+    padding: 2em 1em;
+    border-radius: 0.5em;
 
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+.panel-con-fondo-frente > button {
+    width: 12em;
+    padding: 0.5em;
+    margin-bottom: 15px;
+}
+.input-dia-itinerario{
+    display: inline-flex; 
+    align-items: center; 
+    margin-right: 20px;
+}
+#tabs-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1em;
+}
+.tab-btn{
+    background: transparent;
+    border-radius: 1em 1em 0 0;
+    padding: 0.5em 1.2em;
+}
+
+.email-error{
+    margin-bottom: 0.5em;
+    color: red;
+}
+
+.btn-tab-active{
+    background: #fff;
+    border-bottom: 3px solid #4a7c59;
+}
+
+.itinerario-creado{
+    overflow: scroll;
 }

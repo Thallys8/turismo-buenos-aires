@@ -1,35 +1,65 @@
-import conexionAlmacen from "./ConexionAlmacen.js";
+import Semana from "./Semana.js";
 
-class Itinerario{
-    listaDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-    itinerario = [];
-
-    cargarDiaItinerario( formulario ){
-        const datosFormulario = new FormData(formulario);
-        const datosItinerario = {
-            dia: datosFormulario.get("dia"),
-            mañana: { eleccion: datosFormulario.get("mañana"), comentario: datosFormulario.get("mañana-comentario") },
-            mediaMañana: { eleccion: datosFormulario.get("media-mañana"), comentario: datosFormulario.get("media-mañana-comentario")},
-            mediaTarde: { eleccion: datosFormulario.get("media-tarde"), comentario: datosFormulario.get("media-tarde-comentario")},
-            tarde: { eleccion: datosFormulario.get("tarde"), comentario: datosFormulario.get("tarde-comentario")},
-            noche: { eleccion: datosFormulario.get("noche"), comentario: datosFormulario.get("noche-comentario")}
-        };
-        this.itinerario.push(datosItinerario);
+/**
+ * Representa un itinerario de viaje generado por el usuario
+ */
+export default class Itinerario{
+    semana;
+    itinerario;
+    
+    constructor(){
+        this.semana = new Semana();
+        this.itinerario = [];
     }
+
+    /**
+     * Permite cargar un dia en el itinerario
+     * @param {Array<(string, any)>} keyValueArray Contiene las selecciones del usuario
+     */
+    cargarDiaItinerario( dia ){
+        console.log(dia);
+        this.itinerario.push(dia);
+    }
+
+    /**
+     * Permite asociar un email al itinerario
+     * @param {String} email 
+     */
+    cargarEmail( email ){
+        this.itinerario.email = email;
+    }
+
+    /**
+     * Evalua si es que el itinerario se encuentra completo o faltan dias
+     * @returns {Boolean} Si el itinerario esta completo o no
+     */
     estaCompleto(){
-        return this.itinerario.length === this.listaDias.length
-    }
-    diaEnProceso(){
-        return this.listaDias[this.itinerario.length]
+        let dias = this.semana.getSemana();
+        return this.itinerario.length === dias.length
     }
 
-    toJSON(){
-        JSON.parse(this.itinerario);
+    /**
+     * Devuelve el dia que se esta cargando actualmente
+     * @returns {String} El dia que se esta cargando actualmente
+     */
+    diaEnProceso(){
+        return this.semana.getDias(this.itinerario.length);
     }
-    almacenarElemento(){
-        let datos = this.toJSON();
-        conexionAlmacen.ingresarInformacionItinerario(datos);
+
+    /**
+     * Retorna los datos del itinerario
+     * @returns {Array<Object>}
+     */
+    getItinerario(){
+        return this.itinerario;
+    }
+
+    /**
+     * Retorna los datos del itinerario en formato JSON
+     * @returns {JSON} un string json
+     */
+    toJSON(){
+        console.log(this.itinerario);
+        return JSON.stringify({ datos: this.itinerario });
     }
 }
-
-export default Itinerario;

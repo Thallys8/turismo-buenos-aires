@@ -2,26 +2,36 @@
 <html>
  <head>
     <meta charset="UTF-8">
-    <title> Prueba Jasmine </title>
+    <title>Prueba Jasmine</title>
     <!-- Jasmine CSS --> 
-    <link rel = "shortcut icon" type = "image/png" href = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/jasmine_ favicon.png" > 
-    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/jasmine. min.css" >
-
+    <link rel="shortcut icon" type="image/png" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine_favicon.png"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.css">
 
     <!-- Jasmine Core JavaScript -->
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/jasmine.m in.js" ></script> 
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/jasmine-h tml.min.js" ></script> 
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/boot0.min .js" ></script>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.10.0/boot1.min .js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine-html.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot1.min.js"></script>
   </head>
 
   <body>
-    <h2 style="text-align:center; font-family:sans-serif;"> Pruebas Jasmine </h2>
+    <h2 style="text-align:center; font-family:sans-serif;">Pruebas Jasmine</h2>
 
-    <!-- Tu código fuente --> 
-    <script src = "../script.js" ></script> 
 
-    <!-- Tus tests --> 
-    <script src = "script.spec.js" ></script>
+    <!-- IMPORTANTE: Cargar los modelos primero -->
+    <script type="module" src="../models/ConexionAlmacen.js"></script>
+    <script type="module" src="../models/FiltroAtracciones.js"></script>
+    <script type="module" src="../models/Itinerario.js"></script>
+    <script type="module" src="../models/Reserva.js"></script>
+    <script type="module" src="../models/Semana.js"></script>
+    <script type="module" src="../models/Validador.js"></script>
+
+    <!-- Código fuente (CORREGIDO: ahora apunta a ../script.js desde js/test/) --> 
+    <script type="module" src="../script.js"></script> 
+
+    <!-- Tests --> 
+    <script type="module" src="script.spec.js"></script>
+    <script type="module" src="models.spec.js"></script>
+
   </body>
 </html>

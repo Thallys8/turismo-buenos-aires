@@ -21,14 +21,22 @@ PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Co
 PR: [#101](https://github.com/Thallys8/turismo-buenos-aires/pull/101) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 - [feature/dev-storage] Creó el js/utils/storage.js  
 PR: [#97](https://github.com/Thallys8/turismo-buenos-aires/pull/98) @Thallys8 (Coordinador / DevOps + Tester QA + Desarrollador JS Local y Session Storage ). 
-- [feature/dev-js-clases-oop-y-puml] Clases Javascript OOP y documentacion de clases  
+- [feature/dev-js-clases-oop-y-puml] Correccion de errores generales en js  
 PR: [#99](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
+- [feature/coord-devops-cuarta-entrega] Actualización de changelog y Readme  
+PR: [#103](https://github.com/Thallys8/turismo-buenos-aires/pull/99) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
+- [feature/tester-qa-specs] Se creó el códigos de models.spec y storage.spec, y se editó editado el test-runner.html   
+PR: [#112](https://github.com/Thallys8/turismo-buenos-aires/pull/112) @Thallys8 (Coordinador / DevOps + Tester QA + Desarrollador JS Local y Session Storage ). 
 
 ### Changed  
+- [feature/devjs-correcciones-documentacion] Se expandio y corrigio la documentacion de las funciones y clases  
+PR: [#115](https://github.com/Thallys8/turismo-buenos-aires/pull/115) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
 
 ### Fixed  
 - [feature/dev-js-correcciones] Correcciones en el codigo js y clases  
 PR: [#102](https://github.com/Thallys8/turismo-buenos-aires/pull/102) @Tomig02 (Coordinador / DevOps y Desarrollador javascript)
+- [feature/release-correcciones-js] Clases Javascript OOP y documentacion de clases  
+PR: [#109](https://github.com/Thallys8/turismo-buenos-aires/pull/109) @Tomig02 (Desarrollador JS Eventos + DOM + Desarrollador JS POO). 
 
 ## [Release Entrega Obligatoria Nº 3] - 2025-10-24
 

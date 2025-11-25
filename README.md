@@ -29,6 +29,7 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 - [Indice de Diagrama de Clase](./docs/04-diagramas/02-diagramas-de-clase/diagramas-doc.md)
 - [Indice de Test QA](docs/03-testing/testing-doc.md)
 - [Indice de diagramas de actividad](docs/04-diagramas/diagramas-doc.md)
+- [Documento Storage](docs/05-storage/storage-doc.md)
 - [Changelog](changelog.md) 
 
 

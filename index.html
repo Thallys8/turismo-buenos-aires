@@ -81,15 +81,14 @@
     <section aria-label="selector de actividades diurnas o nocturnas" class="seleccion-dia-noche">
         <!-- JS: Al hacer click en una de estas opciones, cambiaria el diseño/color segun corresponda (dia/noche)-->
 
-        <!-- Implementando botones Bootstrap -->
         <div>
             <img loading="lazy" src="./assets/fotodia.webp" alt="foto-dia" >
-            <button type="button" class="btn dia">Actividades diurnas</button>
+            <button type="button" class="btn dia" id="atracciones-dia-elegir">Actividades diurnas</button>
         </div>
         
         <div>
             <img loading="lazy" src="./assets/fotonoche.webp" alt="foto-noche" >
-            <button type="button" class="btn noche">Actividades nocturnas</button>
+            <button type="button" class="btn noche" id="atracciones-noche-elegir">Actividades nocturnas</button>
         </div>
     </section>
 
@@ -116,7 +115,8 @@
                 <div>
                     <label class="exterior" for="id-horario">¿Cuando te gusta salir?</label>
 
-                    <select name="horario" id="id-horario"> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
+                    <select required name="horario" id="id-horario"> <!-- Estilizado como botones, cambio de color segun el seleccionado -->
+                        <option value=""> Seleccione una opcion </option>
                         <option value="1">Me gusta salir de noche</option>
                         <option value="2">Me gusta salir de dia</option>
                     </select>
@@ -125,303 +125,45 @@
                 <div>
                     <label class="exterior" for="id-tipo-actividad">¿Que te gusta hacer?</label>
 
-                    <select name="tipo-actividad" id="id-tipo-actividad">
+                    <select required name="tipo-actividad" id="id-tipo-actividad">
+                        <option value=""> Seleccione una opcion </option>
                         <option value="1">Deporte</option>
                         <option value="2">Fiesta</option>
                         <option value="3">Cultura</option>
                         <option value="4">Relajacion</option>
-                        <option value="5">Cualquiera</option>
+                        <option value="[1,2,3,4]">Cualquiera</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="exterior" for="id-tipo-grupo">¿Con quienes?</label>
 
-                    <select name="tipo-grupo" id="id-tipo-grupo">
+                    <select required name="tipo-grupo" id="id-tipo-grupo">
+                        <option value=""> Seleccione una opcion </option>
                         <option value="1">Familia</option>
                         <option value="2">Amigos</option>
                         <option value="3">Pareja</option>
                         <option value="4">Desconocidos</option>
-                        <option value="5">Cualquiera</option>
+                        <option value="[1,2,3,4]">Cualquiera</option>
                     </select>
                 </div>
-
                 
                 <button type="submit" class="btn">Busquemos</button>
             </form>
         </div>
     </section>
 
-    <!-- JS: Se activa al seleccionar las opcion de actividades diurnas -->
-    <section class="lista-actividades" aria-label="actividades para hacer durante el dia" id="actividad-diurna">
-        <h2>actividades de dia</h2>
-
+    <!-- JS: Se activa al seleccionar las opcion de actividades nocturnas -->
+    <section class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
+        <h2>actividades</h2>
+        
         <div class="actividades-opciones">
-            <!-- Implementando Contenedor Bootstrap -->
             <div class="container-fluid">
-                <!-- Implementando Fila Bootstrap -->
-                <div class="row justify-content-evenly">
-                    <!-- Implementando Columna Bootstrap -->
-                    <article class="tarjeta col-6 container">
-                        <div class="row h-md-100">
-                            <hgroup class="col-12">
-                                <h3>Rosedal de palermo</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
+                <div class="row justify-content-evenly" id="lista-de-actividades">
 
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col" id="id-mapa-rosedal"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=rosedal+de+palermo,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn">Reservar</button>
-                        </div>                            
-
-                        <img loading="lazy" src="./assets/rosedales.webp" alt="foto aerea de los rosedales" >
-                    </article>
-
-                    <article class="tarjeta reversa col-6 container"> 
-                        <div class="row h-md-100">
-                            <hgroup class="col-12">
-                                <h3>Jardín Botánico</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-botanico"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+botanico,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn">Reservar</button>
-                        </div>
-                            
-                        <img src="./assets/botanico.webp" alt="exterior del jardin botanico" loading="lazy">
-                    </article>      
-                </div>
-                    
-                    
-                    
-
-                <div class="row justify-content-evenly">
-
-                    <article class="tarjeta col-6 container">
-                        <div class="row h-md-100">
-                            <hgroup class="col-12">
-                                <h3>Jardín Japonés</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-japones"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=jardin+japones,buenos+aires">
-                            </iframe>
-
-                            <button value="1" type="button" class="btn">Reservar</button>
-                        </div>
-
-                        <img loading="lazy" src="./assets/japones.webp" alt="foto de los jardines japones" >
-                    </article>  
-
-                    <article class="tarjeta reversa col-6 container">
-                        <div class="row h-md-100">
-                            <hgroup class="col-12">
-                                <h3>Barrio de La Boca</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-                        
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-boca"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=barrio+de+la+boca,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn">Reservar</button>
-                        </div>
-                        
-                        
-                        <img src="./assets/laboca.webp" alt="barrio de la boca" loading="lazy">
-                    </article>                     
                 </div>
             </div>
-        </div>        
-    </section>
-
-    <!-- JS: Se activa al seleccionar las opcion de actividades nocturnas -->
-    <section id="lista-de-actividades" class="lista-actividades" aria-label="actividades para hacer durante la noche" id="actividad-nocturna">
-        <h2>actividades de noche</h2>
-
-        <div class="actividades-opciones">
-            <div class="container-fluid">
-                <div class="row justify-content-evenly">
-                    <article class="tarjeta col-6 col-lg-12 container">
-                        <div class="row">
-                            <hgroup class="col-12">
-                                <h3>Rey de Copas Bar</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                                <label class="direccion-label">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-bar"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=bar+rey+de+copas,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn" id="1234">Reservar</button>
-                        </div>
-
-                        <img loading="lazy" src="./assets/bar.webp" alt="interior del bar rey de copas" >
-                    </article>
-
-                    <article class="tarjeta reversa col-6 col-lg-12 container">
-                        <div class="row">
-                            <hgroup class="col-12">
-                                <h3>Tango Porteño</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                        
-                            <label class="direccion-label col-12" >Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-tango"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=tango+porteño,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn">Reservar</button>
-                        </div>
-                        
-                        <img loading="lazy" src="./assets/tango.webp" alt="foto del tango porteño" >
-                    </article>  
-
-                    <article class="tarjeta col-6 col-lg-12 container">
-                        <div class="row">
-                            <hgroup class="col-12">
-                                <h3>El casino flotante</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p class="col-12">descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-                        
-                            <details class="col-12">
-                            <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                        
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-casino"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=casino+flotante,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn">Reservar</button>
-                        </div>
-
-                        <img loading="lazy" src="./assets/flotante.webp" alt="foto del casino flotante" >
-                    </article>  
-
-                    <article class="tarjeta reversa col-6 col-lg-12 container">
-                        <div class="row">
-                            <hgroup class="col-12">
-                                <h3>Puerto Madero</h3>
-                                <p>subtitulo (alguna pequeña descripcion o slogan del lugar)</p>
-                            </hgroup>
-                            <p>descripcion (descripcion turistica mas detallada del lugar/atraccion)</p>
-                        
-                            <details class="col-12">
-                                <summary>Horarios</summary>
-                                <p>*Horarios comerciales del lugar*</p>
-                            </details>
-                            
-                            <label class="direccion-label col-12">Direccion</label> <br>
-                            <iframe class="google-maps ratio ratio-16x9 col-12" id="id-mapa-puerto"
-                                width="180"
-                                height="150"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbT4vX8IWZ4W_9QIdK5w1KVPOJOxevglA&q=puerto+madero,buenos+aires">
-                            </iframe>
-
-                            <button type="button" class="btn btn-subscripcion">Reservar</button>
-                        </div>
-                        
-                        <img loading="lazy" src="./assets/madero.webp" alt="foto aerea de puerto madero" >
-                    </article> 
-                </div>
-            </div>       
         </div>
-    </section>
-
-    <section aria-label="Area de resultados de busqueda" class="resultados-busqueda">
-        <!-- JS: En esta parte va el resultado de la busqueda en el formulario -->
     </section>
     
     <section aria-label="newsletter y itinerario" class="container-fluid mb-4">
