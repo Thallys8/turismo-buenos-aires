@@ -8,7 +8,10 @@
 ## 📣 Descripcion
 Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos
 
-## 🎯 Objetivo del entregable - entrega 4 
+## 🎯 Objetivo del entregable - Parcial 2
+En esta entrega se integraran nuevas librerrias externas para ampliar la funcionalidad del sistema y se consumiran datos desde APIs a traves de fetch y promises, resultando en un codigo con funcionalidad expandida y con un testeo comprensivo.
+
+## 🎯 Objetivo del entregable - entrega 4 (Finalizada) 
 En esta entrega se busca transformar el proyecto de un simulador basado en prompt() y alert() a una aplicación web interactiva completa que utiliza manipulación del DOM, eventos del usuario, Programación Orientada a Objetos (POO) y almacenamiento persistente mediante Storage API. 
 
 ## 🎯 Objetivo del entregable - entrega 3 (Finalizada) 
@@ -36,5 +39,5 @@ En esta entrega se busca completar la estructuracion del git y index.html inicia
 ## 👥 Integrantes
 | Nombre completo | Nro. de matricula | Usuario Github | Rol en esta entrega |
 | ------------- | ------------- | ------------- | ------------- |
-| Thallys Gomes Leandro  | 145287  | Thallys8  | Coordinador / DevOps + Tester QA / + Desarrollador JS Local y Session Storage  | 
-| Guardo Tomas Agostino  | 153835  | Tomig02  | Desarrollador JS Eventos + DOM + Desarrollador JS POO  | 
+| Thallys Gomes Leandro  | 145287  | Thallys8  | Desarrollador JS Asíncrono + Tester QA/JS  | 
+| Guardo Tomas Agostino  | 153835  | Tomig02  | Coordinador DevOps + Desarrollador JS librerias externas  | 
