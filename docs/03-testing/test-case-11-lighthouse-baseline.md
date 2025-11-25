@@ -32,7 +32,7 @@
 - [Listar observaciones]
 
 ## Issues Generadas 
-- [#XX] Optimizar tamaño de imágenes para mejorar LCP y CLS
+- [#124] Optimizar tamaño de imágenes para mejorar LCP y CLS
 
 ## Conclusiones 
 [Verificamos que los datos de perfocmance no están dentro del padtón minio afectado, devemos corrigir LCP y CLS para mejorar la performance.
