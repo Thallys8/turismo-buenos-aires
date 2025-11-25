@@ -12,7 +12,9 @@
 - **Best Practices:** ≥ 85 
 - **SEO:** ≥ 80
 
-## Resultados Obtenidos ### Performance: [73] 
+## Resultados Obtenidos 
+
+### Performance: [73] 
 - First Contentful Paint: [0.6s] 
 - Largest Contentful Paint: [1.3s] 
 - Total Blocking Time: [0ms] 
