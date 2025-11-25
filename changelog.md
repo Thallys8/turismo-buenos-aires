@@ -5,6 +5,9 @@ Este archivo se actualiza con cada Pull Request para registrar avances y correcc
 ### Added  
 - [feature/dev-libreria-externa-AOS] Integracion de la libreria AOS al sistema
 PR: [#121](https://github.com/Thallys8/turismo-buenos-aires/pull/121) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas)
+- [feature/dev-async-fetch-api] Creó el /js/api/apiService.js
+PR: [#125](https://github.com/Thallys8/turismo-buenos-aires/pull/125) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+
 
 ### Changed  
 
