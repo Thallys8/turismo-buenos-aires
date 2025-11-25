@@ -12,7 +12,9 @@
 - **Best Practices:** ≥ 85 
 - **SEO:** ≥ 80
 
-## Resultados Obtenidos ### Performance: [73] 
+## Resultados Obtenidos 
+
+### Performance: [73] 
 - First Contentful Paint: [0.6s] 
 - Largest Contentful Paint: [1.3s] 
 - Total Blocking Time: [0ms] 
@@ -32,7 +34,7 @@
 - [Listar observaciones]
 
 ## Issues Generadas 
-- [#XX] Optimizar tamaño de imágenes para mejorar LCP y CLS
+- [#124] Optimizar tamaño de imágenes para mejorar LCP y CLS
 
 ## Conclusiones 
 [Verificamos que los datos de perfocmance no están dentro del padtón minio afectado, devemos corrigir LCP y CLS para mejorar la performance.
