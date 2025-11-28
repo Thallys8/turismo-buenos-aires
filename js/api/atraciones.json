@@ -1,0 +1,51 @@
+{
+  "atracciones": [
+    {
+      "nombreAtraccion": "elCaminito",
+      "turnoAtraccion": ["dia"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"],
+      "estiloAtraccion": ["cultura"],
+      "gruposRecomendadosAtraccion": ["desconocidos", "familia", "pareja", "amigos", "cualquiera"]
+    },
+    {
+      "nombreAtraccion": "jardinBotanico",
+      "turnoAtraccion": ["dia"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado"],
+      "estiloAtraccion": ["cultura", "relajacion", "cualquiera"],
+      "gruposRecomendadosAtraccion": ["familia", "pareja", "amigos"],
+      "dirreccionAtraccion": "Av. Santa Fe 3951, C1425 CABA"
+    },
+    {
+      "nombreAtraccion": "baresClandestinos",
+      "turnoAtraccion": ["noche"],
+      "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
+      "estiloAtraccion": ["relajacion", "fiesta", "cualquiera"],
+      "gruposRecomendadosAtraccion": ["pareja", "amigos", "desconocidos"],
+      "dirreccionAtraccion": "Varía según el bar"
+    },
+    {
+      "nombreAtraccion": "puertoMadero",
+      "turnoAtraccion": ["dia", "noche"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"],
+      "estiloAtraccion": ["fiesta", "relajacion", "deporte", "cultura", "cualquiera"],
+      "gruposRecomendadosAtraccion": ["familia", "amigos", "pareja", "desconocidos", "cualquiera"], 
+      "dirreccionAtraccion": "Puerto Madero, CABA"
+    },
+    {
+      "nombreAtraccion": "casinoPuertoMadero",
+      "turnoAtraccion": ["noche"],
+      "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
+      "estiloAtraccion": ["aventira", "fiesta", "cualquiera"],
+      "gruposRecomendadosAtraccion": ["amigos", "pareja", "desconocidos", "cualquiera"], 
+      "dirreccionAtraccion": "Juana Manso 1166, C1107 CABA"
+    },
+    {
+      "nombreAtraccion": "palacioAlvear",
+      "turnoAtraccion": ["dia", "noche"],
+      "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
+      "estiloAtraccion": ["amigos", "desconocidos"],
+      "gruposRecomendadosAtraccion": ["fiesta", "cultura", "cualquiera"], 
+      "dirreccionAtraccion": "Av. Alvear 1891, C1129 CABA"
+    }
+  ]
+}
