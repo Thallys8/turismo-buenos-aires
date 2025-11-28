@@ -31,26 +31,23 @@
 
     <!-- Cargamos TODO lo nuestro como ES modules *antes* de boot1 -->
     <script type="module">
-      // Modelos
-      import "../models/ConexionAlmacen.js";
-      import "../models/FiltroAtracciones.js";
-      import "../models/Itinerario.js";
-      import "../models/Reserva.js";
-      import "../models/Semana.js";
-      import "../models/Validador.js";
+  // Modelos
+  import "../models/ConexionAlmacen.js";
+  import "../models/FiltroAtracciones.js";
+  import "../models/Itinerario.js";
+  import "../models/Reserva.js";
+  import "../models/Semana.js";
+  import "../models/Validador.js";
 
-      // Servicio de API
-      import "../api/apiService.js";
+  // Código principal
+  import "../script.js";
 
-      // Código principal
-      import "../script.js";
-
-      // Specs
-      import "./script.spec.js";
-      import "./models.spec.js";
-      import "./api.spec.js";
-      import "./library.spec.js";
-    </script>
+  // Specs
+  import "./script.spec.js";
+  import "./models.spec.js";
+  import "./api.spec.js";
+  import "./library.spec.js";
+</script>
 
     <!-- boot1: arranca Jasmine *después* de que se cargaron los módulos de arriba -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot1.min.js"></script>
