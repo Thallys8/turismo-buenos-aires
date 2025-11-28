@@ -3,17 +3,18 @@
     {
       "nombreAtraccion": "elCaminito",
       "turnoAtraccion": ["dia"],
-      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"],
       "estiloAtraccion": ["cultura"],
-      "gruposRecomendadosAtraccion": ["desconocidos", "familia", "pareja", "amigos", "cualquiera"]
+      "gruposRecomendadosAtraccion": ["desconocidos", "familia", "pareja", "amigos", "cualquiera"], 
+      "direccionAtraccion": "Caminito, La Boca, CABA"
     },
     {
       "nombreAtraccion": "jardinBotanico",
       "turnoAtraccion": ["dia"],
-      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"],
       "estiloAtraccion": ["cultura", "relajacion", "cualquiera"],
       "gruposRecomendadosAtraccion": ["familia", "pareja", "amigos"],
-      "dirreccionAtraccion": "Av. Santa Fe 3951, C1425 CABA"
+      "direccionAtraccion": "Av. Santa Fe 3951, C1425 CABA"
     },
     {
       "nombreAtraccion": "baresClandestinos",
@@ -21,23 +22,23 @@
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
       "estiloAtraccion": ["relajacion", "fiesta", "cualquiera"],
       "gruposRecomendadosAtraccion": ["pareja", "amigos", "desconocidos"],
-      "dirreccionAtraccion": "Varía según el bar"
+      "direccionAtraccion": "Varia segun el bar"
     },
     {
       "nombreAtraccion": "puertoMadero",
       "turnoAtraccion": ["dia", "noche"],
-      "diasAbiertoAtraccion": ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"],
+      "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"],
       "estiloAtraccion": ["fiesta", "relajacion", "deporte", "cultura", "cualquiera"],
       "gruposRecomendadosAtraccion": ["familia", "amigos", "pareja", "desconocidos", "cualquiera"], 
-      "dirreccionAtraccion": "Puerto Madero, CABA"
+      "direccionAtraccion": "Puerto Madero, CABA"
     },
     {
       "nombreAtraccion": "casinoPuertoMadero",
       "turnoAtraccion": ["noche"],
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
-      "estiloAtraccion": ["aventira", "fiesta", "cualquiera"],
+      "estiloAtraccion": ["aventura", "fiesta", "cualquiera"],
       "gruposRecomendadosAtraccion": ["amigos", "pareja", "desconocidos", "cualquiera"], 
-      "dirreccionAtraccion": "Juana Manso 1166, C1107 CABA"
+      "direccionAtraccion": "Juana Manso 1166, C1107 CABA"
     },
     {
       "nombreAtraccion": "palacioAlvear",
@@ -45,7 +46,7 @@
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
       "estiloAtraccion": ["amigos", "desconocidos"],
       "gruposRecomendadosAtraccion": ["fiesta", "cultura", "cualquiera"], 
-      "dirreccionAtraccion": "Av. Alvear 1891, C1129 CABA"
+      "direccionAtraccion": "Av. Alvear 1891, C1129 CABA"
     }
   ]
 }

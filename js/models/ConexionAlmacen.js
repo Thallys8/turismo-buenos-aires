@@ -1,5 +1,5 @@
 import managerAlmacenamiento from "../utils/storage.js";
-import Itinerario from "./Itinerario.js"; // solo para un jsdoc
+import Itinerario from "./Itinerario.js"; // solo para jsdoc si querés
 import Semana from "./Semana.js";
 
 /**
@@ -8,25 +8,59 @@ import Semana from "./Semana.js";
 export default class ConexionAlamacen {
     semana;
     keys;
+    atracciones;
 
-    constructor(){
+    constructor() {
         this.keys = {
-        atracciones: "atracciones",
-        itinerarios: "itinerarios",
-        newsletter: "newsletter",
-        reservas: "reservas"
+            atracciones: "atracciones",
+            itinerarios: "itinerarios",
+            newsletter: "newsletter",
+            reservas: "reservas"
         };
-        this.generarClaves();
+
         this.semana = new Semana();
+        this.atracciones = [];
+
+        // Genera las claves iniciales en localStorage
+        this.generarClaves();
+
+        // Promesa para saber cuándo terminó de cargar el JSON
+        this.ready = this._cargarAtracciones();
     }
 
     /**
-     * Genera las claves dentro del almacenamiento
+     * Carga js/api/atraciones.json y lo guarda en memoria y en localStorage
      */
-    generarClaves(){
-        for( let llave of Object.keys(this.keys)){
-            if (!this.existeClave(llave))
-                managerAlmacenamiento.guardar(llave, { datos: []}, "local");
+    async _cargarAtracciones() {
+        try {
+            const resp = await fetch("./js/api/atraciones.json");
+            const data = await resp.json();
+
+            this.atracciones = data.atracciones || [];
+            console.log("Atracciones cargadas desde JSON:", this.atracciones);
+
+            // Opcional: guardarlas también en storage bajo la clave "atracciones"
+            // para respetar el esquema { datos: [...] }
+            managerAlmacenamiento.actualizar(
+                this.keys.atracciones,
+                { datos: this.atracciones },
+                "local"
+            );
+        } catch (error) {
+            console.error("Error cargando atraciones.json", error);
+            this.atracciones = [];
+        }
+    }
+
+    /**
+     * Genera las claves dentro del almacenamiento si no existen
+     */
+    generarClaves() {
+        for (let llave of Object.keys(this.keys)) {
+            const claveReal = this.keys[llave];
+            if (!this.existeClave(claveReal)) {
+                managerAlmacenamiento.guardar(claveReal, { datos: [] }, "local");
+            }
         }
     }
 
@@ -35,39 +69,46 @@ export default class ConexionAlamacen {
      * @param {String} clave 
      * @returns {Boolean} Valor de verdad
      */
-    existeClave( clave ){
-        let respuesta = managerAlmacenamiento.obtener(clave);
-        return ( respuesta !== undefined && respuesta );
+    existeClave(clave) {
+        let respuesta = managerAlmacenamiento.obtener(clave, "local");
+        return (respuesta !== undefined && respuesta !== null);
     }
-
 
     /**
      * Devuelve la informacion de las atracciones disponibles en el sistema
      * @returns {Array<object>} los datos de todas las atracciones
      */
-    solicitarInformacionAtracciones(){
-        let respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
-        return respuesta.datos || [];
+    solicitarInformacionAtracciones() {
+        // Intentamos leer desde storage (forma "oficial" del proyecto)
+        const respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
+        if (respuesta && Array.isArray(respuesta.datos)) {
+            return respuesta.datos;
+        }
+
+        // Si por algún motivo no hay nada en storage, devolvemos lo cargado en memoria
+        return this.atracciones || [];
     }
 
     /**
      * Busca la disponibilidad por dia para visitas, de una atraccion especifica
      * @param {String} idAtraccion identificador de la atraccion (nombre)
-     * @returns {String} Lista de dias con disponibilidad
+     * @returns {String[]} Lista de dias con disponibilidad
      */
-    solicitarDisponibilidad(idAtraccion){
-        
-        // solicitar disponibilidad al almacenamiento
+    solicitarDisponibilidad(idAtraccion) {
+        // OPCIÓN A: lógica original aleatoria (manteniendo el código anterior para caso el nuevo falle en las pruebas)
+        // let listaDias = this.semana.getSemana();
+        // let disponibilidad = [];
+        // listaDias.forEach(dia => { 
+        //     if (Math.random() < 0.5) { disponibilidad.push(dia); } 
+        // });
+        // return disponibilidad;
 
-        let listaDias = this.semana.getSemana();
-        
-        // 50/50 de si el dia tiene cupos disponibles o no
-        let disponibilidad = [];
-        listaDias.forEach(dia => { 
-            if(Math.random() < 0.5) { disponibilidad.push(dia); } 
-        });
-
-        return disponibilidad;
+        // OPCIÓN B: Los datos reales de atraciones.json
+        const atr = this.atracciones.find(a => a.nombreAtraccion === idAtraccion);
+        if (!atr || !Array.isArray(atr.diasAbiertoAtraccion)) {
+            return [];
+        }
+        return atr.diasAbiertoAtraccion;
     }
 
     /**
@@ -75,28 +116,28 @@ export default class ConexionAlamacen {
      * @param {String} clave 
      * @param {any} valor 
      */
-    agregarLocalArrayActualizable(clave, valor){
+    agregarLocalArrayActualizable(clave, valor) {
         const respuesta = managerAlmacenamiento.obtener(clave, "local");
 
-        if(respuesta !== undefined && respuesta){
+        if (respuesta !== undefined && respuesta !== null) {
             const arrayDatos = respuesta.datos;
 
-            if( arrayDatos !== null && arrayDatos){
+            if (arrayDatos !== null && arrayDatos !== undefined) {
                 arrayDatos.push(valor);
                 respuesta.datos = arrayDatos;
-                
+
                 managerAlmacenamiento.actualizar(clave, respuesta, "local");
             }
         }
     }
 
     /**
-     * Recibe un DataForm y lo convierte en un objeto JSON
-     * @param {DataForm} form Datos en formato DataForm 
-     * @returns {JSON} objeto JSON con los datos del formulario
+     * Recibe un FormData y lo convierte en un objeto JSON plano
+     * @param {FormData} form Datos en formato FormData 
+     * @returns {Object} objeto JSON con los datos del formulario
      */
-    dataFormToJSON(form){
-        const json = Array.from(form).reduce( (objeto, [key, value]) => {
+    dataFormToJSON(form) {
+        const json = Array.from(form).reduce((objeto, [key, value]) => {
             objeto[key] = value;
             return objeto;
         }, {});
@@ -105,28 +146,28 @@ export default class ConexionAlamacen {
     }
 
     /**
-     * Recibe los datos de la subscripcion a la newsletter y los guarda en el storage
-     * @param {DataForm} subscripcionForm FormData con los datos de la subscripcion
+     * Recibe los datos de la subscripción a la newsletter y los guarda en el storage
+     * @param {FormData} subscripcionForm FormData con los datos de la subscripcion
      */
-    ingresarInformacionNewsletter( subscripcionForm ){
+    ingresarInformacionNewsletter(subscripcionForm) {
         const subscripcion = this.dataFormToJSON(subscripcionForm);
         this.agregarLocalArrayActualizable(this.keys.newsletter, subscripcion);
     }
 
     /**
-     * Recibe el objeto itinerario y los guarda en el storage
+     * Recibe el objeto itinerario y lo guarda en el storage
      * @param {Itinerario} itinerarioObj el objeto itinerario
      */
-    ingresarInformacionItinerario( itinerarioObj ){
+    ingresarInformacionItinerario(itinerarioObj) {
         const itinerario = itinerarioObj.toJSON();
         this.agregarLocalArrayActualizable(this.keys.itinerarios, itinerario);
     }
 
     /**
      * Recibe los datos de la reserva y los guarda en el storage
-     * @param {DataForm} reservaForm
+     * @param {FormData} reservaForm
      */
-    ingresarInformacionReservas( reservaForm ){
+    ingresarInformacionReservas(reservaForm) {
         const reserva = this.dataFormToJSON(reservaForm);
         this.agregarLocalArrayActualizable(this.keys.reservas, reserva);
     }

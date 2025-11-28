@@ -6,6 +6,8 @@ import Semana from './models/Semana.js';
 import Validador from './models/Validador.js';
 
 const conexionAlamacen = new ConexionAlamacen();
+await conexionAlamacen.ready;   // esperamos a que atraciones.json se cargue
+
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
 
