@@ -2,13 +2,13 @@ import FiltroAtracciones from "./FiltroAtracciones.js";
 import ConexionAlmacen from "./ConexionAlmacen.js";
 
 export default class Reserva{
-    conexionAlamacen;
+    conexionAlmacen;
     filtroAtracciones;
     keysObligatorias;
     datosReserva;
 
     constructor(){
-        this.conexionAlamacen = new ConexionAlmacen();
+        this.conexionAlmacen = new ConexionAlmacen();
         this.filtroAtracciones = new FiltroAtracciones();
         this.keysObligatorias = ["atraccion", "visitantes", "disponibilidad", "email"];
         this.datosReserva = {};
@@ -30,7 +30,7 @@ export default class Reserva{
         if( Object.keys(resultado).length === this.keysObligatorias.length){
             resultado["precio"] = this.calcularPrecio(resultado);
             this.datosReserva = resultado;
-            conexionAlamacen.ingresarInformacionReservas(this.datosReserva);
+            conexionAlmacen.ingresarInformacionReservas(this.datosReserva);
         }
         else{
             // error en los datos ingresados
