@@ -30,7 +30,7 @@ export default class Reserva{
         if( Object.keys(resultado).length === this.keysObligatorias.length){
             resultado["precio"] = this.calcularPrecio(resultado);
             this.datosReserva = resultado;
-            conexionAlmacen.ingresarInformacionReservas(this.datosReserva);
+            this.conexionAlmacen.ingresarInformacionReservas(this.datosReserva);
         }
         else{
             // error en los datos ingresados

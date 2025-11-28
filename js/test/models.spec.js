@@ -77,11 +77,12 @@ describe("Reserva", () => {
       "ingresarInformacionNewsletter"
     ]);
 
+    // La reserva internamente usa this.conexionAlmacen
     reserva.conexionAlmacen = mockConexion;
   });
 
   it("guardarReserva: almacena correctamente los datos", () => {
-    // Simulamos lo que hace Array.from(new FormData(form))
+    // Simulamos Array.from(new FormData(form))
     const keyValueArray = [
       ["atraccion", "Test"],
       ["disponibilidad", "Lunes"],
@@ -107,7 +108,7 @@ describe("Reserva", () => {
 
     expect(resultado).toEqual(jasmine.objectContaining({
       atraccion: jasmine.any(String),
-      // lo dejo más laxo porque puede ser string o number según tu modelo
+      // puede ser string o número según tu implementación → lo dejamos flexible
       visitantes: jasmine.anything(),
       email: jasmine.any(String)
     }));
@@ -197,23 +198,24 @@ describe("Itinerario", () => {
 //
 // 5) FiltroAtracciones
 //
-//
-// 5) FiltroAtracciones
-//
 describe("FiltroAtracciones", () => {
   let filtro;
   let mockConexion;
 
   beforeEach(() => {
-    mockConexion = jasmine.createSpyObj("conexionAlmacen", [
+    mockConexion = jasmine.createSpyObj("ConexionAlmacen", [
       "solicitarInformacionAtracciones"
     ]);
 
-    window.conexionAlmacen = mockConexion;
-
+    // Instancia real del filtro
     filtro = new FiltroAtracciones();
 
+    // Forzamos a que use nuestro mock en lugar de la conexión real
+    // (cubriendo ambos posibles nombres)
     filtro.conexionAlmacen = mockConexion;
+    filtro.conexionAlamacen = mockConexion;
+    window.conexionAlmacen = mockConexion;
+    window.conexionAlamacen = mockConexion;
   });
 
   // Tests de constructor
@@ -227,29 +229,35 @@ describe("FiltroAtracciones", () => {
     const atraccionesMock = [
       {
         nombreAtraccion: "Apta 1",
-        momentoAtraccion: [1],
-        horarioAtraccion: [0],
-        tipoActividadAtraccion: [1],
-        grupoObjetivoAtraccion: [1]
+        // Abierta en semana (lunes → jueves)
+        diasAbiertoAtraccion: ["lunes", "martes", "miercoles"],
+        // Turno de día
+        turnoAtraccion: ["dia"],
+        // Actividad 1 → "cultura"
+        estiloAtraccion: ["cultura"],
+        // Grupo 1 → "familia"
+        gruposRecomendadosAtraccion: ["familia"]
       },
       {
         nombreAtraccion: "Apta 2",
-        momentoAtraccion: [1],
-        horarioAtraccion: [0],
-        tipoActividadAtraccion: [1],
-        grupoObjetivoAtraccion: [1]
+        diasAbiertoAtraccion: ["martes"],
+        turnoAtraccion: ["dia"],
+        estiloAtraccion: ["cultura"],
+        gruposRecomendadosAtraccion: ["familia"]
       },
       {
         nombreAtraccion: "No apta",
-        momentoAtraccion: [2],
-        horarioAtraccion: [1],
-        tipoActividadAtraccion: [2],
-        grupoObjetivoAtraccion: [2]
+        // Solo finde
+        diasAbiertoAtraccion: ["sabado", "domingo"],
+        turnoAtraccion: ["noche"],
+        estiloAtraccion: ["fiesta"],
+        gruposRecomendadosAtraccion: ["amigos"]
       }
     ];
 
     mockConexion.solicitarInformacionAtracciones.and.returnValue(atraccionesMock);
 
+    // 1 = semana, 0 = día, 1 = cultura, 1 = familia
     const resultado = filtro.buscarAtracciones([1], [0], [1], [1]);
 
     expect(mockConexion.solicitarInformacionAtracciones).toHaveBeenCalled();
@@ -263,22 +271,23 @@ describe("FiltroAtracciones", () => {
     const atraccionesMock = [
       {
         nombreAtraccion: "No apta 1",
-        momentoAtraccion: [2],
-        horarioAtraccion: [1],
-        tipoActividadAtraccion: [2],
-        grupoObjetivoAtraccion: [2]
+        diasAbiertoAtraccion: ["sabado", "domingo"],
+        turnoAtraccion: ["noche"],
+        estiloAtraccion: ["fiesta"],
+        gruposRecomendadosAtraccion: ["amigos"]
       },
       {
         nombreAtraccion: "No apta 2",
-        momentoAtraccion: [2],
-        horarioAtraccion: [1],
-        tipoActividadAtraccion: [3],
-        grupoObjetivoAtraccion: [3]
+        diasAbiertoAtraccion: ["sabado"],
+        turnoAtraccion: ["noche"],
+        estiloAtraccion: ["deporte"],
+        gruposRecomendadosAtraccion: ["desconocidos"]
       }
     ];
 
     mockConexion.solicitarInformacionAtracciones.and.returnValue(atraccionesMock);
 
+    // Buscamos semana + día + cultura + familia → no matchea ninguna
     const resultado = filtro.buscarAtracciones([1], [0], [1], [1]);
 
     expect(mockConexion.solicitarInformacionAtracciones).toHaveBeenCalled();
@@ -354,58 +363,68 @@ describe("ConexionAlmacen", () => {
 // 7) Tests de integración clave
 //
 describe("Integración entre modelos", () => {
+  let mockConexion;
+
+  beforeEach(() => {
+    mockConexion = jasmine.createSpyObj("ConexionAlmacen", [
+      "solicitarInformacionAtracciones",
+      "ingresarInformacionReservas"
+    ]);
+
+    // Por si algún modelo mira el global:
+    window.conexionAlmacen = mockConexion;
+  });
 
   it("FiltroAtracciones usa Validador para buscar", () => {
     const filtro = new FiltroAtracciones();
-    
     expect(filtro.validador instanceof Validador).toBeTrue();
   });
 
   it("Itinerario usa Semana para controlar días", () => {
     const itinerario = new Itinerario();
-    
     expect(itinerario.semana instanceof Semana).toBeTrue();
   });
 
   it("Flujo completo: Buscar y crear reserva", () => {
-    // Mock global de conexión
-    const mockConexion = jasmine.createSpyObj("conexionAlmacen", [
-      "solicitarInformacionAtracciones",
-      "ingresarInformacionReservas"
-    ]);
-    window.conexionAlmacen = mockConexion;
-
     const filtro = new FiltroAtracciones();
     const reserva = new Reserva();
 
+    // Inyectamos el mock explícitamente en ambos modelos
+    filtro.conexionAlmacen = mockConexion;
+    reserva.conexionAlmacen = mockConexion;
+
+    // Mock que respeta la estructura real que espera FiltroAtracciones
     const atraccionesMock = [
-      { momento: [1], horario: [0], actividad: [1], grupo: [1], titulo: "Test" }
+      {
+        nombreAtraccion: "Test",
+        diasAbiertoAtraccion: ["lunes", "martes"],        // semana
+        turnoAtraccion: ["dia"],                          // 0 → "dia"
+        estiloAtraccion: ["cultura"],                     // 1 → "cultura"
+        gruposRecomendadosAtraccion: ["familia"]          // 1 → "familia"
+      }
     ];
 
     mockConexion.solicitarInformacionAtracciones.and.returnValue(atraccionesMock);
 
+    // 1 = semana, 0 = día, 1 = cultura, 1 = familia
     const atracciones = filtro.buscarAtracciones([1], [0], [1], [1]);
 
-    // Siempre hay un expect: si esto falla lo sabés
+    // Aseguramos que haya resultados
     expect(atracciones.length).toBeGreaterThan(0);
 
+    // Simulamos el formulario de reserva
     const form = document.createElement("form");
     form.innerHTML = `
-      <input name="atraccion" value="${atracciones[0].titulo}">
+      <input name="atraccion" value="${atracciones[0].nombreAtraccion}">
       <input name="visitantes" value="2">
       <input name="disponibilidad" value="Lunes">
       <input name="email" value="test@test.com">
     `;
 
-    const datos = {};
-    new FormData(form).forEach((value, key) => {
-      datos[key] = value;
-    });
+    // Igual que en la app: Array.from(new FormData(form))
+    const keyValueArray = Array.from(new FormData(form));
 
-    // Forzamos a que reserva use el mock
-    reserva.conexionAlmacen = mockConexion;
-
-    reserva.guardarReserva(datos);
+    reserva.guardarReserva(keyValueArray);
     const resultado = reserva.obtenerReserva();
 
     expect(resultado.atraccion).toBe("Test");
