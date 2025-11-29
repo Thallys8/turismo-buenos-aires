@@ -1,8 +1,11 @@
 // js/models/FiltroAtracciones.js
+
+import ConexionAlmacen from "./ConexionAlmacen.js";
 import Validador from "./Validador.js";
 
 export default class FiltroAtracciones {
     constructor() {
+        this.conexionAlmacen = new ConexionAlmacen();
         this.validador = new Validador();
     }
 
@@ -37,7 +40,7 @@ export default class FiltroAtracciones {
      * Interpreta el array `momento` que viene del formulario.
      * momento: [1]  -> solo semana
      * momento: [2]  -> solo finde
-     * momento: [1,2] o vacío -> no filtra por momento
+     * momento: [1,2] o vacío -> no filtra por momento y mostraria la las opciones que tienen las 2 condiciones
      */
     _interpretarMomento(momentoArray) {
         if (!momentoArray || momentoArray.length === 0) {
@@ -133,9 +136,9 @@ export default class FiltroAtracciones {
      * @returns {Object[]} lista de atracciones que cumplen los filtros
      */
     buscarAtracciones(momento, horario, actividad, grupo) {
-        const conexion = window.conexionAlamacen;
+        const conexion = window.conexionAlmacen;
         if (!conexion) {
-            console.warn("No se encontró window.conexionAlamacen. Verificá el orden de los scripts.");
+            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
             return [];
         }
 
@@ -202,4 +205,30 @@ export default class FiltroAtracciones {
             return okMomento && okTurno && okEstilo && okGrupo;
         });
     }
+
+    /**
+     * Busca una atracción por su nombre exacto usando los datos cargados
+     * desde ConexionAlmacen (atracciones.json).
+     * @param {string} nombre Nombre de la atracción a buscar
+     * @returns {Object|null} Objeto atracción o null si no se encuentra
+     */
+    buscarAtraccionPorNombre(nombre) {
+        const conexion = window.conexionAlmacen;
+
+        if (!conexion) {
+            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
+            return null;
+        }
+
+        const todas = conexion.solicitarInformacionAtracciones();
+        if (!Array.isArray(todas)) {
+            return null;
+        }
+
+        // Coincidencia exacta por nombreAtraccion
+        const encontrada = todas.find(atr => atr.nombreAtraccion === nombre);
+
+        return encontrada || null;
+    }
+
 }

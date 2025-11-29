@@ -5,7 +5,7 @@ import Semana from "./Semana.js";
 /**
  * Maneja las conexiones con el almacenamiento interno en storage.js
  */
-export default class ConexionAlamacen {
+export default class ConexionAlmacen {
     semana;
     keys;
     atracciones;
@@ -29,11 +29,11 @@ export default class ConexionAlamacen {
     }
 
     /**
-     * Carga js/api/atraciones.json y lo guarda en memoria y en localStorage
+     * Carga js/api/atracciones.json y lo guarda en memoria y en localStorage
      */
-    async _cargarAtracciones() {
+    async _cargarAtracciones() { 
         try {
-            const resp = await fetch("./js/api/atraciones.json");
+            const resp = await fetch("/js/api/atracciones.json");
             const data = await resp.json();
 
             this.atracciones = data.atracciones || [];
@@ -47,7 +47,7 @@ export default class ConexionAlamacen {
                 "local"
             );
         } catch (error) {
-            console.error("Error cargando atraciones.json", error);
+            console.error("Error cargando atracciones.json", error);
             this.atracciones = [];
         }
     }
@@ -103,7 +103,7 @@ export default class ConexionAlamacen {
         // });
         // return disponibilidad;
 
-        // OPCIÓN B: Los datos reales de atraciones.json
+        // OPCIÓN B: Los datos reales de atracciones.json
         const atr = this.atracciones.find(a => a.nombreAtraccion === idAtraccion);
         if (!atr || !Array.isArray(atr.diasAbiertoAtraccion)) {
             return [];
