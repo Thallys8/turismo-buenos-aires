@@ -1,39 +1,58 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="UTF-8">
     <title>Prueba Jasmine</title>
-    <!-- Jasmine CSS --> 
-    <link rel="shortcut icon" type="image/png" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine_favicon.png"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.css">
 
-    <!-- Jasmine Core JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine-html.min.js"></script> 
+    <!-- Jasmine CSS -->
+    <link rel="shortcut icon" type="image/png"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine_favicon.png">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.css">
+
+    <!-- Jasmine core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/jasmine-html.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot1.min.js"></script>
   </head>
 
   <body>
     <h2 style="text-align:center; font-family:sans-serif;">Pruebas Jasmine</h2>
 
+    <!-- Mock de AOS para que script.js no rompa -->
+    <script>
+      window.__AOS_INIT_CALLED__ = false;
+      window.AOS = {
+        init() {
+          window.__AOS_INIT_CALLED__ = true;
+        }
+      };
+    </script>
 
-    <!-- IMPORTANTE: Cargar los modelos primero -->
-    <script type="module" src="../models/ConexionAlmacen.js"></script>
-    <script type="module" src="../models/FiltroAtracciones.js"></script>
-    <script type="module" src="../models/Itinerario.js"></script>
-    <script type="module" src="../models/Reserva.js"></script>
-    <script type="module" src="../models/Semana.js"></script>
-    <script type="module" src="../models/Validador.js"></script>
-    <script type="module" src="../api/apiService.js"></script>
+    <!-- Cargamos TODO lo nuestro como ES modules *antes* de boot1 -->
+    <script type="module">
+      // Modelos
+      import "../models/ConexionAlmacen.js";
+      import "../models/FiltroAtracciones.js";
+      import "../models/Itinerario.js";
+      import "../models/Reserva.js";
+      import "../models/Semana.js";
+      import "../models/Validador.js";
 
-    <!-- Código fuente (CORREGIDO: ahora apunta a ../script.js desde js/test/) --> 
-    <script type="module" src="../script.js"></script> 
+      // Servicio de API
+      import "../api/apiService.js";
 
-    <!-- Tests --> 
-    <script type="module" src="script.spec.js"></script>
-    <script type="module" src="models.spec.js"></script>
-    <script type="module" src="api.spec.js"></script>
+      // Código principal
+      import "../script.js";
 
+      // Specs
+      import "./script.spec.js";
+      import "./models.spec.js";
+      import "./api.spec.js";
+      import "./library.spec.js";
+    </script>
+
+    <!-- boot1: arranca Jasmine *después* de que se cargaron los módulos de arriba -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot1.min.js"></script>
   </body>
 </html>

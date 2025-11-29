@@ -6,6 +6,8 @@ import Semana from './models/Semana.js';
 import Validador from './models/Validador.js';
 
 const conexionAlamacen = new ConexionAlamacen();
+await conexionAlamacen.ready;   // esperamos a que atracciones.json se cargue
+
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
 
@@ -568,7 +570,7 @@ function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
     return elementoHTML;
 }
 /**
- * Crea las tarjetas de las atraciones utilizando la informacion almacenada
+ * Crea las tarjetas de las atracciones utilizando la informacion almacenada
  * @param {object} criterios parametros de las atracciones deseadas
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos

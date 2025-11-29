@@ -1,59 +1,234 @@
+// js/models/FiltroAtracciones.js
+
 import ConexionAlmacen from "./ConexionAlmacen.js";
-import Validador from "./Validador.js"
+import Validador from "./Validador.js";
 
-/**
- * Se encarga de almacenar y ejecutar filtros para la informacion almacenada
- */
 export default class FiltroAtracciones {
-    validador;
-    conexionAlmacen;
-
-    constructor(){
-        this.validador = new Validador();
+    constructor() {
         this.conexionAlmacen = new ConexionAlmacen();
+        this.validador = new Validador();
     }
 
     /**
-     * Solicita al backend que devuelva las atracciones que cumplen con los requisitos
-     * 
-     * @param {String[]} momento - Los momentos de la semana seleccionados
-     * @param {String[]} horario - Los horarios del dia seleccionados
-     * @param {String[]} actividad - Los tipos de actividades seleccionados
-     * @param {String[]} grupo - Los tipos de grupos seleccionados
-     * @returns {Object[]} Las atracciones que cumplan con los parametros
+     * Normaliza un nombre de día para poder compararlo sin problemas de mayúsculas/acentos.
+     * ej: "Miércoles" → "miercoles"
      */
-    buscarAtracciones(momento, horario, actividad, grupo){
-        const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
-        let atraccionesFiltradas = [];
+    _normalizarDia(dia) {
+        return dia
+            .toLowerCase()
+            .normalize("NFD")               // separa acentos
+            .replace(/[\u0300-\u036f]/g, ""); // elimina acentos
+    }
 
-        if(arrayAtracciones != null && arrayAtracciones){
-            atraccionesFiltradas = arrayAtracciones.filter( atraccion => {
-                let momentoOk = this.validador.algunValorExiste(momento, atraccion.momento);
-                let horarioOk = this.validador.algunValorExiste(horario, atraccion.horario);
-                let actividadOk = this.validador.algunValorExiste(actividad, atraccion.actividad);
-                let grupoOk = this.validador.algunValorExiste(grupo, atraccion.grupo);
+    /**
+     * A partir de la lista de días de una atracción, determina si esa atracción
+     * abre en días de semana y/o en fin de semana.
+     */
+    _clasificarMomentoDesdeDias(diasAbiertoAtraccion = []) {
+        const diasNorm = diasAbiertoAtraccion.map(d => this._normalizarDia(d));
 
-                return momentoOk && horarioOk && actividadOk && grupoOk;
-            });
+        const diasSemana = ["lunes", "martes", "miercoles", "jueves"];
+        const diasFinde  = ["viernes", "sabado", "domingo"];
+
+        const tieneSemana = diasSemana.some(d => diasNorm.includes(d));
+        const tieneFinde  = diasFinde.some(d => diasNorm.includes(d));
+
+        return { tieneSemana, tieneFinde };
+    }
+
+    /**
+     * Interpreta el array `momento` que viene del formulario.
+     * momento: [1]  -> solo semana
+     * momento: [2]  -> solo finde
+     * momento: [1,2] o vacío -> no filtra por momento y mostraria la las opciones que tienen las 2 condiciones
+     */
+    _interpretarMomento(momentoArray) {
+        if (!momentoArray || momentoArray.length === 0) {
+            return null; // sin filtro
         }
-        return atraccionesFiltradas;
+
+        // Convertimos a número por las dudas
+        const valores = Array.from(new Set(momentoArray.map(m => Number(m))));
+        const incluyeSemana = valores.includes(1);
+        const incluyeFinde  = valores.includes(2);
+
+        // Si tiene ambos (1 y 2), es como no filtrar por momento
+        if (incluyeSemana && incluyeFinde) {
+            return null;
+        }
+
+        return {
+            filtrarSemana: incluyeSemana,
+            filtrarFinde: incluyeFinde
+        };
     }
 
     /**
-     * Busca la atraccion segun el nombre recibido como parametro
-     * @param {String} nombre 
-     * @returns {object} Los datos de la atraccion o null
+     * Mapea el horario (0/1) a "dia"/"noche" para comparar con turnoAtraccion.
      */
-    buscarAtraccionPorNombre( nombre ){
-        const arrayAtracciones = this.conexionAlmacen.solicitarInformacionAtracciones();
+    _mapearTurno(horarioArray) {
+        if (!horarioArray || horarioArray.length === 0) return null;
 
-        let busqueda = arrayAtracciones.filter( atraccion => {
-            return atraccion.titulo.normalize() === nombre.normalize();
+        const mapaTurno = {
+            0: "dia",
+            1: "noche",
+            "0": "dia",
+            "1": "noche"
+        };
+
+        return horarioArray.map(v => mapaTurno[v] || v);
+    }
+
+    /**
+     * Mapea la actividad (número) a strings que coincidan con estiloAtraccion.
+     * Ajustá este mapa según los value reales de tu <select name="tipo-actividad">.
+     */
+    _mapearActividad(actividadArray) {
+        if (!actividadArray || actividadArray.length === 0) return null;
+
+        const mapaActividad = {
+            0: "cualquiera",
+            1: "cultura",
+            2: "relajacion",
+            3: "fiesta",
+            4: "deporte",
+            5: "aventura",
+            "0": "cualquiera",
+            "1": "cultura",
+            "2": "relajacion",
+            "3": "fiesta",
+            "4": "deporte",
+            "5": "aventura"
+        };
+
+        return actividadArray.map(v => mapaActividad[v] || v);
+    }
+
+    /**
+     * Mapea el grupo (número) a strings que coincidan con gruposRecomendadosAtraccion.
+     * Ajustá según los value reales de <select name="tipo-grupo">.
+     */
+    _mapearGrupo(grupoArray) {
+        if (!grupoArray || grupoArray.length === 0) return null;
+
+        const mapaGrupo = {
+            0: "cualquiera",
+            1: "familia",
+            2: "amigos",
+            3: "pareja",
+            4: "desconocidos",
+            "0": "cualquiera",
+            "1": "familia",
+            "2": "amigos",
+            "3": "pareja",
+            "4": "desconocidos"
+        };
+
+        return grupoArray.map(v => mapaGrupo[v] || v);
+    }
+
+    /**
+     * Buscar atracciones que cumplan con los criterios.
+     * @param {Number[]|String[]} momento   1 = semana, 2 = finde
+     * @param {Number[]|String[]} horario   0=dia,1=noche → turnoAtraccion
+     * @param {Number[]|String[]} actividad → estiloAtraccion
+     * @param {Number[]|String[]} grupo     → gruposRecomendadosAtraccion
+     * @returns {Object[]} lista de atracciones que cumplen los filtros
+     */
+    buscarAtracciones(momento, horario, actividad, grupo) {
+        const conexion = window.conexionAlmacen;
+        if (!conexion) {
+            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
+            return [];
+        }
+
+        const todas = conexion.solicitarInformacionAtracciones();
+
+        // Interpretamos filtros
+        const filtroMomento = this._interpretarMomento(momento);
+        const turnosFiltrar  = this._mapearTurno(horario);
+        const estilosFiltrar = this._mapearActividad(actividad);
+        const gruposFiltrar  = this._mapearGrupo(grupo);
+
+        // Si literalmente no hay ningún filtro activo en nada:
+        if (!filtroMomento && !turnosFiltrar && !estilosFiltrar && !gruposFiltrar) {
+            return todas;
+        }
+
+        return todas.filter(atr => {
+            let okMomento = true;
+            let okTurno   = true;
+            let okEstilo  = true;
+            let okGrupo   = true;
+
+            // MOMENTO (semana / finde) según diasAbiertoAtraccion
+            if (filtroMomento) {
+                const { tieneSemana, tieneFinde } = this._clasificarMomentoDesdeDias(
+                    atr.diasAbiertoAtraccion || []
+                );
+
+                // Si se pide semana, debe haber algún día de semana
+                if (filtroMomento.filtrarSemana && !tieneSemana) {
+                    okMomento = false;
+                }
+
+                // Si se pide finde, debe haber algún día de finde
+                if (filtroMomento.filtrarFinde && !tieneFinde) {
+                    okMomento = false;
+                }
+            }
+
+            // HORARIO: turnoAtraccion ["dia","noche"]
+            if (turnosFiltrar) {
+                okTurno = this.validador.algunValorExiste(
+                    atr.turnoAtraccion || [],
+                    turnosFiltrar
+                );
+            }
+
+            // ACTIVIDAD: estiloAtraccion ["cultura","relajacion",...]
+            if (estilosFiltrar) {
+                okEstilo = this.validador.algunValorExiste(
+                    atr.estiloAtraccion || [],
+                    estilosFiltrar
+                );
+            }
+
+            // GRUPO: gruposRecomendadosAtraccion ["familia","amigos",...]
+            if (gruposFiltrar) {
+                okGrupo = this.validador.algunValorExiste(
+                    atr.gruposRecomendadosAtraccion || [],
+                    gruposFiltrar
+                );
+            }
+
+            return okMomento && okTurno && okEstilo && okGrupo;
         });
-
-        if(busqueda.length > 0){
-            return busqueda[0];
-        }
-        return null; 
     }
+
+    /**
+     * Busca una atracción por su nombre exacto usando los datos cargados
+     * desde ConexionAlmacen (atracciones.json).
+     * @param {string} nombre Nombre de la atracción a buscar
+     * @returns {Object|null} Objeto atracción o null si no se encuentra
+     */
+    buscarAtraccionPorNombre(nombre) {
+        const conexion = window.conexionAlmacen;
+
+        if (!conexion) {
+            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
+            return null;
+        }
+
+        const todas = conexion.solicitarInformacionAtracciones();
+        if (!Array.isArray(todas)) {
+            return null;
+        }
+
+        // Coincidencia exacta por nombreAtraccion
+        const encontrada = todas.find(atr => atr.nombreAtraccion === nombre);
+
+        return encontrada || null;
+    }
+
 }
