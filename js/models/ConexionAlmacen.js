@@ -31,9 +31,9 @@ export default class ConexionAlmacen {
     /**
      * Carga js/api/atracciones.json y lo guarda en memoria y en localStorage
      */
-    async _cargarAtracciones() {
+    async _cargarAtracciones() { 
         try {
-            const resp = await fetch("./js/api/atracciones.json");
+            const resp = await fetch("/js/api/atracciones.json");
             const data = await resp.json();
 
             this.atracciones = data.atracciones || [];
