@@ -1,4 +1,3 @@
-
 import ConexionAlamacen from './models/ConexionAlmacen.js';
 import FiltroAtracciones from './models/FiltroAtracciones.js';
 import Itinerario from './models/Itinerario.js';
@@ -7,11 +6,15 @@ import Semana from './models/Semana.js';
 import Validador from './models/Validador.js';
 
 const conexionAlamacen = new ConexionAlamacen();
+await conexionAlamacen.ready;   // esperamos a que atracciones.json se cargue
+
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
 
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
+
+AOS.init();
 
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
@@ -524,10 +527,12 @@ if(botonItinerario != null && botonItinerario)
  * @param {*} datosAtraccion Los datos de la atraccion
  * @param {*} callback Callback para el boton de reserva
  */
-function crearTarjetaHTML( datosAtraccion, callback ){
+function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
     let elementoHTML = document.createElement("article");
     elementoHTML.className = "tarjeta col-6 container";
-
+    elementoHTML.setAttribute("data-aos", fadeStyle);
+    elementoHTML.setAttribute("data-aos-delay", "400");
+    
     elementoHTML.innerHTML = `
         <div class="row h-md-100">
             <hgroup class="col-12">
@@ -565,7 +570,7 @@ function crearTarjetaHTML( datosAtraccion, callback ){
     return elementoHTML;
 }
 /**
- * Crea las tarjetas de las atraciones utilizando la informacion almacenada
+ * Crea las tarjetas de las atracciones utilizando la informacion almacenada
  * @param {object} criterios parametros de las atracciones deseadas
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
@@ -576,8 +581,11 @@ function crearAtracciones( criterios, callbackReserva )
     const listaDatos = filtroAtracciones.buscarAtracciones(
         criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
     );
+
+    let fadeStyle = "fade-right";
     listaDatos.forEach( atraccion => {
-        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva) );
+        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva, fadeStyle) );
+        fadeStyle = (fadeStyle === "fade-right") ? "fade-left" : "fade-right";
     });
 
     return nuevasTarjetas;
