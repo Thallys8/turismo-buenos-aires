@@ -230,6 +230,9 @@
 | Tests Fallando | 0 ❌ |
 | Porcentaje de Éxito | 100% |
 
+******************** Parei aqui, tenho que terminar *****************
+
+
 ### Cobertura por Tipo de Test
 | Tipo | Cantidad | Porcentaje |
 |------|----------|------------|
