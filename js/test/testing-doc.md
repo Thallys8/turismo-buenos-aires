@@ -25,180 +25,198 @@
 
 ## Suites de Tests
 
-### Suite 1: Validador
+### Suite 1: Scripts
 **Funciones Testeadas:**
-- `algunValorExiste()` - Verifica si hay valores en común entre dos arrays
-- `esEmail()` - Valida formato de correo electrónico
+
+#### Flujo 1 - handlerSubmitBusqueda()
+- Debe procesar correctamente parámetros válidos
+- Debe aceptar arrays vacíos como parámetros
+- Debe manejar resultados sin atracciones mostrando mensaje apropiado
+- Debe manejar parámetros null o undefined sin lanzar error
+- Debe limpiar elementos anteriores antes de agregar nuevos
+- Debe usar el filtro de atracciones para buscar
+
+#### Flujo 2 - Suscripción a Newsletter
+- Debe prevenir el comportamiento por defecto del formulario
+- Debe procesar los datos del formulario
+- Debe crear un popup de confirmación
+- Debe aceptar un formulario con campos vacíos
+- Debe manejar formularios sin checkboxes seleccionados
+- No debe lanzar errores con valores básicos
+- Debe extraer correctamente los datos del FormData
+
+#### Flujo 3 - Creación de reservas de atracciones
+##### generarMenuReserva()
+- Debe procesar el evento correctamente
+- Debe crear un popup con formulario cuando hay disponibilidad
+##### concretarReserva()
+- Debe prevenir el comportamiento por defecto
+- Debe crear un popup de confirmación con los datos
+- Debe manejar valores de atracción válidos
+- Debe manejar formularios básicos sin lanzar error
+
+#### Flujo 4 - Creación de Itinerario
+##### generarItinerario()
+- Debe ejecutarse sin lanzar errores
+- Debe crear un popup con formulario de itinerario
+##### almacenarDiaItinerario()
+- Debe procesar el formulario sin errores
+- Debe manejar la inicialización del itinerario
+- No debe lanzar error al generar itinerario
 
 **Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | algunValorExiste: detecta valores en común | Comparación de Tipos Primitivos |
-| 2 | esEmail: valida formato de email correctamente | Validación de Formato |
+| ## |                                                      Descripción                                                           |                     Tipo                      |
+|----|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| 01 | Verifica que, al inicializar la página, se generen correctamente las tarjetas de atracciones en el contenedor del DOM.     | Happy path / integración DOM                  |
+| 03 | Comprueba que las tarjetas creadas alternen correctamente las animaciones AOS (izquierda/derecha).                         | Lógica de presentación / integración con AOS  |
+| 04 | Verifica que el handler de búsqueda llama `preventDefault()` y no recarga la página.                                       | Validación de comportamiento de formulario    |
+| 05 | Comprueba que, al enviar el formulario, se invoca el filtro con los criterios seleccionados.                               | Lógica de negocio + integración DOM/modelos   |
+| 06 | Valida que los resultados devueltos por `FiltroAtracciones` se representen en el DOM (lista o tarjetas filtradas).         | Happy path / integración DOM                  |
+| 07 | Verifica que `concretarReserva` llame `preventDefault()` para evitar el envío nativo del formulario.                       | Validación de formulario / manejo de eventos  |
+| 08 | Comprueba que, al guardar la reserva, se muestre en el DOM un popup o mensaje con los datos de la reserva.                 | Lógica de UI / integración DOM                |
+| 09 | Simula un formulario de reserva estándar y verifica que `concretarReserva` no arroje excepciones.                          | Robustez / manejo de errores                  |
+| 10 | Verifica que el formulario de itinerario construye correctamente el `FormData` y llama a `Itinerario.cargarDiaItinerario`. | Integración DOM/modelos / happy path          |
+| 11 | Comprueba que, tras guardar un día, el texto “día en proceso” del DOM se actualiza al siguiente día.                       | Lógica de negocio + actualización de interfaz |
+| 12 | Verifica que, al completar los 7 días, se muestre un mensaje o estado de itinerario completo en la interfaz.               | Caso de borde / integración DOM               |
+| 13 | Comprueba que el formulario de newsletter evita el submit nativo y llama a `ConexionAlmacen.ingresarInformacionNewsletter`.| Integración DOM/modelo / validación           |
+| 14 | Verifica que solo se procese el envío si el email cumple el formato válido (usando `Validador.esEmail`).                   | Validación de datos de entrada                |
+
 
 ---
 
-### Suite 2: Semana
+### Suite 2: Modelos de POO
 **Funciones Testeadas:**
-- `getDias()` - Retorna el nombre del día según índice (0-6)
+
+#### FiltroAtracciones
+- buscarAtracciones: devuelve array vacío sin coincidencias
+- Se inicializa correctamente con método buscarAtracciones
+- buscarAtracciones: filtra atracciones según criterios
+
+#### Semana
+- getDias: devuelve el día correcto según el índice
+- getDias: devuelve todos los días en orden
+
+#### Integración entre modelos
+- Flujo completo: Buscar y crear reserva
+- Itinerario usa Semana para controlar días
+- FiltroAtracciones usa Validador para buscars
+
+#### Reserva
+- obtenerReserva: devuelve objeto con propiedades correctas
+- guardarReserva: almacena correctamente los datos
+
+#### Itinerario
+- cargarDiaItinerario: agrega día al itinerario
+- toJSON: devuelve JSON válido con propiedad 'datos'
+- getItinerario: devuelve array de días cargados
+- diaEnProceso: devuelve el siguiente día a cargar
+- estaCompleto: valida correctamente cuando tiene 7 días
+
+#### FiltroAtracciones
+- buscarAtracciones: filtra atracciones según criterios
+- Se inicializa correctamente con método buscarAtracciones
+- buscarAtracciones: devuelve array vacío sin coincidencias
+
+#### ConexionAlmacen
+- ingresarInformacionReservas: acepta FormData sin error
+- solicitarDisponibilidad: devuelve array de días
+- solicitarInformacionAtracciones: devuelve objeto con datos array
+- ingresarInformacionNewsletter: acepta FormData sin error
+- ingresarInformacionItinerario: acepta Itinerario sin error
 
 **Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | getDias: devuelve el día correcto según el índice | Comparación de Tipos Primitivos |
-| 2 | getDias: devuelve todos los días en orden | Operaciones con Arrays |
+| ## |                                             Descripción                                                  |                    Tipo                      |
+|----|----------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| 01 | Verifica que detecta correctamente cuando dos arrays comparten al menos un valor y cuando no.            | Lógica de negocio / happy path y negativo    |
+| 02 | Valida distintos formatos de email (correcto, con doble @, sin @, vacío).                                | Validación de formato / casos negativos      |
+| 03 | Comprueba que el índice 0 devuelve “lunes” y el 6 devuelve “domingo”.                                    | Lógica de negocio / caso de borde (extremos) |
+| 04 | Recorre todos los índices y verifica que los días se devuelven en el orden esperado.                     | Lógica de negocio / happy path               |
+| 05 | Guarda datos de una reserva creados desde un `FormData` y verifica que se almacenen correctamente.       | Happy path / persistencia de datos           |
+| 06 | Tras guardar una reserva, verifica que el objeto devuelto tenga las propiedades esperadas.               | Lógica de negocio / estructura de datos      |
+| 07 | Carga un día en el itinerario a partir de un `FormData` y verifica que se agregue al array interno.      | Happy path / lógica de negocio               |
+| 08 | Verifica que inicialmente es falso y pasa a verdadero al cargar los 7 días de la semana.                 | Lógica de negocio / caso de borde (umbral)   |
+| 09 | Comprueba que antes de cargar datos el día en proceso es “lunes” y luego avanza a “martes”.              | Lógica de negocio / flujo secuencial         |
+| 10 | Verifica que devuelve un array con los días cargados (tipo y longitud correctos).                        | Happy path / estructura de datos             |
+| 11 | Serializa el itinerario y valida que el JSON resultante tenga la propiedad `datos` como array.           | Serialización / validación de estructura     |
+| 12 | Comprueba que la instancia se inicializa con `validador` y `conexionAlmacen` definidos.                  | Inicialización                               |
+| 13 | Mockea la conexión y verifica que filtra las atracciones correctas según momento/horario/actividad/grupo.| Lógica de negocio / happy path               |
+| 14 | Mockea datos que no matchean los criterios y verifica que devuelve un array vacío.                       | Lógica de negocio / caso negativo            |
+| 15 | Verifica que el resultado esté definido y que sea un array (estructura básica de datos).                 | Validación de estructura / happy path        |
+| 16 | Comprueba que la función devuelve un array de días para una atracción dada.                              | Lógica de negocio simple / estructura        |
+| 17 | Si está implementado, verifica que acepta un `FormData` sin lanzar errores.                              | Robustez / validación de no error            |
+| 18 | Si está implementado, verifica que acepta un objeto `Itinerario` sin lanzar errores.                     | Robustez / validación de no error            |
+| 19 | Si está implementado, verifica que acepta un `FormData` de newsletter sin lanzar errores.                | Robustez / validación de no error            |
+| 20 | Comprueba que la instancia de `FiltroAtracciones` contenga internamente un `Validador`.                  | Integración                                  |
+| 21 | Verifica que `Itinerario` utilice internamente una instancia de `Semana`.                                | Integración                                  |
+| 22 | ockea las atracciones, las busca con `FiltroAtracciones`, arma un formulario y guarda la `Reserva`.      | Integración / happy path                     |
 
 ---
 
-### Suite 3: Reserva
+### Suite 3: Storage
 **Funciones Testeadas:**
-- `guardarReserva()` - Almacena datos de reserva desde FormData
-- `obtenerReserva()` - Retorna objeto con datos de reserva
-- `toJSON()` - Serializa reserva a formato JSON
+####  StorageUtil
+- Guarda y obtiene un objeto en localStorage
+- Guarda y obtiene un string en sessionStorage
+- Actualizar es equivalente a guardar
+- Eliminar borra la clave del storage
+- Listar devuelve solo las claves con el prefijo indicado
+- Limpiar borra todas las claves del storage seleccionado
+- Obtener devuelve null si el JSON está corrupto
 
 **Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | guardarReserva: almacena correctamente los datos | Operaciones con Objetos |
-| 2 | obtenerReserva: devuelve objeto con propiedades correctas | Validación de Estructura |
-| 3 | toJSON: devuelve JSON válido con propiedad 'datos' | Serialización |
+| ## |                                                  Descripción                                                      |                         Tipo                         |
+|----|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| 01 | Guarda un objeto en `localStorage` y lo obtiene verificando que el resultado sea igual al objeto original.        | Happy path / lógica de negocio / persistencia        |
+| 02 | Guarda un string en `sessionStorage`, espía `sessionStorage.setItem` y verifica que se haya llamado y leído bien. | Integración con API nativa / happy path / validación |
+| 03 | Verifica que `actualizar(clave, valor, "local")` termine llamando internamente a `localStorage.setItem` con JSON. | Lógica interna / equivalencia con `guardar`          |
+| 04 | Crea una clave en `localStorage`, llama a `eliminar(clave, "local")` y comprueba que `getItem` devuelva `null`.   | Lógica de negocio / happy path                       |
+| 05 | Crea varias claves, algunas con un prefijo común, y verifica que `listar(prefijo, "local")` devuelva solo esas.   | Lógica de negocio / filtrado / caso positivo         |
+| 06 | Carga varias claves en `localStorage`, ejecuta `limpiar("local")` y comprueba que el `length` quede en 0.         | Caso de limpieza total / lógica de negocio           |
+| 07 | Inserta manualmente un string inválido en `localStorage` y verifica que `obtener(clave, "local")` devuelva `null`.| Manejo de errores / robustez ante datos corruptos    |
 
 ---
 
-### Suite 4: Itinerario
+### Suite 4: API
 **Funciones Testeadas:**
-- `cargarDiaItinerario()` - Agrega un día al itinerario
-- `estaCompleto()` - Valida si se completaron los 7 días
-- `diaEnProceso()` - Retorna el siguiente día a cargar
-- `getItinerario()` - Retorna array de días cargados
-- `toJSON()` - Serializa itinerario a JSON
+####  API de atracciones - js/api/atracciones.json
+- Debe obtener las atracciones correctamente con fetch (respuesta exitosa)
+- Debe manejar un error HTTP (por ejemplo 404) al pedir un recurso inexistente
+- Debe manejar correctamente un error de red (fallo en fetch)
+- Debe procesar los datos de atracciones usando map, filter y reduce correctamente
+- Debe integrar los datos de atracciones en el DOM creando una lista de nombres
 
 **Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | cargarDiaItinerario: agrega día al itinerario | Operaciones con Arrays |
-| 2 | estaCompleto: valida correctamente cuando tiene 7 días | Validación de Estado |
-| 3 | diaEnProceso: devuelve el siguiente día a cargar | Cálculos y Algoritmos |
-| 4 | getItinerario: devuelve array de días cargados | Operaciones con Arrays |
-| 5 | toJSON: devuelve JSON válido con propiedad 'datos' | Serialización |
+| ## |                                                        Descripción                                                            |                        Tipo                     |
+|----|-------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| 01 | Realiza un `fetch("/js/api/atracciones.json")`, parsea el JSON y verifica que `atracciones` exista y sea un array.            | Happy path / integración con API (fetch + JSON) |
+| 02 | Intenta hacer `fetch` a un recurso inexistente (por ej. `recurso-inexistente.json`) y verifica que la respuesta no sea OK.    | Manejo de errores HTTP / validación de estado   |
+| 03 | Simula o testea un caso en el que el `fetch` falle (rechazo de promesa) y comprueba que el código captura la excepción.       | Manejo de errores de red / robustez             |
+| 04 | A partir del array de atracciones del JSON, usa `map/filter/reduce` para transformar/filtrar datos y valida el resultado.     | Lógica de negocio / procesamiento funcional     |
+| 05 | Carga las atracciones desde el JSON y crea dinámicamente elementos del DOM (por ejemplo, una lista de nombres) y los verifica.| Integración DOM + datos remotos / happy path    |
 
 ---
 
-### Suite 5: FiltroAtracciones
+### Suite 5: Library
 **Funciones Testeadas:**
-- Constructor - Inicializa validador y conexión
-- `buscarAtracciones()` - Filtra atracciones según criterios
+####  Librería AOS
+- Inicializa AOS al cargar la aplicación
+- Configura AOS con un objeto de configuración válido
+- Permite ser llamado sin lanzar errores
+- No rompe si AOS.init se llama múltiples veces
+- Expone la función init en window.AOS
+- No depende de elementos específicos del DOM para inicializar
+- Se puede reconfigurar sin errores
 
 **Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | se inicializa correctamente con validador y conexión | Tests de Constructor |
-| 2 | buscarAtracciones: filtra atracciones según criterios | Operaciones con Arrays |
-| 3 | buscarAtracciones: devuelve array vacío sin coincidencias | Casos Borde |
-
----
-
-### Suite 6: ConexionAlmacen
-**Funciones Testeadas:**
-- `solicitarInformacionAtracciones()` - Retorna datos de atracciones
-- `solicitarDisponibilidad()` - Retorna días disponibles
-- `ingresarInformacionReservas()` - Procesa datos de reserva
-- `ingresarInformacionItinerario()` - Procesa itinerario completo
-- `ingresarInformacionNewsletter()` - Procesa suscripción
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | solicitarInformacionAtracciones: devuelve objeto con datos array | Validación de Estructura |
-| 2 | solicitarDisponibilidad: devuelve array de días | Operaciones con Arrays |
-| 3 | ingresarInformacionReservas: acepta FormData sin error | Validación de Errores |
-| 4 | ingresarInformacionItinerario: acepta Itinerario sin error | Validación de Errores |
-| 5 | ingresarInformacionNewsletter: acepta FormData sin error | Validación de Errores |
-
----
-
-### Suite 7: Integración entre modelos
-**Funciones Testeadas:**
-- Validador con FiltroAtracciones
-- Itinerario con Semana
-- Flujo completo: Búsqueda → Reserva
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | FiltroAtracciones usa Validador para buscar | Tests de Integración |
-| 2 | Itinerario usa Semana para controlar días | Tests de Integración |
-| 3 | Flujo completo: Buscar y crear reserva | Tests de Integración |
-
----
-
-### Suite 8: Flujo 1 - handlerSubmitBusqueda()
-**Funciones Testeadas:**
-- `handlerSubmitBusqueda()` - Procesa búsqueda de atracciones
-- Integración con DOM y filtros
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | debe procesar correctamente parámetros válidos | Funcionalidad Básica |
-| 2 | debe aceptar arrays vacíos como parámetros | Casos Borde |
-| 3 | debe manejar resultados sin atracciones mostrando mensaje | Validación de Mensajes |
-| 4 | debe manejar parámetros null o undefined sin lanzar error | Validación de Errores |
-| 5 | debe limpiar elementos anteriores antes de agregar nuevos | Operaciones con DOM |
-| 6 | debe usar el filtro de atracciones para buscar | Operaciones con Objetos |
-
----
-
-### Suite 9: Flujo 2 - Suscripción a Newsletter
-**Funciones Testeadas:**
-- `concretarSubscripcionNews()` - Procesa suscripción
-- `subscripcionNewsletter()` - Genera formulario
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | debe prevenir el comportamiento por defecto del formulario | Funcionalidad Básica |
-| 2 | debe procesar los datos del formulario | Operaciones con FormData |
-| 3 | debe crear un popup de confirmación | Operaciones con DOM |
-| 4 | debe aceptar un formulario con campos vacíos | Casos Borde |
-| 5 | debe manejar formularios sin checkboxes seleccionados | Casos Borde |
-| 6 | no debe lanzar errores con valores básicos | Validación de Errores |
-| 7 | debe extraer correctamente los datos del FormData | Operaciones con Objetos |
-
----
-
-### Suite 10: Flujo 3 - Creación de reservas
-**Funciones Testeadas:**
-- `generarMenuReserva()` - Genera formulario de reserva
-- `concretarReserva()` - Procesa y almacena reserva
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | debe procesar el evento correctamente | Funcionalidad Básica |
-| 2 | debe crear un popup con formulario cuando hay disponibilidad | Operaciones con DOM |
-| 3 | debe prevenir el comportamiento por defecto | Funcionalidad Básica |
-| 4 | debe crear un popup de confirmación con los datos | Operaciones con DOM |
-| 5 | debe manejar valores de atracción válidos | Casos Borde |
-| 6 | debe manejar formularios básicos sin lanzar error | Validación de Errores |
-
----
-
-### Suite 11: Flujo 4 - Creación de Itinerario
-**Funciones Testeadas:**
-- `generarItinerario()` - Inicializa itinerario
-- `almacenarDiaItinerario()` - Guarda día del itinerario
-- `generarMenuItinerario()` - Genera formulario por día
-
-**Casos de Prueba:**
-| # | Descripción | Tipo |
-|---|-------------|------|
-| 1 | debe ejecutarse sin lanzar errores | Funcionalidad Básica |
-| 2 | debe crear un popup con formulario de itinerario | Operaciones con DOM |
-| 3 | debe prevenir el comportamiento por defecto | Funcionalidad Básica |
-| 4 | debe procesar el formulario sin errores | Operaciones con FormData |
-| 5 | debe manejar la inicialización del itinerario | Casos Borde |
-| 6 | no debe lanzar error al generar itinerario | Validación de Errores |
+| ## |                                                        Descripción                                                          |                     Tipo                     |
+|----|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| 01 | Verifica que, tras cargar `script.js`, el mock de `AOS.init` haya sido llamado (`__AOS_INIT_CALLED__ === true`).            | Integración inicial / happy path             |
+| 02 | Comprueba que `AOS.init` deje almacenado un objeto de configuración en `__AOS_CONFIG__` (aunque sea `{}` si no hay config). | Validación de configuración / robustez       |
+| 03 | Verifica que `window.AOS` exista y que `AOS.init` sea una función.                                                          | Validación de librería global / wiring       |
+| 04 | Llama manualmente a `AOS.init({ duration: 500 })` y comprueba que no arroje excepciones.                                    | Manejo de errores / happy path               |
+| 05 | Verifica que se puede llamar a `AOS.init` varias veces seguidas sin que se produzcan errores.                               | Robustez / reconfiguración                   |
+| 06 | Llama a `AOS.init` con la configuración disponible y comprueba que no dependa de que existan nodos concretos en el DOM.     | Integración con entorno / robustez           |
+| 07 | Aplica dos configuraciones distintas consecutivas (`once`, `duration`, etc.) y verifica que no se generen errores.          | Lógica de reconfiguración / manejo de estado |
 
 ---
 
@@ -207,8 +225,8 @@
 ### Resumen General
 | Métrica | Valor |
 |---------|-------|
-| Total de Tests | 52 |
-| Tests Pasando | 52 ✅ |
+| Total de Tests | 65 |
+| Tests Pasando | 65 ✅ |
 | Tests Fallando | 0 ❌ |
 | Porcentaje de Éxito | 100% |
 
