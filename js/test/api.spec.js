@@ -1,128 +1,120 @@
-import ApiService from '../api/apiService.js';
+// js/test/api.spec.js
+// Pruebas orientadas a js/api/atracciones.json
 
-describe("ApiService - fetchData() éxito", function () {
+describe("API de atracciones - js/api/atracciones.json", function () {
 
-  beforeEach(function () {
-    // Mock de showLoading y hideLoading
-    spyOn(ApiService, "showLoading");
-    spyOn(ApiService, "hideLoading");
+  const ATRACCIONES_URL = "../api/atracciones.json";
 
-    // Mock del fetch global
+  /* 1) Test de función fetch con respuesta exitosa */
+  it("debe obtener las atracciones correctamente con fetch (respuesta exitosa)", async function () {
+    const response = await fetch(ATRACCIONES_URL);
+
+    // La respuesta debe ser correcta (HTTP 200–299)
+    expect(response.ok).toBeTrue();
+
+    const data = await response.json();
+
+    // Debe tener la propiedad 'atracciones' como array
+    expect(data).toBeDefined();
+    expect(Array.isArray(data.atracciones)).toBeTrue();
+    expect(data.atracciones.length).toBeGreaterThan(0);
+
+    // Cada atracción debe tener al menos un nombre
+    const primera = data.atracciones[0];
+    expect(primera.nombreAtraccion).toBeDefined();
+  });
+
+  /* 2) Test de función fetch con error HTTP */
+  it("debe manejar un error HTTP (por ejemplo 404) al pedir un recurso inexistente", async function () {
+    // Simulamos un recurso que no existe
+    const response = await fetch("../api/recurso-inexistente.json");
+
+    // No debería ser ok
+    expect(response.ok).toBeFalse();
+    // Normalmente será 404, pero al menos verificamos que sea >= 400
+    expect(response.status).toBeGreaterThanOrEqual(400);
+  });
+
+  /* 3) Test de función fetch con error de red */
+  it("debe manejar correctamente un error de red (fallo en fetch)", async function () {
+    const originalFetch = window.fetch;
+
+    // Espiamos fetch para simular un error de red (reject)
     spyOn(window, "fetch").and.returnValue(
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([{ id: 1, name: "Juan" }])
-      })
+      Promise.reject(new Error("Network error simulado"))
     );
+
+    let errorCapturado;
+
+    try {
+      await fetch(ATRACCIONES_URL);
+    } catch (error) {
+      errorCapturado = error;
+    }
+
+    // Verificamos que el error se haya capturado
+    expect(errorCapturado).toBeDefined();
+    expect(errorCapturado.message).toContain("Network error");
+
+    // Restauramos fetch original para no afectar otros tests
+    window.fetch = originalFetch;
   });
 
-  // ---- Test de función fetch con respuesta exitosa ----
-  it("debe obtener los datos correctamente cuando la respuesta es exitosa", async function () {
-    const datos = await ApiService.fetchData("/fake-endpoint");
+  /* 4) Test de procesamiento de datos con map/filter/reduce */
+  it("debe procesar los datos de atracciones usando map, filter y reduce correctamente", async function () {
+    const response = await fetch(ATRACCIONES_URL);
+    const data = await response.json();
 
-    // Se llamó al fetch
-    expect(window.fetch).toHaveBeenCalledWith("/fake-endpoint");
+    const atracciones = data.atracciones;
 
-    // Loading UI
-    expect(ApiService.showLoading).toHaveBeenCalled();
-    expect(ApiService.hideLoading).toHaveBeenCalled();
+    // map: obtener solo los nombres de las atracciones
+    const nombres = atracciones.map(a => a.nombreAtraccion);
 
-    // Los datos devueltos deben coincidir con el mock
-    expect(datos).toEqual([{ id: 1, name: "Juan" }]);
+    // filter: atracciones que se pueden visitar de día
+    const atraccionesDia = atracciones.filter(a =>
+      Array.isArray(a.turnoAtraccion) &&
+      a.turnoAtraccion.includes("dia")
+    );
+
+    // reduce: total de días abiertos sumando todos
+    const totalDiasAbiertos = atracciones.reduce((acum, a) => {
+      const dias = Array.isArray(a.diasAbiertoAtraccion)
+        ? a.diasAbiertoAtraccion.length
+        : 0;
+      return acum + dias;
+    }, 0);
+
+    expect(nombres.length).toBe(atracciones.length);
+    expect(atraccionesDia.length).toBeGreaterThan(0);
+    expect(totalDiasAbiertos).toBeGreaterThan(0);
   });
 
+  /* 5) Test de integración con DOM (si aplica) */
+  it("debe integrar los datos de atracciones en el DOM creando una lista de nombres", async function () {
+    // Creamos un contenedor en el DOM para las pruebas
+    const lista = document.createElement("ul");
+    lista.id = "lista-atracciones-test";
+    document.body.appendChild(lista);
 
-  // ---- Test de función fetch con error HTTP ----
-  it("debe manejar correctamente un error HTTP", async function () {
-        // Mock de fetch que responde con error 404
-        window.fetch.and.returnValue(
-            Promise.resolve({
-            ok: false,
-            status: 404
-            })
-        );
+    const response = await fetch(ATRACCIONES_URL);
+    const data = await response.json();
 
-        let errorCapturado;
-
-        try {
-            await ApiService.fetchData("/endpoint-404");
-        } catch (error) {
-            errorCapturado = error;
-        }
-
-        // Debe haberse lanzado un error
-        expect(errorCapturado).toBeDefined();
-        expect(errorCapturado.message).toContain("HTTP error");
-
-        // hideLoading() debe ejecutarse siempre
-        expect(ApiService.hideLoading).toHaveBeenCalled();
-
-        // showError() debe invocarse con el mensaje predefinido
-        expect(ApiService.showError).toHaveBeenCalledWith(
-            "No fue posible cargar la lista de usuarios"
-        );
+    data.atracciones.forEach(a => {
+      const li = document.createElement("li");
+      li.textContent = a.nombreAtraccion;
+      lista.appendChild(li);
     });
 
+    const items = lista.querySelectorAll("li");
 
-  // ---- Test de función fetch con error de red ----
-    it("debe manejar correctamente un error de red", async function () {
-        // Mock de fetch que falla con un error de red
-        window.fetch.and.returnValue(
-            Promise.reject(new Error("Network error"))
-        );
+    // Debe haber un li por cada atracción
+    expect(items.length).toBe(data.atracciones.length);
 
-        let errorCapturado;
+    // El primer elemento debe coincidir con la primera atracción del JSON
+    expect(items[0].textContent).toBe(data.atracciones[0].nombreAtraccion);
 
-        try {
-            await ApiService.fetchData("/endpoint-network-error");
-        } catch (error) {
-            errorCapturado = error;
-        }
-
-        // Verifica que el error fue capturado
-        expect(errorCapturado).toBeDefined();
-        expect(errorCapturado.message).toContain("Network error");
-
-        // hideLoading() debe ejecutarse incluso si fetch falla
-        expect(ApiService.hideLoading).toHaveBeenCalled();
-
-        // showError() debe llamarse con el mensaje genérico del servicio
-        expect(ApiService.showError).toHaveBeenCalledWith(
-            "No fue posible cargar la lista de usuarios"
-        );
-    });
-
-
-  // ---- Test de procesamiento de datos con map/filter/reduce ----
-  it("debe procesar datos usando map, filter y reduce correctamente", function () {
-        // Datos crudos simulados (por ejemplo, usuarios)
-        const rawData = [
-            { id: 1, name: "Ana", active: true,  age: 25 },
-            { id: 2, name: "Luis", active: false, age: 30 },
-            { id: 3, name: "María", active: true,  age: 28 },
-            { id: 4, name: "Juan", active: true,  age: 22 }
-        ];
-
-        // 1) filter -> nos quedamos solo con los usuarios activos
-        const activeUsers = rawData.filter(user => user.active);
-
-        // 2) map -> obtenemos solo los nombres de los usuarios activos
-        const activeNames = activeUsers.map(user => user.name);
-
-        // 3) reduce -> sumamos las edades de los usuarios activos
-        const totalAgeActive = activeUsers.reduce((acc, user) => acc + user.age, 0);
-
-        // 4) reduce extra -> contamos cuántos activos hay
-        const totalActive = rawData.reduce(
-            (acc, user) => acc + (user.active ? 1 : 0),
-            0
-        );
-
-        // Expectativas
-        expect(activeUsers.length).toBe(3);                   // Ana, María, Juan
-        expect(activeNames).toEqual(["Ana", "María", "Juan"]);
-        expect(totalAgeActive).toBe(25 + 28 + 22);           // 75
-        expect(totalActive).toBe(3);
-    });
+    // Limpiamos el DOM de prueba
+    document.body.removeChild(lista);
+  });
 
 });

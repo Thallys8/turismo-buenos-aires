@@ -22,37 +22,41 @@
     <!-- Mock de AOS para que script.js no rompa -->
     <script>
       window.__AOS_INIT_CALLED__ = false;
+      window.__AOS_CONFIG__ = undefined;
+
       window.AOS = {
-        init() {
+        init(config) {
           window.__AOS_INIT_CALLED__ = true;
+          // Si no pasan config, guardamos un objeto vacío para que typeof === "object"
+          window.__AOS_CONFIG__ = config || {};
         }
       };
     </script>
 
     <!-- Cargamos TODO lo nuestro como ES modules *antes* de boot1 -->
     <script type="module">
-      // Modelos
-      import "../models/ConexionAlmacen.js";
-      import "../models/FiltroAtracciones.js";
-      import "../models/Itinerario.js";
-      import "../models/Reserva.js";
-      import "../models/Semana.js";
-      import "../models/Validador.js";
 
-      // Servicio de API
-      import "../api/apiService.js";
+    // Modelos
+    import "../models/ConexionAlmacen.js";
+    import "../models/FiltroAtracciones.js";
+    import "../models/Itinerario.js";
+    import "../models/Reserva.js";
+    import "../models/Semana.js";
+    import "../models/Validador.js";
 
-      // Código principal
-      import "../script.js";
+    // Código principal
+    import "../script.js";
 
-      // Specs
-      import "./script.spec.js";
-      import "./models.spec.js";
-      import "./api.spec.js";
-      import "./library.spec.js";
+    // Specs
+    import "./script.spec.js";
+    import "./models.spec.js";
+    import "./storage.spec.js";
+    import "./api.spec.js";
+    import "./library.spec.js";
+
     </script>
 
-    <!-- boot1: arranca Jasmine *después* de que se cargaron los módulos de arriba -->
+      <!-- boot1: arranca Jasmine *después* de que se cargaron los módulos de arriba -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/5.1.0/boot1.min.js"></script>
   </body>
 </html>
