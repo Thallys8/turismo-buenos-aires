@@ -18,6 +18,8 @@ PR: [#123](https://github.com/Thallys8/turismo-buenos-aires/pull/123) @Tomig02 (
 PR: [#131](https://github.com/Thallys8/turismo-buenos-aires/pull/131) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 - [feature/dev-async-fetch-api] Se actualizó js/api/apiService.js agregando las funcionalidades fetch, se adaptó apiService.js para que funcione fetch y se cambió esteticamente el código de testing-runnet.md.  
 PR: [#132](https://github.com/Thallys8/turismo-buenos-aires/pull/132) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/dev-async-fetch-api] Correción de los archivos Readme, changelog y index, adaptados a la entrega del parcial.  
+PR: [#133](https://github.com/Thallys8/turismo-buenos-aires/pull/133) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 ### Fixed  
 
