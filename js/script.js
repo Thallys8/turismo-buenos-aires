@@ -4,9 +4,9 @@ import Itinerario from './models/Itinerario.js';
 import Reserva from './models/Reserva.js';
 import Semana from './models/Semana.js';
 import Validador from './models/Validador.js';
+import { obtenerAtracciones } from "./api/apiService.js";
 
 const conexionAlamacen = new ConexionAlamacen();
-await conexionAlamacen.ready;   // esperamos a que atracciones.json se cargue
 
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
@@ -34,7 +34,6 @@ function concretarReserva(event, formulario){
         emailError.textContent = "El email ingresado no es valido";
         return;
     }
-
 
     const reserva = new Reserva();
     reserva.guardarReserva(datos);
@@ -96,36 +95,54 @@ function generarMenuReserva(event){
 /**
  * Recibe los parametros de busqueda y solicita las atracciones que los cumplan.
  * Generando las tarjetas nuevas en la web 
- * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
+ * @param {Object} parametros Los parametros de busqueda para contrastar con las opciones
  */
-function handlerSubmitBusqueda(parametros, listaActividades){
+async function handlerSubmitBusqueda(parametros, listaActividades){
     let elementosHTML = [];
 
-    const valoresNulos = Array.from(parametros).filter( value =>{
-        if ( !(value != null && value) )
-            return value;
-    });
-    if(valoresNulos.length == 0)
-        elementosHTML = crearAtracciones(parametros, generarMenuReserva);
+    try {
+        // 1) Pedimos los datos al apiService (fetch)
+        const todasLasAtracciones = await obtenerAtracciones();
 
-    // destruye todos los elementos contenidos y agrega los nuevos
-    
-    if(listaActividades != null && listaActividades){
-        while (listaActividades.firstChild) {
-            listaActividades.removeChild(listaActividades.firstChild);
+        // 2) Filtramos usando la lógica de FiltroAtracciones (función de orden superior filter interna)
+        const listaDatos = filtroAtracciones.buscarAtracciones(
+            parametros.momento,
+            parametros.horario,
+            parametros.actividad,
+            parametros.grupo,
+            todasLasAtracciones     
+        );
+
+        // 3) Creamos las tarjetas a partir de los datos filtrados
+        elementosHTML = crearAtracciones(listaDatos, generarMenuReserva);
+
+        // 4) Limpiar y pintar en el DOM
+        if(listaActividades){
+            while (listaActividades.firstChild) {
+                listaActividades.removeChild(listaActividades.firstChild);
+            }
+
+            if(elementosHTML.length > 0 ){
+                elementosHTML.forEach(elemento => listaActividades.appendChild(elemento));
+            } else {
+                const cantAtracciones = todasLasAtracciones.length;
+                listaActividades.innerHTML = `
+                    <p class="text-center mb-5">
+                        De las ${cantAtracciones} atracciones almacenadas, ninguna cumple con el criterio buscado.
+                    </p>`;
+            }
+
+            listaActividades.scrollIntoView();
         }
 
-        if(elementosHTML.length > 0 ){
-        elementosHTML.forEach(elemento => {
-            listaActividades.appendChild(elemento);
-        });
+    } catch (error) {
+        console.error(error);
+        if (listaActividades) {
+            listaActividades.innerHTML = `
+                <p class="text-center mb-5 text-danger">
+                    ${error.message || "No pudimos cargar las atracciones. Probá nuevamente en unos minutos."}
+                </p>`;
         }
-        else{
-            let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
-            listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
-        }
-
-        listaActividades.scrollIntoView();
     }
 }
 
@@ -151,7 +168,7 @@ function formularioSubmit(event){
     const actividad = [...formData.get("tipo-actividad")];
     const grupo = [...formData.get("tipo-grupo")];
 
-    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
+    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo};
     handlerSubmitBusqueda(parametros, listaActividades);
 }
 if (formularioAvanzado != null && formularioAvanzado) 
@@ -169,7 +186,7 @@ for (var i = 0; i <= maxTipos; i++) {
  * Con un solo criterio
  */
 function onclickAtraccionesDia(){
-    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
+    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones};
     handlerSubmitBusqueda(parametros, listaActividades);
 }
 
@@ -178,7 +195,7 @@ function onclickAtraccionesDia(){
  * Con un solo criterio
  */
 function onclickAtraccionesNoche(){
-    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
+    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones};
     handlerSubmitBusqueda(parametros, listaActividades);
 }
 const btnNoche = document.getElementById("atracciones-noche-elegir");
@@ -250,7 +267,6 @@ function subscripcionNewsletter(event){
     `, (event) => { concretarSubscripcionNews(event, event.target); });
 
     document.body.appendChild(nuevoElemento);
-    // con los datos del formulario, generar subscripcion
 }
 const botonNewsletter = document.getElementById("btn-newsletter");
 if(botonNewsletter != null && botonNewsletter) 
@@ -308,7 +324,6 @@ function popUpItinerarioCompleto(){
 /**
  * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
  * y si este esta completo, lo almacena
- * @param {Event} event 
  * @param {HTMLElement} formulario 
  */
 function almacenarDiaItinerario(formulario) {
@@ -331,7 +346,7 @@ function almacenarDiaItinerario(formulario) {
             mañana: formData.get(`${dia}-mañana`),
             tarde: formData.get(`${dia}-tarde`),
             noche: formData.get(`${dia}-noche`)
-        }
+        };
         datosItinerario.datos.push(diaFinal);
     });
     datosItinerario.email = formData.get("email");
@@ -350,7 +365,7 @@ function almacenarDiaItinerario(formulario) {
 /**
  * Actualiza las tabs segun el dia elegido
  * @param {HTMLElement} contenedor 
- * @param {HTMLElement[]} opciones 
+ * @param {String[]} opciones 
  */
 function actualizarTabs(contenedor, opciones) {
     const checkboxes = contenedor.querySelectorAll('input[name="dias"]:checked');
@@ -441,7 +456,7 @@ function actualizarTabs(contenedor, opciones) {
 
 /**
  * Genera el HTML necesario para ingresar el itinerario y lo agrega al DOM
- * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
+ * @param {String[]} opciones Las opciones para el tag <Select> 
  */
 function generarMenuItinerario(opciones) {
     const diasSemana = semana.getSemana();
@@ -499,25 +514,27 @@ function generarMenuItinerario(opciones) {
  * Funcion de inicio para la generacion del itinerario, genera el setup inicial 
  * y solicita crear la pantalla que continuara con la creacion
  */
-function generarItinerario(){
+async function generarItinerario(){
     itinerario = new Itinerario();
     opcionesAtraccion = [];
 
-    const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
-    
-    let atracciones = [];
-    if(datosAtracciones != null && datosAtracciones) 
-        atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
+    try {
+        const datosAtracciones = await obtenerAtracciones(); // apiService
 
-    for(let i = 0; i < atracciones.length; i++){
-        opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
+        const atracciones = datosAtracciones.map(a => a.nombreAtraccion);
+
+        for (let i = 0; i < atracciones.length; i++) {
+            opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
+        }
+        opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
+
+        generarMenuItinerario(opcionesAtraccion);
+    } catch (error) {
+        console.error(error);
+        alert(error.message || "No pudimos cargar las atracciones para el itinerario.");
     }
-    opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
-
-    generarMenuItinerario(opcionesAtraccion);
-
-    // generar el itinerario y envialo por email (no de verdad) 
 }
+
 const botonItinerario = document.getElementById("btn-itinerario");
 if(botonItinerario != null && botonItinerario) 
     botonItinerario.addEventListener("click", generarItinerario);
@@ -569,26 +586,21 @@ function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
 
     return elementoHTML;
 }
+
 /**
- * Crea las tarjetas de las atracciones utilizando la informacion almacenada
- * @param {object} criterios parametros de las atracciones deseadas
+ * Crea las tarjetas de las atraciones utilizando la informacion filtrada
+ * @param {Object[]} listaDatos lista de datos de atracciones (ya filtradas)
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
 */
-function crearAtracciones( criterios, callbackReserva )
+function crearAtracciones( listaDatos, callbackReserva )
 {
-    const nuevasTarjetas = [];
-    const listaDatos = filtroAtracciones.buscarAtracciones(
-        criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
-    );
-
     let fadeStyle = "fade-right";
-    listaDatos.forEach( atraccion => {
-        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva, fadeStyle) );
+    return listaDatos.map( atraccion => {
+        const tarjeta = crearTarjetaHTML(atraccion, callbackReserva, fadeStyle);
         fadeStyle = (fadeStyle === "fade-right") ? "fade-left" : "fade-right";
+        return tarjeta;
     });
-
-    return nuevasTarjetas;
 }
 
 /**
@@ -609,11 +621,11 @@ function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
 
     contenedor.appendChild(formulario);
 
-    const boton = document.createElement("button")
+    const boton = document.createElement("button");
     boton.addEventListener("click", () => { contenedor.remove(); });
     boton.innerText = "Cerrar";
 
-    const botonSubmit = document.createElement("button")
+    const botonSubmit = document.createElement("button");
     botonSubmit.type = "submit";
     botonSubmit.innerText = "Finalizar";
 
@@ -638,7 +650,7 @@ function crearPopUpSimple( nuevoInnerHtml ){
     const contenedor = document.createElement("div");
     contenedor.className = "panel-con-fondo-frente";
 
-    const boton = document.createElement("button")
+    const boton = document.createElement("button");
     boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
     boton.innerText = "Cerrar";
 
