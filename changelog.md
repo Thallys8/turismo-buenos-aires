@@ -14,8 +14,12 @@ PR: [#125](https://github.com/Thallys8/turismo-buenos-aires/pull/125) @Thallys8 
 ### Changed  
 - [feature/coordinador-devops-readme-documentacion] Actualizacion del readme.md  
 PR: [#123](https://github.com/Thallys8/turismo-buenos-aires/pull/123) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas).
+- [feature/tester-qa-js-testing-suite] Se actualizó el archivo testin-doc de las pruebas Jamine y tambien el archivo de Lighthouse para pruebas Mobile.  
+PR: [#131](https://github.com/Thallys8/turismo-buenos-aires/pull/131) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 - [feature/dev-async-fetch-api] Se actualizó js/api/apiService.js agregando las funcionalidades fetch, se adaptó apiService.js para que funcione fetch y se cambió esteticamente el código de testing-runnet.md.  
 PR: [#132](https://github.com/Thallys8/turismo-buenos-aires/pull/132) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/dev-async-fetch-api] Correción de los archivos Readme y changelog , adaptados a la entrega del parcial.  
+PR: [#133](https://github.com/Thallys8/turismo-buenos-aires/pull/133) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 ### Fixed  
 
