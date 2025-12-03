@@ -1,5 +1,6 @@
+// js/models/ConexionAlmacen.js
+
 import managerAlmacenamiento from "../utils/storage.js";
-import Itinerario from "./Itinerario.js"; // solo para jsdoc si querés
 import Semana from "./Semana.js";
 
 /**
@@ -7,13 +8,13 @@ import Semana from "./Semana.js";
  * (newsletter, reservas, itinerarios, etc.)
  * NO usa fetch: la carga de atracciones la hace apiService.js
  */
-export default class ConexionAlamacen {
+export default class ConexionAlmacen {
     semana;
     keys;
 
     constructor() {
         this.keys = {
-            atracciones: "atracciones",  // la dejamos por compatibilidad, aunque no la llenamos acá
+            atracciones: "atracciones",  // la dejamos por compatibilidad, aunque hoy no se llena desde acá
             itinerarios: "itinerarios",
             newsletter: "newsletter",
             reservas: "reservas"
@@ -48,7 +49,7 @@ export default class ConexionAlamacen {
     }
 
     /**
-     * (Opcional) Devuelve la informacion de las atracciones si se hubieran guardado en storage
+     * (Opcional) Devuelve la informacion de las atracciones si se hubieran guardado en storage.
      * Hoy NO se guardan acá (las trae apiService), pero dejamos el método por compatibilidad.
      * @returns {Array<object>} los datos de todas las atracciones
      */
@@ -62,7 +63,7 @@ export default class ConexionAlamacen {
 
     /**
      * Busca la disponibilidad por día para visitas, de una atracción específica.
-     * Mantengo la lógica original "aleatoria" independiente del JSON, como en tu versión anterior.
+     * Mantengo la lógica original "aleatoria" independiente del JSON.
      * @param {String} idAtraccion identificador de la atraccion (nombre)
      * @returns {String[]} Lista de dias con disponibilidad
      */
