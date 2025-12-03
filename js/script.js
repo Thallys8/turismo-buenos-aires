@@ -101,8 +101,8 @@ async function handlerSubmitBusqueda(parametros, listaActividades){
 
     try {
         // 1) Pedimos los datos al apiService (fetch)
-        // Usamos window.obtenerAtracciones para poder mockearla en los tests
-        const todasLasAtracciones = await window.obtenerAtracciones();
+        // Usamos obtenerAtracciones para poder mockearla en los tests
+        const todasLasAtracciones = await obtenerAtracciones();
 
         // 2) Filtramos usando la lógica de FiltroAtracciones
         const listaDatos = filtroAtracciones.buscarAtracciones(
@@ -155,22 +155,25 @@ function formularioSubmit(event){
 
     const formData = new FormData(formularioAvanzado);
 
+    // Momento: semana / finde
     const momento = [];
-    
-    if (formData.get("semana") === "1")  
-        momento.push(1);
-    if (formData.get("finde")  === "2")
-        momento.push(2);
+    if (formData.get("semana") === "1")  momento.push(1);
+    if (formData.get("finde")  === "2")  momento.push(2);
+    if (momento.length === 0) momento.push(1, 2); // si no elige, tomamos ambos
 
-    if(momento.length == 0) momento.push(1, 2);
+    // Horario, actividad y grupo: un único valor cada uno
+    const horarioValor    = formData.get("horario");         // "1" o "2"
+    const actividadValor  = formData.get("tipo-actividad");  // "1","2","3","4" o "[1,2,3,4]"
+    const grupoValor      = formData.get("tipo-grupo");      // "1","2","3","4" o "[1,2,3,4]"
 
-    const horario = [...formData.get("horario")];
-    const actividad = [...formData.get("tipo-actividad")];
-    const grupo = [...formData.get("tipo-grupo")];
+    const horario   = horarioValor   ? [horarioValor]   : [];
+    const actividad = actividadValor ? [actividadValor] : [];
+    const grupo     = grupoValor     ? [grupoValor]     : [];
 
-    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo};
+    const parametros = { momento, horario, actividad, grupo };
     handlerSubmitBusqueda(parametros, listaActividades);
 }
+
 if (formularioAvanzado != null && formularioAvanzado) 
     formularioAvanzado.addEventListener('submit', formularioSubmit);
 
@@ -517,7 +520,7 @@ async function generarItinerario(){
     opcionesAtraccion = [];
 
     try {
-        const datosAtracciones = await window.obtenerAtracciones(); // apiService (mockeable en tests)
+        const datosAtracciones = await obtenerAtracciones(); // apiService (mockeable en tests)
 
         const atracciones = datosAtracciones.map(a => a.nombreAtraccion);
 
@@ -543,48 +546,75 @@ if(botonItinerario != null && botonItinerario)
  * @param {Function} callback Callback para el boton de reserva
  * @param {String} fadeStyle estilo de animación AOS
  */
-function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
-    let elementoHTML = document.createElement("article");
+function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
+    const elementoHTML = document.createElement("article");
     elementoHTML.className = "tarjeta col-6 container";
     elementoHTML.setAttribute("data-aos", fadeStyle);
     elementoHTML.setAttribute("data-aos-delay", "400");
-    
+
+    // Usamos campos reales del JSON + defaults
+    const titulo = datosAtraccion.titulo || datosAtraccion.nombreAtraccion || "Atracción";
+    const subtitulo = datosAtraccion.subtitulo || "";
+    const descripcion = datosAtraccion.descripcion || "";
+    const horarioAbierto = datosAtraccion.horarioAbierto || "No informado";
+    const direccion = datosAtraccion.direccionAtraccion || "Ciudad de Buenos Aires";
+
+    const mapaSrc = datosAtraccion.promptMaps && datosAtraccion.promptMaps.trim()
+        ? datosAtraccion.promptMaps
+        : null;
+
+    const imgSrc = datosAtraccion.imgSrc && datosAtraccion.imgSrc.trim()
+        ? datosAtraccion.imgSrc
+        : null;
+
+    const iframeHTML = mapaSrc
+        ? `
+        <iframe class="google-maps ratio ratio-16x9 col-12"
+            width="180"
+            height="150"
+            style="border:0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="${mapaSrc}">
+        </iframe>
+        `
+        : `<p class="col-12 text-muted">Mapa no disponible</p>`;
+
+    const imagenHTML = imgSrc
+        ? `<img loading="lazy" src="${imgSrc}" alt="${datosAtraccion.altFoto || titulo}" >`
+        : "";
+
     elementoHTML.innerHTML = `
         <div class="row h-md-100">
             <hgroup class="col-12">
-                <h3>${datosAtraccion.titulo}</h3>
-                <p>${datosAtraccion.subtitulo}</p>
+                <h3>${titulo}</h3>
+                <p>${subtitulo}</p>
             </hgroup>
-            <p class="col-12">${datosAtraccion.descripcion}</p>
+            <p class="col-12">${descripcion}</p>
 
             <details class="col-12">
                 <summary>Horarios</summary>
-                <p>${datosAtraccion.horarioAbierto || "No informado"}</p>
+                <p>${horarioAbierto}</p>
             </details>
             <label class="direccion-label col-12">Direccion</label> <br>
-            <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"
-                width="180"
-                height="150"
-                style="border:0"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="${datosAtraccion.promptMaps}">
-            </iframe>
+            <p class="col-12">${direccion}</p>
+            ${iframeHTML}
 
-            <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
+            <button type="button" class="btn reservar-btn" value="${titulo}">Reservar</button>
         </div>
 
-        <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
+        ${imagenHTML}
     `;
 
-    const button = elementoHTML.querySelector('.reservar-btn');
-    button.addEventListener('click', (event) => {
+    const button = elementoHTML.querySelector(".reservar-btn");
+    button.addEventListener("click", (event) => {
         callback(event);
     });
 
     return elementoHTML;
 }
+
 
 /**
  * Crea las tarjetas de las atracciones utilizando la informacion filtrada

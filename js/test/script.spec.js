@@ -8,7 +8,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
 
   beforeEach(function() {
     // Verificar que script.js esté cargado
-    if (typeof window.handlerSubmitBusqueda === 'undefined') {
+    if (typeof handlerSubmitBusqueda === 'undefined') {
       pending("script.js no está cargado. Asegúrate de incluirlo en el SpecRunner.html");
     }
     
@@ -46,7 +46,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
     spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
     spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
 
-    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+    await handlerSubmitBusqueda(parametros, mockListaActividades);
 
     // Si llegó hasta acá sin tirar error, estamos bien
     expect(true).toBeTrue();
@@ -68,7 +68,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
     spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
     spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
 
-    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+    await handlerSubmitBusqueda(parametros, mockListaActividades);
 
     expect(true).toBeTrue();
   });
@@ -96,7 +96,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
       grupo: [1]
     };
 
-    await window.handlerSubmitBusqueda(parametros, lista);
+    await handlerSubmitBusqueda(parametros, lista);
 
     // Debe mostrarse el mensaje de "ninguna cumple con el criterio"
     expect(lista.textContent).toContain("cumple con el criterio");
@@ -118,7 +118,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
     spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
     spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
 
-    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+    await handlerSubmitBusqueda(parametros, mockListaActividades);
 
     expect(true).toBeTrue();
   });
@@ -155,7 +155,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
       grupo: [1]
     };
 
-    await window.handlerSubmitBusqueda(parametros, lista);
+    await handlerSubmitBusqueda(parametros, lista);
 
     // Ya no debería estar el texto anterior
     expect(lista.innerHTML).not.toContain("Contenido anterior");
@@ -183,7 +183,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
       grupo: [1]
     };
 
-    await window.handlerSubmitBusqueda(parametros, lista);
+    await handlerSubmitBusqueda(parametros, lista);
 
     expect(spyFiltro.calls.count()).toBeGreaterThan(0);
   });
