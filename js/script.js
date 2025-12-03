@@ -588,7 +588,7 @@ function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
 }
 
 /**
- * Crea las tarjetas de las atraciones utilizando la informacion filtrada
+ * Crea las tarjetas de las atracciones utilizando la informacion filtrada
  * @param {Object[]} listaDatos lista de datos de atracciones (ya filtradas)
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
