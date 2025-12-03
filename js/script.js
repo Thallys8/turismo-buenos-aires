@@ -101,8 +101,8 @@ async function handlerSubmitBusqueda(parametros, listaActividades){
 
     try {
         // 1) Pedimos los datos al apiService (fetch)
-        // Usamos window.obtenerAtracciones para poder mockearla en los tests
-        const todasLasAtracciones = await window.obtenerAtracciones();
+        // Usamos obtenerAtracciones para poder mockearla en los tests
+        const todasLasAtracciones = await obtenerAtracciones();
 
         // 2) Filtramos usando la lógica de FiltroAtracciones
         const listaDatos = filtroAtracciones.buscarAtracciones(
@@ -520,7 +520,7 @@ async function generarItinerario(){
     opcionesAtraccion = [];
 
     try {
-        const datosAtracciones = await window.obtenerAtracciones(); // apiService (mockeable en tests)
+        const datosAtracciones = await obtenerAtracciones(); // apiService (mockeable en tests)
 
         const atracciones = datosAtracciones.map(a => a.nombreAtraccion);
 

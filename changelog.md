@@ -26,7 +26,8 @@ PR: [#134](https://github.com/Thallys8/turismo-buenos-aires/pull/134) @Thallys8 
 PR: [#135](https://github.com/Thallys8/turismo-buenos-aires/pull/135) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 ### Fixed  
-
+- [feature/tester-qa-js-testing-suite] CRemoción de Window para que la página funcione corretamente.      
+PR: [#136](https://github.com/Thallys8/turismo-buenos-aires/pull/136) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 ---  
 
