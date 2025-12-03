@@ -1,55 +1,29 @@
+// js/models/ConexionAlmacen.js
+
 import managerAlmacenamiento from "../utils/storage.js";
-import Itinerario from "./Itinerario.js"; // solo para jsdoc si querés
 import Semana from "./Semana.js";
 
 /**
  * Maneja las conexiones con el almacenamiento interno en storage.js
+ * (newsletter, reservas, itinerarios, etc.)
+ * NO usa fetch: la carga de atracciones la hace apiService.js
  */
 export default class ConexionAlmacen {
     semana;
     keys;
-    atracciones;
 
     constructor() {
         this.keys = {
-            atracciones: "atracciones",
+            atracciones: "atracciones",  // la dejamos por compatibilidad, aunque hoy no se llena desde acá
             itinerarios: "itinerarios",
             newsletter: "newsletter",
             reservas: "reservas"
         };
 
         this.semana = new Semana();
-        this.atracciones = [];
 
         // Genera las claves iniciales en localStorage
         this.generarClaves();
-
-        // Promesa para saber cuándo terminó de cargar el JSON
-        this.ready = this._cargarAtracciones();
-    }
-
-    /**
-     * Carga js/api/atracciones.json y lo guarda en memoria y en localStorage
-     */
-    async _cargarAtracciones() { 
-        try {
-            const resp = await fetch("/js/api/atracciones.json");
-            const data = await resp.json();
-
-            this.atracciones = data.atracciones || [];
-            console.log("Atracciones cargadas desde JSON:", this.atracciones);
-
-            // Opcional: guardarlas también en storage bajo la clave "atracciones"
-            // para respetar el esquema { datos: [...] }
-            managerAlmacenamiento.actualizar(
-                this.keys.atracciones,
-                { datos: this.atracciones },
-                "local"
-            );
-        } catch (error) {
-            console.error("Error cargando atracciones.json", error);
-            this.atracciones = [];
-        }
     }
 
     /**
@@ -70,45 +44,40 @@ export default class ConexionAlmacen {
      * @returns {Boolean} Valor de verdad
      */
     existeClave(clave) {
-        let respuesta = managerAlmacenamiento.obtener(clave, "local");
+        const respuesta = managerAlmacenamiento.obtener(clave, "local");
         return (respuesta !== undefined && respuesta !== null);
     }
 
     /**
-     * Devuelve la informacion de las atracciones disponibles en el sistema
+     * (Opcional) Devuelve la informacion de las atracciones si se hubieran guardado en storage.
+     * Hoy NO se guardan acá (las trae apiService), pero dejamos el método por compatibilidad.
      * @returns {Array<object>} los datos de todas las atracciones
      */
     solicitarInformacionAtracciones() {
-        // Intentamos leer desde storage (forma "oficial" del proyecto)
         const respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
         if (respuesta && Array.isArray(respuesta.datos)) {
             return respuesta.datos;
         }
-
-        // Si por algún motivo no hay nada en storage, devolvemos lo cargado en memoria
-        return this.atracciones || [];
+        return [];
     }
 
     /**
-     * Busca la disponibilidad por dia para visitas, de una atraccion especifica
+     * Busca la disponibilidad por día para visitas, de una atracción específica.
+     * Mantengo la lógica original "aleatoria" independiente del JSON.
      * @param {String} idAtraccion identificador de la atraccion (nombre)
      * @returns {String[]} Lista de dias con disponibilidad
      */
     solicitarDisponibilidad(idAtraccion) {
-        // OPCIÓN A: lógica original aleatoria (manteniendo el código anterior para caso el nuevo falle en las pruebas)
-        // let listaDias = this.semana.getSemana();
-        // let disponibilidad = [];
-        // listaDias.forEach(dia => { 
-        //     if (Math.random() < 0.5) { disponibilidad.push(dia); } 
-        // });
-        // return disponibilidad;
+        const listaDias = this.semana.getSemana();
+        
+        const disponibilidad = [];
+        listaDias.forEach(dia => { 
+            if (Math.random() < 0.5) { 
+                disponibilidad.push(dia); 
+            } 
+        });
 
-        // OPCIÓN B: Los datos reales de atracciones.json
-        const atr = this.atracciones.find(a => a.nombreAtraccion === idAtraccion);
-        if (!atr || !Array.isArray(atr.diasAbiertoAtraccion)) {
-            return [];
-        }
-        return atr.diasAbiertoAtraccion;
+        return disponibilidad;
     }
 
     /**
