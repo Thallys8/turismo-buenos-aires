@@ -426,8 +426,14 @@ describe("Flujo 4 - Creación de Itinerario", function() {
     if (typeof window.generarItinerario === 'undefined' || typeof window.almacenarDiaItinerario === 'undefined') {
       pending("script.js no está cargado. Asegúrate de incluirlo en el SpecRunner.html");
     }
-    
+
     spyOn(console, 'log');
+
+    // 🔹 Mockear obtenerAtracciones para que NO haga fetch real
+    spyOn(window, "obtenerAtracciones").and.resolveTo([
+      { nombreAtraccion: "Atracción 1" },
+      { nombreAtraccion: "Atracción 2" }
+    ]);
   });
 
   afterEach(function() {
@@ -439,30 +445,15 @@ describe("Flujo 4 - Creación de Itinerario", function() {
   describe("generarItinerario()", function() {
     
     it("debe ejecutarse sin lanzar errores", async function() {
-      const mockAtracciones = [
-        { nombreAtraccion: "Obelisco" },
-        { nombreAtraccion: "La Boca" }
-      ];
-
-      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
-
-      await window.generarItinerario();
-
-      expect(true).toBeTrue();
+      await expectAsync(window.generarItinerario()).toBeResolved();
     });
 
     it("debe crear un popup con formulario de itinerario", async function() {
-      const mockAtracciones = [
-        { nombreAtraccion: "Obelisco" },
-        { nombreAtraccion: "La Boca" }
-      ];
-
-      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
-
       await window.generarItinerario();
       
       const popup = document.querySelector('.panel-con-fondo');
       expect(popup).toBeTruthy();
+      // el HTML que armás tiene <h2>Armar itinerario semanal</h2>
       expect(popup.innerHTML.toLowerCase()).toContain("itinerario");
     });
   });
@@ -472,10 +463,13 @@ describe("Flujo 4 - Creación de Itinerario", function() {
     let mockFormulario;
 
     beforeEach(async function() {
+      // Primero generamos el itinerario (crea el popup con el formulario real)
+      await window.generarItinerario();
+
+      // Para esta prueba seguimos usando un formulario propio simple
       mockFormulario = document.createElement('form');
       mockFormulario.innerHTML = `
         <input type="checkbox" name="dias" value="lunes" checked>
-        <input type="checkbox" name="dias" value="martes">
         <select name="lunes-mañana"><option value="Atracción 1" selected>Atracción 1</option></select>
         <select name="lunes-tarde"><option value="Atracción 2" selected>Atracción 2</option></select>
         <select name="lunes-noche"><option value="Atracción 3" selected>Atracción 3</option></select>
@@ -486,16 +480,6 @@ describe("Flujo 4 - Creación de Itinerario", function() {
       const parentElement = document.createElement('div');
       parentElement.appendChild(mockFormulario);
       document.body.appendChild(parentElement);
-
-      const mockAtracciones = [
-        { nombreAtraccion: "Atracción 1" },
-        { nombreAtraccion: "Atracción 2" },
-        { nombreAtraccion: "Atracción 3" }
-      ];
-
-      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
-
-      await window.generarItinerario();
     });
 
     it("debe procesar el formulario sin errores", function() {
@@ -507,29 +491,15 @@ describe("Flujo 4 - Creación de Itinerario", function() {
 
   // --- CASOS BORDE ---
   it("debe manejar la inicialización del itinerario", async function() {
-    const mockAtracciones = [
-      { nombreAtraccion: "Obelisco" }
-    ];
-
-    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
-
-    await window.generarItinerario();
+    await expectAsync(window.generarItinerario()).toBeResolved();
     
-    // Verificar que se creó el popup
     const popup = document.querySelector('.panel-con-fondo');
     expect(popup).toBeTruthy();
   });
 
   // --- VALIDACIÓN DE ERRORES ---
   it("no debe lanzar error al generar itinerario", async function() {
-    const mockAtracciones = [
-      { nombreAtraccion: "Obelisco" }
-    ];
-
-    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
-
-    await window.generarItinerario();
-
-    expect(true).toBeTrue();
+    await expectAsync(window.generarItinerario()).toBeResolved();
   });
 });
+

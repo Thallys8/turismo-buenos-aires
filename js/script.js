@@ -520,7 +520,7 @@ async function generarItinerario(){
     opcionesAtraccion = [];
 
     try {
-        const datosAtracciones = await obtenerAtracciones(); // apiService
+        const datosAtracciones = await window.obtenerAtracciones(); // apiService (mockeable en tests)
 
         const atracciones = datosAtracciones.map(a => a.nombreAtraccion);
 
