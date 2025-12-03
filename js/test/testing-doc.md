@@ -164,20 +164,34 @@
 - Obtener devuelve null si el JSON está corrupto
 
 **Casos de Prueba:**
-| ## |                                                  Descripción                                                      |                         Tipo                         |
-|----|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
-| 01 | Guarda un objeto en `localStorage` y lo obtiene verificando que el resultado sea igual al objeto original.        | Happy path / lógica de negocio / persistencia        |
-| 02 | Guarda un string en `sessionStorage`, espía `sessionStorage.setItem` y verifica que se haya llamado y leído bien. | Integración con API nativa / happy path / validación |
-| 03 | Verifica que `actualizar(clave, valor, "local")` termine llamando internamente a `localStorage.setItem` con JSON. | Lógica interna / equivalencia con `guardar`          |
-| 04 | Crea una clave en `localStorage`, llama a `eliminar(clave, "local")` y comprueba que `getItem` devuelva `null`.   | Lógica de negocio / happy path                       |
-| 05 | Crea varias claves, algunas con un prefijo común, y verifica que `listar(prefijo, "local")` devuelva solo esas.   | Lógica de negocio / filtrado / caso positivo         |
-| 06 | Carga varias claves en `localStorage`, ejecuta `limpiar("local")` y comprueba que el `length` quede en 0.         | Caso de limpieza total / lógica de negocio           |
-| 07 | Inserta manualmente un string inválido en `localStorage` y verifica que `obtener(clave, "local")` devuelva `null`.| Manejo de errores / robustez ante datos corruptos    |
+| ## |                                                            Descripción                                                          |                       Tipo                     |
+|----|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| 01 | Verifica que la constante exportada `API_URL` apunte a la ruta correcta del JSON de atracciones: `./js/api/atracciones.json`.   | Happy path                                     |
+| 02 | Comprueba que, dado un string válido con espacios, la función devuelve el mismo texto recortado.                                | Lógica de negocio / Happy path                 |
+| 03 | Verifica que para valores no string (`null`, `undefined`, números, objetos, arrays), la función devuelva el `fallback` indicado | Validación / manejo de tipos inválidos         |
+| 04 | Valida que cuando el string es vacío o solo espacios, se devuelva el `fallback` definido (o `""` si no se pasa `fallback`).     | Caso de borde / normalización de entradas      |
+| 05 | Asegura que la función no arroje errores cuando recibe texto con caracteres especiales o HTML y que siga devolviendo un string. | Robustez / sanitización básica                 |
+| 06 | Utiliza `fetch("../api/atracciones.json")` y verifica que la respuesta sea `ok`, que `data.atracciones` exista, sea un array y tenga al menos un elemento                        | Integración HTTP + JSON / happy path         |
+| 07 | Realiza un `fetch("../api/recurso-inexistente.json")` y verifica que `response.ok` sea `false` y que el `status` sea ≥ 400      | Manejo de errores HTTP                         |
+| 08 | Espía `window.fetch` para forzar un `Promise.reject(new Error("Network error simulado"))` y valida que el error sea capturado y contenga el mensaje esperado                        | Manejo de errores de red / robustez          |
+| 09 | A partir de `data.atracciones`, obtiene los nombres con `map`, filtra atracciones de día con `filter` y calcula días totales abiertos con `reduce`. Verifica resultados > 0.                              | Lógica de negocio / procesamiento funcional  |
+| 10 | Crea dinámicamente un `<ul>` en el DOM, recorre `data.atracciones` y genera un `<li>` por atracción. Verifica que la cantidad de `li` coincida con el array y que el primero tenga el nombre correcto        | Integración DOM + datos remotos / Happy path |
+
 
 ---
 
 ### Suite 4: API
 **Funciones Testeadas:**
+####  API de atracciones - configuración de apiService
+- Debe exponer la constante API_URL con la ruta correcta
+
+#####sanitizeString
+- Devuelve el string recortado cuando es un valor válido
+- Reemplaza valores no-string por el fallback indicado
+- Si el string es vacío o solo espacios, devuelve el fallback
+- Si no se pasa fallback, usa cadena vacía como valor por defecto
+- No revienta si el string contiene caracteres especiales o HTML
+
 ####  API de atracciones - js/api/atracciones.json
 - Debe obtener las atracciones correctamente con fetch (respuesta exitosa)
 - Debe manejar un error HTTP (por ejemplo 404) al pedir un recurso inexistente
