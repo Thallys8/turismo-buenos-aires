@@ -1,234 +1,152 @@
 // js/models/FiltroAtracciones.js
 
-import ConexionAlmacen from "./ConexionAlmacen.js";
-import Validador from "./Validador.js";
-
 export default class FiltroAtracciones {
-    constructor() {
-        this.conexionAlmacen = new ConexionAlmacen();
-        this.validador = new Validador();
-    }
+    constructor() {}
 
     /**
-     * Normaliza un nombre de día para poder compararlo sin problemas de mayúsculas/acentos.
-     * ej: "Miércoles" → "miercoles"
+     * Busca atracciones que cumplan con los criterios indicados.
+     * @param {Array<number|string>} momento  [1] = semana, [2] = finde
+     * @param {Array<number|string>} horario  ['0'] = día, ['1'] = noche
+     * @param {Array<number|string>} actividad  códigos de tipo de actividad
+     * @param {Array<number|string>} grupo   códigos de tipo de grupo
+     * @param {Array<object>} atracciones    lista de atracciones (obtenerAtracciones)
+     * @returns {Array<object>} atracciones filtradas
      */
-    _normalizarDia(dia) {
-        return dia
-            .toLowerCase()
-            .normalize("NFD")               // separa acentos
-            .replace(/[\u0300-\u036f]/g, ""); // elimina acentos
-    }
+    buscarAtracciones(momento, horario, actividad, grupo, atracciones = []) {
+        const momentosFiltro = this._mapMomento(momento);
+        const horariosFiltro = this._mapHorario(horario);
+        const estilosFiltro  = this._mapActividad(actividad);
+        const gruposFiltro   = this._mapGrupo(grupo);
 
-    /**
-     * A partir de la lista de días de una atracción, determina si esa atracción
-     * abre en días de semana y/o en fin de semana.
-     */
-    _clasificarMomentoDesdeDias(diasAbiertoAtraccion = []) {
-        const diasNorm = diasAbiertoAtraccion.map(d => this._normalizarDia(d));
+        // Si no viene nada, no filtramos por ese criterio
+        return atracciones.filter(atr => {
+            const diasAtr = (atr.diasAbiertoAtraccion || []).map(d => d.toLowerCase());
+            const turnos  = (atr.turnoAtraccion || []).map(t => t.toLowerCase());
+            const estilos = (atr.estiloAtraccion || []).map(e => e.toLowerCase());
+            const grupos  = (atr.gruposRecomendadosAtraccion || []).map(g => g.toLowerCase());
 
-        const diasSemana = ["lunes", "martes", "miercoles", "jueves"];
-        const diasFinde  = ["viernes", "sabado", "domingo"];
-
-        const tieneSemana = diasSemana.some(d => diasNorm.includes(d));
-        const tieneFinde  = diasFinde.some(d => diasNorm.includes(d));
-
-        return { tieneSemana, tieneFinde };
-    }
-
-    /**
-     * Interpreta el array `momento` que viene del formulario.
-     * momento: [1]  -> solo semana
-     * momento: [2]  -> solo finde
-     * momento: [1,2] o vacío -> no filtra por momento y mostraria la las opciones que tienen las 2 condiciones
-     */
-    _interpretarMomento(momentoArray) {
-        if (!momentoArray || momentoArray.length === 0) {
-            return null; // sin filtro
-        }
-
-        // Convertimos a número por las dudas
-        const valores = Array.from(new Set(momentoArray.map(m => Number(m))));
-        const incluyeSemana = valores.includes(1);
-        const incluyeFinde  = valores.includes(2);
-
-        // Si tiene ambos (1 y 2), es como no filtrar por momento
-        if (incluyeSemana && incluyeFinde) {
-            return null;
-        }
-
-        return {
-            filtrarSemana: incluyeSemana,
-            filtrarFinde: incluyeFinde
-        };
-    }
-
-    /**
-     * Mapea el horario (0/1) a "dia"/"noche" para comparar con turnoAtraccion.
-     */
-    _mapearTurno(horarioArray) {
-        if (!horarioArray || horarioArray.length === 0) return null;
-
-        const mapaTurno = {
-            0: "dia",
-            1: "noche",
-            "0": "dia",
-            "1": "noche"
-        };
-
-        return horarioArray.map(v => mapaTurno[v] || v);
-    }
-
-    /**
-     * Mapea la actividad (número) a strings que coincidan con estiloAtraccion.
-     * Ajustá este mapa según los value reales de tu <select name="tipo-actividad">.
-     */
-    _mapearActividad(actividadArray) {
-        if (!actividadArray || actividadArray.length === 0) return null;
-
-        const mapaActividad = {
-            0: "cualquiera",
-            1: "cultura",
-            2: "relajacion",
-            3: "fiesta",
-            4: "deporte",
-            5: "aventura",
-            "0": "cualquiera",
-            "1": "cultura",
-            "2": "relajacion",
-            "3": "fiesta",
-            "4": "deporte",
-            "5": "aventura"
-        };
-
-        return actividadArray.map(v => mapaActividad[v] || v);
-    }
-
-    /**
-     * Mapea el grupo (número) a strings que coincidan con gruposRecomendadosAtraccion.
-     * Ajustá según los value reales de <select name="tipo-grupo">.
-     */
-    _mapearGrupo(grupoArray) {
-        if (!grupoArray || grupoArray.length === 0) return null;
-
-        const mapaGrupo = {
-            0: "cualquiera",
-            1: "familia",
-            2: "amigos",
-            3: "pareja",
-            4: "desconocidos",
-            "0": "cualquiera",
-            "1": "familia",
-            "2": "amigos",
-            "3": "pareja",
-            "4": "desconocidos"
-        };
-
-        return grupoArray.map(v => mapaGrupo[v] || v);
-    }
-
-    /**
-     * Buscar atracciones que cumplan con los criterios.
-     * @param {Number[]|String[]} momento   1 = semana, 2 = finde
-     * @param {Number[]|String[]} horario   0=dia,1=noche → turnoAtraccion
-     * @param {Number[]|String[]} actividad → estiloAtraccion
-     * @param {Number[]|String[]} grupo     → gruposRecomendadosAtraccion
-     * @returns {Object[]} lista de atracciones que cumplen los filtros
-     */
-    buscarAtracciones(momento, horario, actividad, grupo) {
-        const conexion = window.conexionAlmacen;
-        if (!conexion) {
-            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
-            return [];
-        }
-
-        const todas = conexion.solicitarInformacionAtracciones();
-
-        // Interpretamos filtros
-        const filtroMomento = this._interpretarMomento(momento);
-        const turnosFiltrar  = this._mapearTurno(horario);
-        const estilosFiltrar = this._mapearActividad(actividad);
-        const gruposFiltrar  = this._mapearGrupo(grupo);
-
-        // Si literalmente no hay ningún filtro activo en nada:
-        if (!filtroMomento && !turnosFiltrar && !estilosFiltrar && !gruposFiltrar) {
-            return todas;
-        }
-
-        return todas.filter(atr => {
+            // ---- filtro MOMENTO: semana / finde ----
             let okMomento = true;
-            let okTurno   = true;
-            let okEstilo  = true;
-            let okGrupo   = true;
+            if (momentosFiltro.length > 0) {
+                const diasSemana = ["lunes", "martes", "miercoles", "miércoles", "jueves"];
+                const diasFinde  = ["viernes", "sabado", "sábado", "domingo"];
 
-            // MOMENTO (semana / finde) según diasAbiertoAtraccion
-            if (filtroMomento) {
-                const { tieneSemana, tieneFinde } = this._clasificarMomentoDesdeDias(
-                    atr.diasAbiertoAtraccion || []
-                );
+                const abreSemana = diasAtr.some(d => diasSemana.includes(d));
+                const abreFinde  = diasAtr.some(d => diasFinde.includes(d));
 
-                // Si se pide semana, debe haber algún día de semana
-                if (filtroMomento.filtrarSemana && !tieneSemana) {
-                    okMomento = false;
-                }
-
-                // Si se pide finde, debe haber algún día de finde
-                if (filtroMomento.filtrarFinde && !tieneFinde) {
-                    okMomento = false;
-                }
+                okMomento =
+                    (momentosFiltro.includes("semana") && abreSemana) ||
+                    (momentosFiltro.includes("finde")  && abreFinde);
             }
 
-            // HORARIO: turnoAtraccion ["dia","noche"]
-            if (turnosFiltrar) {
-                okTurno = this.validador.algunValorExiste(
-                    atr.turnoAtraccion || [],
-                    turnosFiltrar
-                );
+            // ---- filtro HORARIO: dia / noche ----
+            let okHorario = true;
+            if (horariosFiltro.length > 0) {
+                okHorario = turnos.some(t => horariosFiltro.includes(t));
             }
 
-            // ACTIVIDAD: estiloAtraccion ["cultura","relajacion",...]
-            if (estilosFiltrar) {
-                okEstilo = this.validador.algunValorExiste(
-                    atr.estiloAtraccion || [],
-                    estilosFiltrar
-                );
+            // ---- filtro ACTIVIDAD: cultura, fiesta, relajacion, deporte, etc. ----
+            let okEstilo = true;
+            if (estilosFiltro.length > 0) {
+                okEstilo = estilos.some(e => estilosFiltro.includes(e));
             }
 
-            // GRUPO: gruposRecomendadosAtraccion ["familia","amigos",...]
-            if (gruposFiltrar) {
-                okGrupo = this.validador.algunValorExiste(
-                    atr.gruposRecomendadosAtraccion || [],
-                    gruposFiltrar
-                );
+            // ---- filtro GRUPO: familia, amigos, pareja, desconocidos ----
+            let okGrupo = true;
+            if (gruposFiltro.length > 0) {
+                okGrupo = grupos.some(g => gruposFiltro.includes(g));
             }
 
-            return okMomento && okTurno && okEstilo && okGrupo;
+            return okMomento && okHorario && okEstilo && okGrupo;
         });
     }
 
     /**
-     * Busca una atracción por su nombre exacto usando los datos cargados
-     * desde ConexionAlmacen (atracciones.json).
-     * @param {string} nombre Nombre de la atracción a buscar
-     * @returns {Object|null} Objeto atracción o null si no se encuentra
+     * Mapear valores del formulario de "momento" a etiquetas lógicas.
+     * momento: 1 = semana, 2 = finde
      */
-    buscarAtraccionPorNombre(nombre) {
-        const conexion = window.conexionAlmacen;
+    _mapMomento(momentoArray = []) {
+        const values = momentoArray.map(v => String(v));
+        const result = [];
 
-        if (!conexion) {
-            console.warn("No se encontró window.conexionAlmacen. Verificá el orden de los scripts.");
-            return null;
-        }
+        if (values.includes("1")) result.push("semana");
+        if (values.includes("2")) result.push("finde");
 
-        const todas = conexion.solicitarInformacionAtracciones();
-        if (!Array.isArray(todas)) {
-            return null;
-        }
-
-        // Coincidencia exacta por nombreAtraccion
-        const encontrada = todas.find(atr => atr.nombreAtraccion === nombre);
-
-        return encontrada || null;
+        return result;
     }
 
+    /**
+     * Mapear valores del formulario de "horario" a [ "dia", "noche" ].
+     * horario: "0" = dia, "1" = noche
+     */
+    _mapHorario(horarioArray = []) {
+        const values = horarioArray.map(v => String(v));
+        const result = [];
+
+        if (values.includes("0") || values.includes("dia")) {
+            result.push("dia");
+        }
+        if (values.includes("1") || values.includes("noche")) {
+            result.push("noche");
+        }
+
+        return result;
+    }
+
+    /**
+     * Mapear valores del formulario "tipo-actividad" a los estilos del JSON.
+     * Ajustá estos índices a los value reales de tus <option>.
+     *
+     * Ejemplo posible:
+     *  0 = cualquiera (sin filtro)
+     *  1 = cultura
+     *  2 = fiesta
+     *  3 = relajacion
+     *  4 = deporte
+     */
+    _mapActividad(actividadArray = []) {
+        const values = actividadArray.map(v => String(v));
+
+        const mapa = {
+            "1": "cultura",
+            "2": "fiesta",
+            "3": "relajacion",
+            "4": "deporte"
+            // podés agregar más si tenés más estilos en el JSON
+        };
+
+        const resultado = values
+            .map(v => mapa[v])
+            .filter(Boolean)       // quita undefined
+            .map(v => v.toLowerCase());
+
+        return resultado;
+    }
+
+    /**
+     * Mapear valores del formulario "tipo-grupo" a los grupos del JSON.
+     *
+     * Ejemplo posible:
+     *  0 = familia
+     *  1 = amigos
+     *  2 = pareja
+     *  3 = desconocidos
+     */
+    _mapGrupo(grupoArray = []) {
+        const values = grupoArray.map(v => String(v));
+
+        const mapa = {
+            "0": "familia",
+            "1": "amigos",
+            "2": "pareja",
+            "3": "desconocidos"
+        };
+
+        const resultado = values
+            .map(v => mapa[v])
+            .filter(Boolean)
+            .map(v => v.toLowerCase());
+
+        return resultado;
+    }
 }
