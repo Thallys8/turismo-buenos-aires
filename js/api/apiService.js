@@ -1,18 +1,23 @@
 // js/api/apiService.js
 
-const API_URL = "./js/api/atracciones.json";
+// URL base del JSON de atracciones (desde index.html)
+export const API_URL = "./js/api/atracciones.json";
 
-/** Sanitiza un string: asegura que sea string y recorta espacios. */
-function sanitizeString(value, fallback = "") {
-  if (value === null || value === undefined) return fallback;
-  return String(value).trim();
+/** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
+export function sanitizeString(value, fallback = "") {
+  if (typeof value !== "string") return fallback;
+
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+
+  return trimmed;
 }
 
 /** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
 function sanitizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value
-    .map(v => sanitizeString(v))
+    .map(v => sanitizeString(v, "")) // si no es string o queda vacío → ""
     .filter(v => v.length > 0);
 }
 
@@ -32,7 +37,10 @@ function validarYAtraccion(raw, index) {
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
   const estiloAtraccion = sanitizeStringArray(raw.estiloAtraccion);
   const gruposRecomendadosAtraccion = sanitizeStringArray(raw.gruposRecomendadosAtraccion);
-  const direccionAtraccion = sanitizeString(raw.direccionAtraccion, "Ciudad de Buenos Aires");
+  const direccionAtraccion = sanitizeString(
+    raw.direccionAtraccion,
+    "Ciudad de Buenos Aires"
+  );
 
   // Reglas mínimas de validez
   const errores = [];
@@ -93,7 +101,6 @@ export async function obtenerAtracciones() {
       .map(validarYAtraccion)
       .filter(a => a !== null);
 
-    // Si no quedó ninguna válida, avisamos
     if (atrSanitizadas.length === 0) {
       console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
       throw new Error("Por el momento no hay atracciones disponibles.");
@@ -101,23 +108,19 @@ export async function obtenerAtracciones() {
 
     return atrSanitizadas;
   } catch (error) {
-    // Log técnico para desarrollador
     console.error("[apiService] Error general al obtener atracciones:", error);
 
-    // Error amigable para el usuario
     if (error instanceof SyntaxError) {
-      // Error parseando JSON
       throw new Error(
         "Tuvimos un problema al leer los datos de las atracciones. Por favor recargá la página."
       );
     }
 
-    if (error.message && error.message.startsWith("No pudimos cargar")) {
-      throw error; 
-    }
-
-    if (error.message && error.message.startsWith("Encontramos un problema")) {
-      throw error; 
+    if (error.message && (
+      error.message.startsWith("No pudimos cargar") ||
+      error.message.startsWith("Encontramos un problema")
+    )) {
+      throw error;
     }
 
     throw new Error(
@@ -132,14 +135,7 @@ export async function obtenerNombresAtracciones() {
   return atracciones.map(a => a.nombreAtraccion);
 }
 
-/** Filtra atracciones por un criterio flexible.
- * `criterios` puede incluir:
- * - turno: ["dia","noche"]
- * - estilos: ["cultura","fiesta",...]
- * - grupos: ["familia","amigos",...]
- *
- * Usa filter + some (orden superior). */
-
+/** Filtra atracciones por un criterio flexible. */
 export async function filtrarAtraccionesPorCriterios(criterios = {}) {
   const { turno, estilos, grupos } = criterios;
   const atracciones = await obtenerAtracciones();
@@ -165,11 +161,7 @@ export async function filtrarAtraccionesPorCriterios(criterios = {}) {
   });
 }
 
-/** Devuelve estadísticas usando reduce:
- * - total de atracciones
- * - conteo por turno (cuántas tienen día, cuántas noche)
- * - conteo por tipo de estilo (cultura, fiesta, etc.) */
-
+/** Devuelve estadísticas usando reduce. */
 export async function obtenerEstadisticasAtracciones() {
   const atracciones = await obtenerAtracciones();
 
@@ -177,17 +169,14 @@ export async function obtenerEstadisticasAtracciones() {
     (acc, atr) => {
       acc.total++;
 
-      // turnos
       atr.turnoAtraccion.forEach(t => {
         acc.porTurno[t] = (acc.porTurno[t] || 0) + 1;
       });
 
-      // estilos
       atr.estiloAtraccion.forEach(e => {
         acc.porEstilo[e] = (acc.porEstilo[e] || 0) + 1;
       });
 
-      // grupos
       atr.gruposRecomendadosAtraccion.forEach(g => {
         acc.porGrupo[g] = (acc.porGrupo[g] || 0) + 1;
       });
@@ -205,10 +194,7 @@ export async function obtenerEstadisticasAtracciones() {
   return estadisticas;
 }
 
-/** Función de ayuda para integrar con el DOM:
- * Recibe un callback que sabe "pintar" las atracciones.
- * Si hay error, llama a onError con un mensaje. */
-
+/** Ayuda para integrar con el DOM. */
 export async function cargarAtraccionesEnUI({ onSuccess, onError }) {
   try {
     const atracciones = await obtenerAtracciones();

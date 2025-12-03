@@ -65,22 +65,32 @@
 - No debe lanzar error al generar itinerario
 
 **Casos de Prueba:**
-| ## |                                                      Descripción                                                           |                     Tipo                      |
-|----|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| 01 | Verifica que, al inicializar la página, se generen correctamente las tarjetas de atracciones en el contenedor del DOM.     | Happy path / integración DOM                  |
-| 03 | Comprueba que las tarjetas creadas alternen correctamente las animaciones AOS (izquierda/derecha).                         | Lógica de presentación / integración con AOS  |
-| 04 | Verifica que el handler de búsqueda llama `preventDefault()` y no recarga la página.                                       | Validación de comportamiento de formulario    |
-| 05 | Comprueba que, al enviar el formulario, se invoca el filtro con los criterios seleccionados.                               | Lógica de negocio + integración DOM / modelos |
-| 06 | Valida que los resultados devueltos por `FiltroAtracciones` se representen en el DOM (lista o tarjetas filtradas).         | Happy path / integración DOM                  |
-| 07 | Verifica que `concretarReserva` llame `preventDefault()` para evitar el envío nativo del formulario.                       | Validación de formulario / manejo de eventos  |
-| 08 | Comprueba que, al guardar la reserva, se muestre en el DOM un popup o mensaje con los datos de la reserva.                 | Lógica de UI / integración DOM                |
-| 09 | Simula un formulario de reserva estándar y verifica que `concretarReserva` no arroje excepciones.                          | Robustez / manejo de errores                  |
-| 10 | Verifica que el formulario de itinerario construye correctamente el `FormData` y llama a `Itinerario.cargarDiaItinerario`. | Integración DOM / modelos / happy path        |
-| 11 | Comprueba que, tras guardar un día, el texto “día en proceso” del DOM se actualiza al siguiente día.                       | Lógica de negocio + actualización de interfaz |
-| 12 | Verifica que, al completar los 7 días, se muestre un mensaje o estado de itinerario completo en la interfaz.               | Caso de borde / integración DOM               |
-| 13 | Comprueba que el formulario de newsletter evita el submit nativo y llama a `ConexionAlmacen.ingresarInformacionNewsletter`.| Integración DOM/modelo / validación           |
-| 14 | Verifica que solo se procese el envío si el email cumple el formato válido (usando `Validador.esEmail`).                   | Validación de datos de entrada                |
-
+| ## |                                                    Descripción                                                         |                          Tipo                         |
+|----|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 01 | Procesa parámetros válidos sin lanzar errores y escribe en el contenedor de actividades.                               | Happy path / smoke test                               |
+| 02 | Acepta arrays vacíos como parámetros (momento, horario, actividad, grupo) sin romper.                                  | Caso de borde / robustez                              |
+| 03 | Cuando el filtro devuelve **sin resultados**, muestra un mensaje indicando que ninguna atracción cumple el criterio.   | Lógica + DOM (estado sin resultados)                  |
+| 04 | Limpia el contenido anterior de `lista-de-actividades` antes de agregar nuevas tarjetas de atracciones.                | Lógica DOM / limpieza de estado                       |
+| 05 | Utiliza `filtroAtracciones.buscarAtracciones` para filtrar atracciones (se verifica con `spyOn`).                      | Integración con modelo `FiltroAtracciones`            |
+| 06 | Maneja parámetros `null` / `undefined` sin lanzar errores.                                                             | Caso de borde / robustez                              |
+| 07 | Previene el comportamiento por defecto (`event.preventDefault`).                                                       | Comportamiento de evento                              |
+| 08 | Procesa los datos de un formulario válido sin lanzar errores.                                                          | Happy path                                            |
+| 09 | Crea un popup de confirmación con el texto de “Subscripción exitosa”.                                                  | Lógica + DOM                                          |
+| 10 | Acepta formulario con campos vacíos sin lanzar error.                                                                  | Caso de borde                                         |
+| 11 | Maneja formularios sin checkboxes seleccionados sin romper.                                                            | Caso de borde                                         |
+| 12 | No lanza errores con valores básicos (smoke test).                                                                     | Robustez                                              |
+| 13 | Se verifica que `FormData` extrae correctamente `nombre` y `email`.                                                    | Validación de entrada / mapeo                         |
+| 14 | Procesa correctamente el evento con un botón que contiene el nombre de una atracción.                                  | Happy path                                            |
+| 15 | Se ejecuta sin lanzar errores aun cuando la disponibilidad depende de la configuración real.                           | Robustez / integración con modelo                     |
+| 16 | Previene el comportamiento por defecto del formulario.                                                                 | Comportamiento de evento                              |
+| 17 | Crea un popup de confirmación que incluye datos de la reserva (atracción, personas, días, contacto).                   | Lógica + DOM                                          |
+| 18 | Acepta valores de atracción válidos (“Atracción Test”) sin lanzar errores.                                             | Caso de borde sencillo                                |
+| 19 | Maneja formularios básicos sin lanzar error (smoke test de robustez).                                                  | Robustez                                              |
+| 20 | Se ejecuta sin lanzar errores (probando la ruta feliz con mock de `obtenerAtracciones`).                               | Happy path / integración con API                      |
+| 21 | Crea un popup con formulario de itinerario (`.panel-con-fondo`) y contiene texto relacionado a “itinerario”.           | Lógica + DOM + integración con datos de atracciones   |
+| 22 | Procesa un formulario (con día seleccionado, selects de mañana/tarde/noche y email válido) sin errores.                | Lógica de negocio + integración con modelo Itinerario |
+| 23 | Maneja correctamente la inicialización del itinerario, asegurando que el popup se genere.                              | Caso de borde / robustez                              |
+| 24 | No lanza error incluso en condiciones mínimas (smoke test).                                                            | Robustez                                              |
 
 ---
 
@@ -164,20 +174,34 @@
 - Obtener devuelve null si el JSON está corrupto
 
 **Casos de Prueba:**
-| ## |                                                  Descripción                                                      |                         Tipo                         |
-|----|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
-| 01 | Guarda un objeto en `localStorage` y lo obtiene verificando que el resultado sea igual al objeto original.        | Happy path / lógica de negocio / persistencia        |
-| 02 | Guarda un string en `sessionStorage`, espía `sessionStorage.setItem` y verifica que se haya llamado y leído bien. | Integración con API nativa / happy path / validación |
-| 03 | Verifica que `actualizar(clave, valor, "local")` termine llamando internamente a `localStorage.setItem` con JSON. | Lógica interna / equivalencia con `guardar`          |
-| 04 | Crea una clave en `localStorage`, llama a `eliminar(clave, "local")` y comprueba que `getItem` devuelva `null`.   | Lógica de negocio / happy path                       |
-| 05 | Crea varias claves, algunas con un prefijo común, y verifica que `listar(prefijo, "local")` devuelva solo esas.   | Lógica de negocio / filtrado / caso positivo         |
-| 06 | Carga varias claves en `localStorage`, ejecuta `limpiar("local")` y comprueba que el `length` quede en 0.         | Caso de limpieza total / lógica de negocio           |
-| 07 | Inserta manualmente un string inválido en `localStorage` y verifica que `obtener(clave, "local")` devuelva `null`.| Manejo de errores / robustez ante datos corruptos    |
+| ## |                                                            Descripción                                                          |                       Tipo                     |
+|----|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| 01 | Verifica que la constante exportada `API_URL` apunte a la ruta correcta del JSON de atracciones: `./js/api/atracciones.json`.   | Happy path                                     |
+| 02 | Comprueba que, dado un string válido con espacios, la función devuelve el mismo texto recortado.                                | Lógica de negocio / Happy path                 |
+| 03 | Verifica que para valores no string (`null`, `undefined`, números, objetos, arrays), la función devuelva el `fallback` indicado | Validación / manejo de tipos inválidos         |
+| 04 | Valida que cuando el string es vacío o solo espacios, se devuelva el `fallback` definido (o `""` si no se pasa `fallback`).     | Caso de borde / normalización de entradas      |
+| 05 | Asegura que la función no arroje errores cuando recibe texto con caracteres especiales o HTML y que siga devolviendo un string. | Robustez / sanitización básica                 |
+| 06 | Utiliza `fetch("../api/atracciones.json")` y verifica que la respuesta sea `ok`, que `data.atracciones` exista, sea un array y tenga al menos un elemento                        | Integración HTTP + JSON / happy path         |
+| 07 | Realiza un `fetch("../api/recurso-inexistente.json")` y verifica que `response.ok` sea `false` y que el `status` sea ≥ 400      | Manejo de errores HTTP                         |
+| 08 | Espía `window.fetch` para forzar un `Promise.reject(new Error("Network error simulado"))` y valida que el error sea capturado y contenga el mensaje esperado                        | Manejo de errores de red / robustez          |
+| 09 | A partir de `data.atracciones`, obtiene los nombres con `map`, filtra atracciones de día con `filter` y calcula días totales abiertos con `reduce`. Verifica resultados > 0.                              | Lógica de negocio / procesamiento funcional  |
+| 10 | Crea dinámicamente un `<ul>` en el DOM, recorre `data.atracciones` y genera un `<li>` por atracción. Verifica que la cantidad de `li` coincida con el array y que el primero tenga el nombre correcto        | Integración DOM + datos remotos / Happy path |
+
 
 ---
 
 ### Suite 4: API
 **Funciones Testeadas:**
+####  API de atracciones - configuración de apiService
+- Debe exponer la constante API_URL con la ruta correcta
+
+#####sanitizeString
+- Devuelve el string recortado cuando es un valor válido
+- Reemplaza valores no-string por el fallback indicado
+- Si el string es vacío o solo espacios, devuelve el fallback
+- Si no se pasa fallback, usa cadena vacía como valor por defecto
+- No revienta si el string contiene caracteres especiales o HTML
+
 ####  API de atracciones - js/api/atracciones.json
 - Debe obtener las atracciones correctamente con fetch (respuesta exitosa)
 - Debe manejar un error HTTP (por ejemplo 404) al pedir un recurso inexistente
