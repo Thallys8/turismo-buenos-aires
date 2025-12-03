@@ -7,7 +7,6 @@ import Validador from './models/Validador.js';
 import { obtenerAtracciones } from "./api/apiService.js";
 
 const conexionAlamacen = new ConexionAlamacen();
-
 const filtroAtracciones = new FiltroAtracciones();
 const semana = new Semana();
 
@@ -20,7 +19,7 @@ AOS.init();
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
  * Recibe la informacion de la reserva, la envia a almacenar y genera un popup avisando de su registro
  * @param {Event} event 
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
 function concretarReserva(event, formulario){
     event.preventDefault();
@@ -105,7 +104,7 @@ async function handlerSubmitBusqueda(parametros, listaActividades){
         // Usamos window.obtenerAtracciones para poder mockearla en los tests
         const todasLasAtracciones = await window.obtenerAtracciones();
 
-        // 2) Filtramos usando la lógica de FiltroAtracciones (función de orden superior filter interna)
+        // 2) Filtramos usando la lógica de FiltroAtracciones
         const listaDatos = filtroAtracciones.buscarAtracciones(
             parametros.momento,
             parametros.horario,
@@ -178,7 +177,7 @@ if (formularioAvanzado != null && formularioAvanzado)
 // genera una lista con el numero de opciones [1...10]
 const maxTipos = 10;
 const opciones = [];
-for (var i = 0; i <= maxTipos; i++) {
+for (let i = 0; i <= maxTipos; i++) {
     opciones.push(i);
 }
 
@@ -211,7 +210,7 @@ if(btnDia != null && btnDia)
  * Recibe el formulario HTML con la informacion de la informacion, almacenandolo y
  * generando un aviso de subscripcion correcta
  * @param {Event} event 
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
 function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
@@ -241,9 +240,6 @@ function concretarSubscripcionNews( event, formulario ){
  * @param {Event} event evento de click
  */
 function subscripcionNewsletter(event){
-
-    // generar html para nuevo formulario de subscripcion
-    // este nuevo html se encarga de la validacion
     const nuevoElemento = crearPopUpFormulario(`
         <label for="nombre" class="form-label "> Ingrese su nombre completo </label>
         <input required type="text" name="nombre" id="nombre" class="form-control w-75">
@@ -325,7 +321,7 @@ function popUpItinerarioCompleto(){
 /**
  * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
  * y si este esta completo, lo almacena
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
 function almacenarDiaItinerario(formulario) {
     const formData = new FormData(formulario);
@@ -338,8 +334,9 @@ function almacenarDiaItinerario(formulario) {
         return;
     }
 
-    const diasSeleccionados = Array.from(formulario.querySelectorAll('input[name="dias"]:checked'))
-        .map(cb => cb.value);
+    const diasSeleccionados = Array.from(
+        formulario.querySelectorAll('input[name="dias"]:checked')
+    ).map(cb => cb.value);
     
     diasSeleccionados.forEach(dia => {
         const diaFinal = {
@@ -425,7 +422,7 @@ function actualizarTabs(contenedor, opciones) {
         </div>
     `).join('');
 
-    Object.keys(valoresElegidos).map(name => {
+    Object.keys(valoresElegidos).forEach(name => {
         const select = document.querySelector(`select[name="${name}"]`);
         if(select) {
             select.value = valoresElegidos[name];
@@ -543,7 +540,8 @@ if(botonItinerario != null && botonItinerario)
 /**
  * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
  * @param {*} datosAtraccion Los datos de la atraccion
- * @param {*} callback Callback para el boton de reserva
+ * @param {Function} callback Callback para el boton de reserva
+ * @param {String} fadeStyle estilo de animación AOS
  */
 function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
     let elementoHTML = document.createElement("article");
@@ -594,8 +592,7 @@ function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
 */
-function crearAtracciones( listaDatos, callbackReserva )
-{
+function crearAtracciones( listaDatos, callbackReserva ){
     let fadeStyle = "fade-right";
     return listaDatos.map( atraccion => {
         const tarjeta = crearTarjetaHTML(atraccion, callbackReserva, fadeStyle);
@@ -610,7 +607,7 @@ function crearAtracciones( listaDatos, callbackReserva )
  * @param {Function} nuevoOnSubmit callback para usar durante el submit
  * @returns {HTMLElement} El popup creado 
  */
-function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
+function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit ){
     // contenedor que da el fondo semi-transparente
     const contenedor = document.createElement("div");
     contenedor.className = "panel-con-fondo container-fluid row overflow-scroll";
@@ -661,42 +658,3 @@ function crearPopUpSimple( nuevoInnerHtml ){
     fondo.appendChild(contenedor);
     return fondo;
 }
-
-if (typeof window !== 'undefined') {
-    // Funciones principales
-    window.handlerSubmitBusqueda = handlerSubmitBusqueda;
-    window.formularioSubmit = formularioSubmit;
-    window.onclickAtraccionesDia = onclickAtraccionesDia;
-    window.onclickAtraccionesNoche = onclickAtraccionesNoche;
-    
-    // Funciones de reserva
-    window.concretarReserva = concretarReserva;
-    window.generarMenuReserva = generarMenuReserva;
-    
-    // Funciones de newsletter
-    window.concretarSubscripcionNews = concretarSubscripcionNews;
-    window.subscripcionNewsletter = subscripcionNewsletter;
-    
-    // Funciones de itinerario
-    window.almacenarDiaItinerario = almacenarDiaItinerario;
-    window.generarMenuItinerario = generarMenuItinerario;
-    window.generarItinerario = generarItinerario;
-    window.popUpItinerarioCompleto = popUpItinerarioCompleto;
-    
-    // Funciones helper de creación HTML
-    window.crearAtracciones = crearAtracciones;
-    window.crearTarjetaHTML = crearTarjetaHTML;
-    window.crearPopUpFormulario = crearPopUpFormulario;
-    window.crearPopUpSimple = crearPopUpSimple;
-    
-    // Instancias globales
-    window.formularioAvanzado = formularioAvanzado;
-    window.listaActividades = listaActividades;
-    window.conexionAlamacen = conexionAlamacen;
-    window.filtroAtracciones = filtroAtracciones;
-    window.semana = semana;
-
-    // EXHIBE la función del apiService
-    window.obtenerAtracciones = obtenerAtracciones;
-}
-
