@@ -155,22 +155,25 @@ function formularioSubmit(event){
 
     const formData = new FormData(formularioAvanzado);
 
+    // Momento: semana / finde
     const momento = [];
-    
-    if (formData.get("semana") === "1")  
-        momento.push(1);
-    if (formData.get("finde")  === "2")
-        momento.push(2);
+    if (formData.get("semana") === "1")  momento.push(1);
+    if (formData.get("finde")  === "2")  momento.push(2);
+    if (momento.length === 0) momento.push(1, 2); // si no elige, tomamos ambos
 
-    if(momento.length == 0) momento.push(1, 2);
+    // Horario, actividad y grupo: un único valor cada uno
+    const horarioValor    = formData.get("horario");         // "1" o "2"
+    const actividadValor  = formData.get("tipo-actividad");  // "1","2","3","4" o "[1,2,3,4]"
+    const grupoValor      = formData.get("tipo-grupo");      // "1","2","3","4" o "[1,2,3,4]"
 
-    const horario = [...formData.get("horario")];
-    const actividad = [...formData.get("tipo-actividad")];
-    const grupo = [...formData.get("tipo-grupo")];
+    const horario   = horarioValor   ? [horarioValor]   : [];
+    const actividad = actividadValor ? [actividadValor] : [];
+    const grupo     = grupoValor     ? [grupoValor]     : [];
 
-    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo};
+    const parametros = { momento, horario, actividad, grupo };
     handlerSubmitBusqueda(parametros, listaActividades);
 }
+
 if (formularioAvanzado != null && formularioAvanzado) 
     formularioAvanzado.addEventListener('submit', formularioSubmit);
 
