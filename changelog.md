@@ -22,6 +22,8 @@ PR: [#132](https://github.com/Thallys8/turismo-buenos-aires/pull/132) @Thallys8 
 PR: [#133](https://github.com/Thallys8/turismo-buenos-aires/pull/133) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 - [feature/dev-async-fetch-api] Corrección de los errores de consola.  
 PR: [#134](https://github.com/Thallys8/turismo-buenos-aires/pull/134) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/tester-qa-js-testing-suite] Completando las pruebas de las funciones que agregamos a de apiService.js y corrigiendo los errores de test de script.js.    
+PR: [#135](https://github.com/Thallys8/turismo-buenos-aires/pull/135) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 ### Fixed  
 

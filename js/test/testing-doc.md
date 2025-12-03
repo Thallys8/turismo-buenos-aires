@@ -65,22 +65,32 @@
 - No debe lanzar error al generar itinerario
 
 **Casos de Prueba:**
-| ## |                                                      Descripción                                                           |                     Tipo                      |
-|----|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| 01 | Verifica que, al inicializar la página, se generen correctamente las tarjetas de atracciones en el contenedor del DOM.     | Happy path / integración DOM                  |
-| 03 | Comprueba que las tarjetas creadas alternen correctamente las animaciones AOS (izquierda/derecha).                         | Lógica de presentación / integración con AOS  |
-| 04 | Verifica que el handler de búsqueda llama `preventDefault()` y no recarga la página.                                       | Validación de comportamiento de formulario    |
-| 05 | Comprueba que, al enviar el formulario, se invoca el filtro con los criterios seleccionados.                               | Lógica de negocio + integración DOM / modelos |
-| 06 | Valida que los resultados devueltos por `FiltroAtracciones` se representen en el DOM (lista o tarjetas filtradas).         | Happy path / integración DOM                  |
-| 07 | Verifica que `concretarReserva` llame `preventDefault()` para evitar el envío nativo del formulario.                       | Validación de formulario / manejo de eventos  |
-| 08 | Comprueba que, al guardar la reserva, se muestre en el DOM un popup o mensaje con los datos de la reserva.                 | Lógica de UI / integración DOM                |
-| 09 | Simula un formulario de reserva estándar y verifica que `concretarReserva` no arroje excepciones.                          | Robustez / manejo de errores                  |
-| 10 | Verifica que el formulario de itinerario construye correctamente el `FormData` y llama a `Itinerario.cargarDiaItinerario`. | Integración DOM / modelos / happy path        |
-| 11 | Comprueba que, tras guardar un día, el texto “día en proceso” del DOM se actualiza al siguiente día.                       | Lógica de negocio + actualización de interfaz |
-| 12 | Verifica que, al completar los 7 días, se muestre un mensaje o estado de itinerario completo en la interfaz.               | Caso de borde / integración DOM               |
-| 13 | Comprueba que el formulario de newsletter evita el submit nativo y llama a `ConexionAlmacen.ingresarInformacionNewsletter`.| Integración DOM/modelo / validación           |
-| 14 | Verifica que solo se procese el envío si el email cumple el formato válido (usando `Validador.esEmail`).                   | Validación de datos de entrada                |
-
+| ## |                                                    Descripción                                                         |                          Tipo                         |
+|----|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 01 | Procesa parámetros válidos sin lanzar errores y escribe en el contenedor de actividades.                               | Happy path / smoke test                               |
+| 02 | Acepta arrays vacíos como parámetros (momento, horario, actividad, grupo) sin romper.                                  | Caso de borde / robustez                              |
+| 03 | Cuando el filtro devuelve **sin resultados**, muestra un mensaje indicando que ninguna atracción cumple el criterio.   | Lógica + DOM (estado sin resultados)                  |
+| 04 | Limpia el contenido anterior de `lista-de-actividades` antes de agregar nuevas tarjetas de atracciones.                | Lógica DOM / limpieza de estado                       |
+| 05 | Utiliza `filtroAtracciones.buscarAtracciones` para filtrar atracciones (se verifica con `spyOn`).                      | Integración con modelo `FiltroAtracciones`            |
+| 06 | Maneja parámetros `null` / `undefined` sin lanzar errores.                                                             | Caso de borde / robustez                              |
+| 07 | Previene el comportamiento por defecto (`event.preventDefault`).                                                       | Comportamiento de evento                              |
+| 08 | Procesa los datos de un formulario válido sin lanzar errores.                                                          | Happy path                                            |
+| 09 | Crea un popup de confirmación con el texto de “Subscripción exitosa”.                                                  | Lógica + DOM                                          |
+| 10 | Acepta formulario con campos vacíos sin lanzar error.                                                                  | Caso de borde                                         |
+| 11 | Maneja formularios sin checkboxes seleccionados sin romper.                                                            | Caso de borde                                         |
+| 12 | No lanza errores con valores básicos (smoke test).                                                                     | Robustez                                              |
+| 13 | Se verifica que `FormData` extrae correctamente `nombre` y `email`.                                                    | Validación de entrada / mapeo                         |
+| 14 | Procesa correctamente el evento con un botón que contiene el nombre de una atracción.                                  | Happy path                                            |
+| 15 | Se ejecuta sin lanzar errores aun cuando la disponibilidad depende de la configuración real.                           | Robustez / integración con modelo                     |
+| 16 | Previene el comportamiento por defecto del formulario.                                                                 | Comportamiento de evento                              |
+| 17 | Crea un popup de confirmación que incluye datos de la reserva (atracción, personas, días, contacto).                   | Lógica + DOM                                          |
+| 18 | Acepta valores de atracción válidos (“Atracción Test”) sin lanzar errores.                                             | Caso de borde sencillo                                |
+| 19 | Maneja formularios básicos sin lanzar error (smoke test de robustez).                                                  | Robustez                                              |
+| 20 | Se ejecuta sin lanzar errores (probando la ruta feliz con mock de `obtenerAtracciones`).                               | Happy path / integración con API                      |
+| 21 | Crea un popup con formulario de itinerario (`.panel-con-fondo`) y contiene texto relacionado a “itinerario”.           | Lógica + DOM + integración con datos de atracciones   |
+| 22 | Procesa un formulario (con día seleccionado, selects de mañana/tarde/noche y email válido) sin errores.                | Lógica de negocio + integración con modelo Itinerario |
+| 23 | Maneja correctamente la inicialización del itinerario, asegurando que el popup se genere.                              | Caso de borde / robustez                              |
+| 24 | No lanza error incluso en condiciones mínimas (smoke test).                                                            | Robustez                                              |
 
 ---
 
