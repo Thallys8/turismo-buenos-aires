@@ -31,7 +31,7 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
   });
 
   // --- FUNCIONALIDAD BÁSICA (happy path) ---
-  it("debe procesar correctamente parámetros válidos", function() {
+  it("debe procesar correctamente parámetros válidos", async function() {
     const parametros = {
       momento: [1], 
       horario: [0], 
@@ -39,82 +39,153 @@ describe("Flujo 1 - handlerSubmitBusqueda()", function() {
       grupo: [1]
     };
 
-    expect(function() {
-      window.handlerSubmitBusqueda(parametros);
-    }).not.toThrow();
-    
-    // Verificar que el contenedor de actividades existe
-    expect(mockListaActividades).toBeDefined();
+    const mockAtracciones = [
+      { nombreAtraccion: "Obelisco" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+    spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
+
+    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+
+    // Si llegó hasta acá sin tirar error, estamos bien
+    expect(true).toBeTrue();
   });
 
   // --- CASOS BORDE ---
-  it("debe aceptar arrays vacíos como parámetros", function() {
+  it("debe aceptar arrays vacíos como parámetros", async function() {
     const parametros = {
       momento: [], 
       horario: [], 
       actividad: [], 
       grupo: []
     };
-    
-    expect(function() {
-      window.handlerSubmitBusqueda(parametros);
-    }).not.toThrow();
+
+    const mockAtracciones = [
+      { nombreAtraccion: "Teatro Colón" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+    spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
+
+    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+
+    expect(true).toBeTrue();
   });
 
-  it("debe manejar resultados sin atracciones mostrando mensaje apropiado", function() {
-    // Usar parámetros que probablemente no coincidan con ninguna atracción
+  it("debe manejar resultados sin atracciones mostrando mensaje apropiado", async function() {
+    // Usamos el contenedor creado en beforeEach
+    const lista = mockListaActividades;
+
+    // Mock de datos crudos que devolvería la API
+    const mockAtracciones = [
+      { nombreAtraccion: "Obelisco" },
+      { nombreAtraccion: "Teatro Colón" }
+    ];
+
+    // Mock de API
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+    // Filtro devuelve SIN resultados
+    spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
+
     const parametros = {
-      momento: [99], 
-      horario: [99], 
-      actividad: [99], 
-      grupo: [99]
+      momento: [1],
+      horario: [0],
+      actividad: [1],
+      grupo: [1]
     };
-    
-    window.handlerSubmitBusqueda(parametros, mockListaActividades);
-    
-    // Verificar que muestra mensaje cuando no hay resultados
-    expect(mockListaActividades.innerHTML).toContain("cumple con el criterio");
+
+    await window.handlerSubmitBusqueda(parametros, lista);
+
+    // Debe mostrarse el mensaje de "ninguna cumple con el criterio"
+    expect(lista.textContent).toContain("cumple con el criterio");
   });
 
   // --- VALIDACIÓN DE ERRORES ---
-  it("debe manejar parámetros null o undefined sin lanzar error", function() {
-    expect(function() {
-      window.handlerSubmitBusqueda({ momento: null, horario: undefined, actividad: [], grupo: [] });
-    }).not.toThrow();
+  it("debe manejar parámetros null o undefined sin lanzar error", async function() {
+    const parametros = {
+      momento: null, 
+      horario: undefined, 
+      actividad: [], 
+      grupo: []
+    };
+
+    const mockAtracciones = [
+      { nombreAtraccion: "Jardín Japonés" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+    spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([]);
+
+    await window.handlerSubmitBusqueda(parametros, mockListaActividades);
+
+    expect(true).toBeTrue();
   });
 
   // --- OPERACIONES CON ARRAYS ---
-  it("debe limpiar elementos anteriores antes de agregar nuevos", function() {
-    mockListaActividades.innerHTML = "<p>Contenido anterior</p>";
-    
+  it("debe limpiar elementos anteriores antes de agregar nuevos", async () => {
+    const lista = mockListaActividades;
+    lista.innerHTML = "<p>Contenido anterior</p>";
+
+    const mockAtracciones = [
+      { nombreAtraccion: "Planetario" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+    // Devolvemos una lista con UNA atracción ya en formato que espera crearAtracciones
+    spyOn(window.filtroAtracciones, "buscarAtracciones").and.returnValue([
+      {
+        titulo: "Planetario",
+        subtitulo: "Ciencia y estrellas",
+        descripcion: "Un lugar para mirar el cielo.",
+        horarioAbierto: "10 a 18 h",
+        idMapa: "map-planetario",
+        promptMaps: "https://maps.google.com",
+        imgSrc: "img/planetario.jpg",
+        altFoto: "Planetario"
+      }
+    ]);
+
     const parametros = {
-      momento: [1], 
-      horario: [0], 
-      actividad: [1], 
+      momento: [1],
+      horario: [0],
+      actividad: [1],
       grupo: [1]
     };
-    
-    window.handlerSubmitBusqueda(parametros, mockListaActividades);
-    
-    expect(mockListaActividades.innerHTML).not.toContain("Contenido anterior");
+
+    await window.handlerSubmitBusqueda(parametros, lista);
+
+    // Ya no debería estar el texto anterior
+    expect(lista.innerHTML).not.toContain("Contenido anterior");
+    // Y debería haber la nueva tarjeta
+    expect(lista.innerHTML).toContain("Planetario");
   });
 
   // --- OPERACIONES CON OBJETOS ---
-  it("debe usar el filtro de atracciones para buscar", function() {
+  it("debe usar el filtro de atracciones para buscar", async () => {
+    const lista = mockListaActividades;
+
+    const mockAtracciones = [
+      { nombreAtraccion: "Jardín Japonés" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+    const spyFiltro = spyOn(window.filtroAtracciones, "buscarAtracciones")
+      .and.returnValue([]);
+
     const parametros = {
-      momento: [1], 
-      horario: [1], 
-      actividad: [1], 
+      momento: [1],
+      horario: [0],
+      actividad: [1],
       grupo: [1]
     };
-    
-    // Simplemente verificar que no lanza error al usar el filtro
-    expect(function() {
-      window.handlerSubmitBusqueda(parametros, mockListaActividades);
-    }).not.toThrow();
-    
-    // El contenedor debe tener contenido (tarjetas o mensaje)
-    expect(mockListaActividades.innerHTML.length).toBeGreaterThan(0);
+
+    await window.handlerSubmitBusqueda(parametros, lista);
+
+    expect(spyFiltro.calls.count()).toBeGreaterThan(0);
   });
 });
 
@@ -160,7 +231,8 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
   afterEach(function() {
     // Limpiar popups
     document.querySelectorAll('.panel-con-fondo').forEach(el => el.remove());
-    document.getElementById("email-error").remove();
+    const emailError = document.getElementById("email-error");
+    if (emailError) emailError.remove();
   });
 
   // --- FUNCIONALIDAD BÁSICA ---
@@ -190,6 +262,7 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
     mockFormulario.innerHTML = `
       <input name="nombre" value="">
       <input name="email" value="">
+      <span id="email-error" class="email-error"></span>
     `;
     
     expect(function() {
@@ -202,6 +275,7 @@ describe("Flujo 2 - Suscripción a Newsletter", function() {
       <input name="nombre" value="Test">
       <input type="checkbox" name="noticias" value="1">
       <input name="email" value="test@example.com">
+      <span id="email-error" class="email-error"></span>
     `;
     
     expect(function() {
@@ -284,6 +358,7 @@ describe("Flujo 3 - Creación de reservas de atracciones", function() {
         <input name="visitantes" value="3">
         <input name="disponibilidad" value="Lunes">
         <input name="email" value="test@example.com">
+        <span id="email-error" class="email-error"></span>
       `;
       
       const parentElement = document.createElement('div');
@@ -326,6 +401,7 @@ describe("Flujo 3 - Creación de reservas de atracciones", function() {
       <input name="visitantes" value="1">
       <input name="disponibilidad" value="Lunes">
       <input name="email" value="test@test.com">
+      <span id="email-error" class="email-error"></span>
     `;
     
     const parentElement = document.createElement('div');
@@ -362,45 +438,64 @@ describe("Flujo 4 - Creación de Itinerario", function() {
   // --- FUNCIONALIDAD BÁSICA ---
   describe("generarItinerario()", function() {
     
-    it("debe ejecutarse sin lanzar errores", function() {
-      expect(function() {
-        window.generarItinerario();
-      }).not.toThrow();
+    it("debe ejecutarse sin lanzar errores", async function() {
+      const mockAtracciones = [
+        { nombreAtraccion: "Obelisco" },
+        { nombreAtraccion: "La Boca" }
+      ];
+
+      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+      await window.generarItinerario();
+
+      expect(true).toBeTrue();
     });
 
-    it("debe crear un popup con formulario de itinerario", function() {
-      window.generarItinerario();
+    it("debe crear un popup con formulario de itinerario", async function() {
+      const mockAtracciones = [
+        { nombreAtraccion: "Obelisco" },
+        { nombreAtraccion: "La Boca" }
+      ];
+
+      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+      await window.generarItinerario();
       
       const popup = document.querySelector('.panel-con-fondo');
       expect(popup).toBeTruthy();
-      expect(popup.innerHTML).toContain("itinerario");
+      expect(popup.innerHTML.toLowerCase()).toContain("itinerario");
     });
   });
 
   describe("almacenarDiaItinerario()", function() {
     
     let mockFormulario;
-    let mockEvent;
 
-    beforeEach(function() {
+    beforeEach(async function() {
       mockFormulario = document.createElement('form');
       mockFormulario.innerHTML = `
-        <input name="dia" value="lunes">
-        <select name="mañana"><option value="Atracción 1" selected></option></select>
-        <select name="media-mañana"><option value="ninguna" selected></option></select>
-        <select name="media-tarde"><option value="Atracción 2" selected></option></select>
-        <select name="tarde"><option value="ninguna" selected></option></select>
-        <select name="noche"><option value="Atracción 3" selected></option></select>
+        <input type="checkbox" name="dias" value="lunes" checked>
+        <input type="checkbox" name="dias" value="martes">
+        <select name="lunes-mañana"><option value="Atracción 1" selected>Atracción 1</option></select>
+        <select name="lunes-tarde"><option value="Atracción 2" selected>Atracción 2</option></select>
+        <select name="lunes-noche"><option value="Atracción 3" selected>Atracción 3</option></select>
+        <input name="email" value="test@example.com">
+        <span id="email-error" class="email-error"></span>
       `;
       
       const parentElement = document.createElement('div');
       parentElement.appendChild(mockFormulario);
       document.body.appendChild(parentElement);
-      
-      mockEvent = jasmine.createSpyObj('event', ['preventDefault']);
-      
-      // Inicializar itinerario primero
-      window.generarItinerario();
+
+      const mockAtracciones = [
+        { nombreAtraccion: "Atracción 1" },
+        { nombreAtraccion: "Atracción 2" },
+        { nombreAtraccion: "Atracción 3" }
+      ];
+
+      spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+      await window.generarItinerario();
     });
 
     it("debe procesar el formulario sin errores", function() {
@@ -411,10 +506,14 @@ describe("Flujo 4 - Creación de Itinerario", function() {
   });
 
   // --- CASOS BORDE ---
-  it("debe manejar la inicialización del itinerario", function() {
-    expect(function() {
-      window.generarItinerario();
-    }).not.toThrow();
+  it("debe manejar la inicialización del itinerario", async function() {
+    const mockAtracciones = [
+      { nombreAtraccion: "Obelisco" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+    await window.generarItinerario();
     
     // Verificar que se creó el popup
     const popup = document.querySelector('.panel-con-fondo');
@@ -422,9 +521,15 @@ describe("Flujo 4 - Creación de Itinerario", function() {
   });
 
   // --- VALIDACIÓN DE ERRORES ---
-  it("no debe lanzar error al generar itinerario", function() {
-    expect(function() {
-      window.generarItinerario();
-    }).not.toThrow();
+  it("no debe lanzar error al generar itinerario", async function() {
+    const mockAtracciones = [
+      { nombreAtraccion: "Obelisco" }
+    ];
+
+    spyOn(window, "obtenerAtracciones").and.resolveTo(mockAtracciones);
+
+    await window.generarItinerario();
+
+    expect(true).toBeTrue();
   });
 });
