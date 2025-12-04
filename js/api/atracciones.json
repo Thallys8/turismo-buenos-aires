@@ -1,7 +1,7 @@
 {
   "atracciones": [
     {
-      "nombreAtraccion": "elCaminito",
+      "nombreAtraccion": "El Caminito",
       "turnoAtraccion": ["dia"],
       "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"],
       "estiloAtraccion": ["cultura"],
@@ -15,7 +15,7 @@
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     },
     {
-      "nombreAtraccion": "jardinBotanico",
+      "nombreAtraccion": "Jardin Botanico",
       "turnoAtraccion": ["dia"],
       "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"],
       "estiloAtraccion": ["cultura", "relajacion", "cualquiera"],
@@ -29,7 +29,7 @@
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     },
     {
-      "nombreAtraccion": "baresClandestinos",
+      "nombreAtraccion": "Bares Clandestinos",
       "turnoAtraccion": ["noche"],
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
       "estiloAtraccion": ["relajacion", "fiesta", "cualquiera"],
@@ -43,7 +43,7 @@
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     },
     {
-      "nombreAtraccion": "puertoMadero",
+      "nombreAtraccion": "Puerto Madero",
       "turnoAtraccion": ["dia", "noche"],
       "diasAbiertoAtraccion": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"],
       "estiloAtraccion": ["fiesta", "relajacion", "deporte", "cultura", "cualquiera"],
@@ -57,7 +57,7 @@
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     },
     {
-      "nombreAtraccion": "casinoPuertoMadero",
+      "nombreAtraccion": "Casino Puerto Madero",
       "turnoAtraccion": ["noche"],
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
       "estiloAtraccion": ["aventura", "fiesta", "cualquiera"],
@@ -71,7 +71,7 @@
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     },
     {
-      "nombreAtraccion": "palacioAlvear",
+      "nombreAtraccion": "Palacio Alvear",
       "turnoAtraccion": ["dia", "noche"],
       "diasAbiertoAtraccion": ["viernes", "sabado", "domingo"],
       "estiloAtraccion": ["amigos", "desconocidos"],
