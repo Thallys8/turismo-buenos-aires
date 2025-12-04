@@ -531,40 +531,37 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
     elementoHTML.setAttribute("data-aos", fadeStyle);
     elementoHTML.setAttribute("data-aos-delay", "400");
 
-    // Valores con fallback por si algo falta
+    // Usamos campos reales del JSON + defaults
     const titulo = datosAtraccion.titulo || datosAtraccion.nombreAtraccion || "Atracción";
     const subtitulo = datosAtraccion.subtitulo || "";
     const descripcion = datosAtraccion.descripcion || "";
     const horarioAbierto = datosAtraccion.horarioAbierto || "No informado";
+    const direccion = datosAtraccion.direccionAtraccion || "Ciudad de Buenos Aires";
 
-    const direccion =
-        datosAtraccion.direccionAtraccion ||
-        datosAtraccion.dirreccionAtraccion ||
-        "Ciudad de Buenos Aires";
+    const mapaSrc = datosAtraccion.promptMaps && datosAtraccion.promptMaps.trim()
+        ? datosAtraccion.promptMaps
+        : null;
 
-    const promptMaps = (datosAtraccion.promptMaps || "").trim();
-    const imgSrc = (datosAtraccion.imgSrc || "").trim();
-    const altFoto = datosAtraccion.altFoto || `Imagen de ${titulo}`;
+    const imgSrc = datosAtraccion.imgSrc && datosAtraccion.imgSrc.trim()
+        ? datosAtraccion.imgSrc
+        : null;
 
-    // Si existe URL de mapa, mostramos iframe, si no, nada
-    const iframeHTML = promptMaps
+    const iframeHTML = mapaSrc
         ? `
         <iframe class="google-maps ratio ratio-16x9 col-12"
-            id="${datosAtraccion.idMapa || ""}"
             width="180"
             height="150"
             style="border:0"
             loading="lazy"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"
-            src="${promptMaps}">
+            src="${mapaSrc}">
         </iframe>
         `
-        : "";
+        : `<p class="col-12 text-muted">Mapa no disponible</p>`;
 
-    // Si existe imagen, la mostramos, si no, nada (así no se rompe el layout)
     const imagenHTML = imgSrc
-        ? `<img loading="lazy" src="${imgSrc}" alt="${altFoto}">`
+        ? `<img loading="lazy" src="${imgSrc}" alt="${datosAtraccion.altFoto || titulo}" >`
         : "";
 
     elementoHTML.innerHTML = `
@@ -573,17 +570,14 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
                 <h3>${titulo}</h3>
                 <p>${subtitulo}</p>
             </hgroup>
-
             <p class="col-12">${descripcion}</p>
 
             <details class="col-12">
                 <summary>Horarios</summary>
                 <p>${horarioAbierto}</p>
             </details>
-
-            <label class="direccion-label col-12">Dirección</label> <br>
+            <label class="direccion-label col-12">Direccion</label> <br>
             <p class="col-12">${direccion}</p>
-
             ${iframeHTML}
 
             <button type="button" class="btn reservar-btn" value="${titulo}">Reservar</button>
@@ -599,6 +593,7 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
 
     return elementoHTML;
 }
+
 
 /**
  * Crea las tarjetas de las atraciones utilizando la informacion almacenada
