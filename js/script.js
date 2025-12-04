@@ -525,81 +525,48 @@ if(botonItinerario != null && botonItinerario)
  * @param {*} datosAtraccion Los datos de la atraccion
  * @param {*} callback Callback para el boton de reserva
  */
-function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
-    const elementoHTML = document.createElement("article");
+function crearTarjetaHTML( datosAtraccion, callback, fadeStyle ){
+    let elementoHTML = document.createElement("article");
     elementoHTML.className = "tarjeta col-6 container";
     elementoHTML.setAttribute("data-aos", fadeStyle);
     elementoHTML.setAttribute("data-aos-delay", "400");
-
-    // Valores con fallback por si algo falta
-    const titulo = datosAtraccion.titulo || datosAtraccion.nombreAtraccion || "Atracción";
-    const subtitulo = datosAtraccion.subtitulo || "";
-    const descripcion = datosAtraccion.descripcion || "";
-    const horarioAbierto = datosAtraccion.horarioAbierto || "No informado";
-
-    const direccion =
-        datosAtraccion.direccionAtraccion ||
-        datosAtraccion.dirreccionAtraccion ||
-        "Ciudad de Buenos Aires";
-
-    const promptMaps = (datosAtraccion.promptMaps || "").trim();
-    const imgSrc = (datosAtraccion.imgSrc || "").trim();
-    const altFoto = datosAtraccion.altFoto || `Imagen de ${titulo}`;
-
-    // Si existe URL de mapa, mostramos iframe, si no, nada
-    const iframeHTML = promptMaps
-        ? `
-        <iframe class="google-maps ratio ratio-16x9 col-12"
-            id="${datosAtraccion.idMapa || ""}"
-            width="180"
-            height="150"
-            style="border:0"
-            loading="lazy"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade"
-            src="${promptMaps}">
-        </iframe>
-        `
-        : "";
-
-    // Si existe imagen, la mostramos, si no, nada (así no se rompe el layout)
-    const imagenHTML = imgSrc
-        ? `<img loading="lazy" src="${imgSrc}" alt="${altFoto}">`
-        : "";
-
+    
     elementoHTML.innerHTML = `
         <div class="row h-md-100">
             <hgroup class="col-12">
-                <h3>${titulo}</h3>
-                <p>${subtitulo}</p>
+                <h3>${datosAtraccion.titulo}</h3>
+                <p>${datosAtraccion.subtitulo}</p>
             </hgroup>
-
-            <p class="col-12">${descripcion}</p>
+            <p class="col-12">${datosAtraccion.descripcion}</p>
 
             <details class="col-12">
                 <summary>Horarios</summary>
-                <p>${horarioAbierto}</p>
+                <p>${datosAtraccion.horarioAbierto || "No informado"}</p>
             </details>
+            <label class="direccion-label col-12">Direccion</label> <br>
+            <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"
+                width="180"
+                height="150"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${datosAtraccion.promptMaps}">
+            </iframe>
 
-            <label class="direccion-label col-12">Dirección</label> <br>
-            <p class="col-12">${direccion}</p>
-
-            ${iframeHTML}
-
-            <button type="button" class="btn reservar-btn" value="${titulo}">Reservar</button>
+            <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
         </div>
 
-        ${imagenHTML}
+        <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
     `;
 
-    const button = elementoHTML.querySelector(".reservar-btn");
-    button.addEventListener("click", (event) => {
+    const button = elementoHTML.querySelector('.reservar-btn');
+    button.addEventListener('click', (event) => {
         callback(event);
     });
 
     return elementoHTML;
 }
-
 /**
  * Crea las tarjetas de las atraciones utilizando la informacion almacenada
  * @param {object} criterios parametros de las atracciones deseadas
