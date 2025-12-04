@@ -5,19 +5,16 @@ export const API_URL = "./js/api/atracciones.json";
 
 /** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
 export function sanitizeString(value, fallback = "") {
-  if (typeof value !== "string") return fallback;
-
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-
-  return trimmed;
+  if (value === null || value === undefined) return fallback;
+  const str = String(value).trim();
+  return str || fallback;
 }
 
 /** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
 function sanitizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value
-    .map(v => sanitizeString(v, "")) // si no es string o queda vacío → ""
+    .map(v => sanitizeString(v, ""))
     .filter(v => v.length > 0);
 }
 
@@ -32,6 +29,7 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Campos "lógicos"
   const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
   const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
@@ -42,7 +40,7 @@ function validarYAtraccion(raw, index) {
     "Ciudad de Buenos Aires"
   );
 
-  // Reglas mínimas de validez
+  // Validación mínima
   const errores = [];
 
   if (!nombreAtraccion) {
@@ -65,14 +63,93 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Campos "visuales" que usa crearTarjetaHTML
+  const titulo = sanitizeString(raw.titulo, nombreAtraccion);
+  const subtitulo = sanitizeString(raw.subtitulo, "");
+  const descripcion = sanitizeString(raw.descripcion, "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto, "");
+  const imgSrc = sanitizeString(raw.imgSrc, "./assets/placeholder.webp");
+  const altFoto = sanitizeString(
+    raw.altFoto,
+    titulo || nombreAtraccion || "Foto de la atracción"
+  );
+  const promptMaps = sanitizeString(raw.promptMaps, "");
+  const idMapa = sanitizeString(
+    raw.idMapa,
+    nombreAtraccion.toLowerCase().replace(/\s+/g, "-") + "-map"
+  );
+
   return {
+    // Campos de negocio
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
-    direccionAtraccion
+    direccionAtraccion,
+    // Campos de UI
+    titulo,
+    subtitulo,
+    descripcion,
+    horarioAbierto,
+    imgSrc,
+    altFoto,
+    promptMaps,
+    idMapa
   };
+}
+
+/** Obtiene las atracciones desde el JSON remoto, las sanitiza y valida. */
+export async function obtenerAtracciones() {
+  try {
+    const resp = await fetch(API_URL);
+
+    if (!resp.ok) {
+      console.error(`[apiService] Error HTTP ${resp.status} al cargar ${API_URL}`);
+      throw new Error(
+        "No pudimos cargar las atracciones en este momento. Probá nuevamente en unos instantes."
+      );
+    }
+
+    const data = await resp.json();
+
+    if (!data || !Array.isArray(data.atracciones)) {
+      console.error("[apiService] Formato de datos inválido: falta 'atracciones' como arreglo.");
+      throw new Error(
+        "Encontramos un problema con los datos de atracciones. Estamos trabajando para solucionarlo."
+      );
+    }
+
+    const atrSanitizadas = data.atracciones
+      .map(validarYAtraccion)
+      .filter(a => a !== null);
+
+    if (atrSanitizadas.length === 0) {
+      console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
+      throw new Error("Por el momento no hay atracciones disponibles.");
+    }
+
+    return atrSanitizadas;
+  } catch (error) {
+    console.error("[apiService] Error general al obtener atracciones:", error);
+
+    if (error instanceof SyntaxError) {
+      throw new Error(
+        "Tuvimos un problema al leer los datos de las atracciones. Por favor recargá la página."
+      );
+    }
+
+    if (error.message && (
+      error.message.startsWith("No pudimos cargar") ||
+      error.message.startsWith("Encontramos un problema")
+    )) {
+      throw error;
+    }
+
+    throw new Error(
+      "Ocurrió un error inesperado al cargar las atracciones. Probá nuevamente en unos segundos."
+    );
+  }
 }
 
 /** Obtiene las atracciones desde el JSON remoto, las sanitiza y valida. */
