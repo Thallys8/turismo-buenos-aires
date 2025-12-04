@@ -30,7 +30,10 @@ PR: [#135](https://github.com/Thallys8/turismo-buenos-aires/pull/135) @Thallys8 
 - [feature/tester-qa-js-testing-suite] CRemoción de Window para que la página funcione corretamente.      
 PR: [#136](https://github.com/Thallys8/turismo-buenos-aires/pull/136) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 - [feature/dev-async-fetch-api] Remoción de Window restantes, adecuación del código script.js  
-PR: [#137](https://github.com/Thallys8/turismo-buenos-aires/pull/137) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
+PR: [#137](https://github.com/Thallys8/turismo-buenos-aires/pull/137) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones y errores en consola al momento de finalizar la reserva.  
+PR: [#138](https://github.com/Thallys8/turismo-buenos-aires/pull/138) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
+
 
 ---  
 
