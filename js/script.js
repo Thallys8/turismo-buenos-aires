@@ -566,7 +566,7 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
 
     elementoHTML.innerHTML = `
         <div class="row h-md-100">
-            <hgroup class="col-12">
+            <hgroup class="col-12">Y
                 <h3>${titulo}</h3>
                 <p>${subtitulo}</p>
             </hgroup>

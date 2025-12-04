@@ -1,15 +1,13 @@
 // js/api/apiService.js
 
-// URL base del JSON de atracciones (desde index.html)
+// URL base del JSON de atracciones (vista desde index.html)
 export const API_URL = "./js/api/atracciones.json";
 
 /** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
 export function sanitizeString(value, fallback = "") {
   if (typeof value !== "string") return fallback;
-
   const trimmed = value.trim();
   if (!trimmed) return fallback;
-
   return trimmed;
 }
 
@@ -21,10 +19,19 @@ function sanitizeStringArray(value) {
     .filter(v => v.length > 0);
 }
 
+/** Sanitiza URLs muy básicas: si no es string o está vacía, devuelve "" */
+function sanitizeUrl(value) {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (!trimmed || trimmed === "undefined" || trimmed === "null") return "";
+  return trimmed;
+}
+
 /**
- * Valida una atracción cruda del JSON y devuelve:
- * - objeto atracción sanitizado si es válida
- * - null si está demasiado rota y conviene ignorarla
+ * Valida y normaliza una atracción cruda del JSON.
+ * Devuelve:
+ *  - objeto atracción sanitizado si es válida
+ *  - null si está demasiado rota y conviene ignorarla
  */
 function validarYAtraccion(raw, index) {
   if (!raw || typeof raw !== "object") {
@@ -32,30 +39,22 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Campos de filtro (lo más importante para la lógica de negocio)
   const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
   const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
   const estiloAtraccion = sanitizeStringArray(raw.estiloAtraccion);
   const gruposRecomendadosAtraccion = sanitizeStringArray(raw.gruposRecomendadosAtraccion);
-  const direccionAtraccion = sanitizeString(
-    raw.direccionAtraccion,
-    "Ciudad de Buenos Aires"
-  );
 
-  // Reglas mínimas de validez
+  // Dirección (en tu JSON original se llamaba "dirreccionAtraccion")
+  const direccionAtraccion =
+    sanitizeString(raw.direccionAtraccion, "") ||
+    sanitizeString(raw.dirreccionAtraccion, "Ciudad de Buenos Aires");
+
   const errores = [];
-
-  if (!nombreAtraccion) {
-    errores.push("Falta el nombre de la atracción.");
-  }
-
-  if (turnoAtraccion.length === 0) {
-    errores.push("No tiene horarios asignados (día/noche).");
-  }
-
-  if (diasAbiertoAtraccion.length === 0) {
-    errores.push("No tiene días de apertura configurados.");
-  }
+  if (!nombreAtraccion) errores.push("Falta el nombre de la atracción.");
+  if (turnoAtraccion.length === 0) errores.push("No tiene horarios asignados (día/noche).");
+  if (diasAbiertoAtraccion.length === 0) errores.push("No tiene días de apertura configurados.");
 
   if (errores.length > 0) {
     console.warn(
@@ -65,13 +64,37 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Campos de UI (para las tarjetas)
+  const titulo =
+    sanitizeString(raw.titulo || "", "") ||
+    nombreAtraccion; // si no hay titulo, usamos el nombre
+
+  const subtitulo = sanitizeString(raw.subtitulo || "", "");
+  const descripcion = sanitizeString(raw.descripcion || "", "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto || "", "No informado");
+  const promptMaps = sanitizeUrl(raw.promptMaps || "");
+  const imgSrc = sanitizeUrl(raw.imgSrc || "");
+  const altFoto =
+    sanitizeString(raw.altFoto || "", "") ||
+    nombreAtraccion ||
+    "Atracción";
+
   return {
+    // para filtros
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
-    direccionAtraccion
+    direccionAtraccion,
+    // para UI
+    titulo,
+    subtitulo,
+    descripcion,
+    horarioAbierto,
+    promptMaps,
+    imgSrc,
+    altFoto
   };
 }
 
@@ -89,6 +112,12 @@ export async function obtenerAtracciones() {
 
     const data = await resp.json();
 
+    console.log("[apiService] JSON crudo:", data);
+    console.log(
+      "[apiService] Cantidad en data.atracciones:",
+      Array.isArray(data.atracciones) ? data.atracciones.length : "NO ES ARRAY"
+    );
+
     if (!data || !Array.isArray(data.atracciones)) {
       console.error("[apiService] Formato de datos inválido: falta 'atracciones' como arreglo.");
       throw new Error(
@@ -98,8 +127,13 @@ export async function obtenerAtracciones() {
 
     // Sanitizar + validar (map) y descartar las inválidas (filter)
     const atrSanitizadas = data.atracciones
-      .map(validarYAtraccion)
-      .filter(a => a !== null);
+      .map(validarYAtraccion)   // función de orden superior map
+      .filter(a => a !== null); // función de orden superior filter
+
+    console.log(
+      "[apiService] Cantidad después de validar:",
+      atrSanitizadas.length
+    );
 
     if (atrSanitizadas.length === 0) {
       console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
@@ -111,15 +145,17 @@ export async function obtenerAtracciones() {
     console.error("[apiService] Error general al obtener atracciones:", error);
 
     if (error instanceof SyntaxError) {
+      // Error parseando JSON
       throw new Error(
         "Tuvimos un problema al leer los datos de las atracciones. Por favor recargá la página."
       );
     }
 
-    if (error.message && (
-      error.message.startsWith("No pudimos cargar") ||
-      error.message.startsWith("Encontramos un problema")
-    )) {
+    if (
+      error.message &&
+      (error.message.startsWith("No pudimos cargar") ||
+        error.message.startsWith("Encontramos un problema"))
+    ) {
       throw error;
     }
 
@@ -135,7 +171,7 @@ export async function obtenerNombresAtracciones() {
   return atracciones.map(a => a.nombreAtraccion);
 }
 
-/** Filtra atracciones por un criterio flexible. */
+/** Filtra atracciones por un criterio flexible (turno, estilos, grupos). */
 export async function filtrarAtraccionesPorCriterios(criterios = {}) {
   const { turno, estilos, grupos } = criterios;
   const atracciones = await obtenerAtracciones();
