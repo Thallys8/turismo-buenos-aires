@@ -21,10 +21,24 @@ function sanitizeStringArray(value) {
     .filter(v => v.length > 0);
 }
 
+/** Sanitiza una URL simple (para imgSrc / promptMaps). */
+function sanitizeUrl(value) {
+  const s = sanitizeString(value, "");
+  if (!s) return "";
+  // Permitimos http/https o rutas relativas
+  if (s.startsWith("http") || s.startsWith("./") || s.startsWith("/")) {
+    return s;
+  }
+  return "";
+}
+
 /**
  * Valida una atracción cruda del JSON y devuelve:
  * - objeto atracción sanitizado si es válida
  * - null si está demasiado rota y conviene ignorarla
+ *
+ * Ahora además conservamos los campos necesarios para las tarjetas:
+ * titulo, subtitulo, descripcion, horarioAbierto, promptMaps, imgSrc, altFoto
  */
 function validarYAtraccion(raw, index) {
   if (!raw || typeof raw !== "object") {
@@ -32,17 +46,29 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // --- Datos "de negocio" usados para filtros ---
   const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
   const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
   const estiloAtraccion = sanitizeStringArray(raw.estiloAtraccion);
   const gruposRecomendadosAtraccion = sanitizeStringArray(raw.gruposRecomendadosAtraccion);
-  const direccionAtraccion = sanitizeString(
-    raw.direccionAtraccion,
-    "Ciudad de Buenos Aires"
-  );
 
-  // Reglas mínimas de validez
+  // contemplamos posible typo dirreccionAtraccion
+  const direccionAtraccion =
+    sanitizeString(raw.direccionAtraccion, "") ||
+    sanitizeString(raw.dirreccionAtraccion, "Ciudad de Buenos Aires");
+
+  // --- Datos de presentación para la UI (tarjetas) ---
+  const titulo = sanitizeString(raw.titulo || raw.nombreAtraccion || "", "Atracción");
+  const subtitulo = sanitizeString(raw.subtitulo || "", "");
+  const descripcion = sanitizeString(raw.descripcion || "", "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto || "", "No informado");
+
+  const promptMaps = sanitizeUrl(raw.promptMaps || "");
+  const imgSrc = sanitizeUrl(raw.imgSrc || "");
+  const altFoto = sanitizeString(raw.altFoto || titulo, titulo);
+
+  // --- Reglas mínimas de validez ---
   const errores = [];
 
   if (!nombreAtraccion) {
@@ -65,13 +91,24 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Devolvemos TODO lo que necesita la app (filtros + UI)
   return {
+    // negocio / filtros
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
-    direccionAtraccion
+    direccionAtraccion,
+
+    // presentación
+    titulo,
+    subtitulo,
+    descripcion,
+    horarioAbierto,
+    promptMaps,
+    imgSrc,
+    altFoto
   };
 }
 
@@ -116,10 +153,11 @@ export async function obtenerAtracciones() {
       );
     }
 
-    if (error.message && (
-      error.message.startsWith("No pudimos cargar") ||
-      error.message.startsWith("Encontramos un problema")
-    )) {
+    if (
+      error.message &&
+      (error.message.startsWith("No pudimos cargar") ||
+        error.message.startsWith("Encontramos un problema"))
+    ) {
       throw error;
     }
 
