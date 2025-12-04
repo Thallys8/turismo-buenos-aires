@@ -3,28 +3,48 @@
 // URL base del JSON de atracciones (desde index.html)
 export const API_URL = "./js/api/atracciones.json";
 
-/** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
+/** Sanitiza un string: lo fuerza a string, recorta espacios y aplica fallback si queda vacío. */
 export function sanitizeString(value, fallback = "") {
-  if (typeof value !== "string") return fallback;
-
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-
-  return trimmed;
+  if (value === null || value === undefined) return fallback;
+  const trimmed = String(value).trim();
+  return trimmed || fallback;
 }
 
-/** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
-function sanitizeStringArray(value) {
-  if (!Array.isArray(value)) return [];
-  return value
-    .map(v => sanitizeString(v, "")) // si no es string o queda vacío → ""
-    .filter(v => v.length > 0);
+/** Convierte el valor a array de strings “limpios”.
+ * Acepta:
+ *   - ["a","b"]
+ *   - "a"
+ *   - null / undefined → []
+ */
+function sanitizeToStringArray(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map(v => sanitizeString(v, ""))
+      .filter(v => v.length > 0);
+  }
+
+  const single = sanitizeString(value, "");
+  return single ? [single] : [];
+}
+
+/** Sanitiza una URL simple (para imgSrc / promptMaps). */
+function sanitizeUrl(value) {
+  const s = sanitizeString(value, "");
+  if (!s) return "";
+  // Permitimos http/https o rutas relativas
+  if (s.startsWith("http") || s.startsWith("./") || s.startsWith("/")) {
+    return s;
+  }
+  return "";
 }
 
 /**
  * Valida una atracción cruda del JSON y devuelve:
  * - objeto atracción sanitizado si es válida
  * - null si está demasiado rota y conviene ignorarla
+ *
+ * Conserva también los campos de UI:
+ * titulo, subtitulo, descripcion, horarioAbierto, promptMaps, imgSrc, altFoto
  */
 function validarYAtraccion(raw, index) {
   if (!raw || typeof raw !== "object") {
@@ -32,29 +52,58 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
-  const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
-  const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
-  const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
-  const estiloAtraccion = sanitizeStringArray(raw.estiloAtraccion);
-  const gruposRecomendadosAtraccion = sanitizeStringArray(raw.gruposRecomendadosAtraccion);
-  const direccionAtraccion = sanitizeString(
-    raw.direccionAtraccion,
-    "Ciudad de Buenos Aires"
-  );
+  // --- Datos "de negocio" usados para filtros ---
+  const nombreAtraccion = sanitizeString(raw.nombreAtraccion, "");
 
-  // Reglas mínimas de validez
+  let turnoAtraccion = sanitizeToStringArray(raw.turnoAtraccion);
+  let diasAbiertoAtraccion = sanitizeToStringArray(raw.diasAbiertoAtraccion);
+  let estiloAtraccion = sanitizeToStringArray(raw.estiloAtraccion);
+  let gruposRecomendadosAtraccion = sanitizeToStringArray(raw.gruposRecomendadosAtraccion);
+
+  // contemplamos posible typo dirreccionAtraccion
+  const direccionAtraccion =
+    sanitizeString(raw.direccionAtraccion, "") ||
+    sanitizeString(raw.dirreccionAtraccion, "Ciudad de Buenos Aires");
+
+  // --- Datos de presentación para la UI (tarjetas) ---
+  const titulo = sanitizeString(raw.titulo || raw.nombreAtraccion || "", "Atracción");
+  const subtitulo = sanitizeString(raw.subtitulo || "", "");
+  const descripcion = sanitizeString(raw.descripcion || "", "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto || "", "No informado");
+
+  const promptMaps = sanitizeUrl(raw.promptMaps || "");
+  const imgSrc = sanitizeUrl(raw.imgSrc || "");
+  const altFoto = sanitizeString(raw.altFoto || titulo, titulo);
+
+  // -------- Reglas mínimas de validez --------
+  // Ahora solo exigimos que tenga nombre.
   const errores = [];
 
   if (!nombreAtraccion) {
     errores.push("Falta el nombre de la atracción.");
   }
 
+  // Si los arrays vienen vacíos, les damos defaults en lugar de descartar todo.
   if (turnoAtraccion.length === 0) {
-    errores.push("No tiene horarios asignados (día/noche).");
+    console.warn(
+      `[apiService] Atracción "${nombreAtraccion}" sin turnoAtraccion; se asigna ["dia","noche"].`
+    );
+    turnoAtraccion = ["dia", "noche"];
   }
 
   if (diasAbiertoAtraccion.length === 0) {
-    errores.push("No tiene días de apertura configurados.");
+    console.warn(
+      `[apiService] Atracción "${nombreAtraccion}" sin diasAbiertoAtraccion; se asigna semana completa.`
+    );
+    diasAbiertoAtraccion = [
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sabado",
+      "domingo"
+    ];
   }
 
   if (errores.length > 0) {
@@ -65,13 +114,24 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Devolvemos TODO lo que necesita la app (filtros + UI)
   return {
+    // negocio / filtros
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
-    direccionAtraccion
+    direccionAtraccion,
+
+    // presentación
+    titulo,
+    subtitulo,
+    descripcion,
+    horarioAbierto,
+    promptMaps,
+    imgSrc,
+    altFoto
   };
 }
 
@@ -103,7 +163,8 @@ export async function obtenerAtracciones() {
 
     if (atrSanitizadas.length === 0) {
       console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
-      throw new Error("Por el momento no hay atracciones disponibles.");
+      // No tiramos error duro: devolvemos array vacío.
+      return [];
     }
 
     return atrSanitizadas;
@@ -116,10 +177,11 @@ export async function obtenerAtracciones() {
       );
     }
 
-    if (error.message && (
-      error.message.startsWith("No pudimos cargar") ||
-      error.message.startsWith("Encontramos un problema")
-    )) {
+    if (
+      error.message &&
+      (error.message.startsWith("No pudimos cargar") ||
+        error.message.startsWith("Encontramos un problema"))
+    ) {
       throw error;
     }
 
