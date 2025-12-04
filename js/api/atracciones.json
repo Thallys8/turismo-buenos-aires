@@ -9,7 +9,7 @@
       "direccionAtraccion": "Caminito, La Boca, CABA",
       "promptMaps": "https://maps.app.goo.gl/asF1qNWQTxxDtEu9A",
       "idMapa": "mapa-elCaminito",
-      "imgSrc": "./assets/laboca.webp",
+      "imgSrc": "../assets/laboca.webp",
       "altFoto": "foto-elCaminito",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -23,7 +23,7 @@
       "direccionAtraccion": "Av. Santa Fe 3951, C1425 CABA",
       "promptMaps": "https://maps.app.goo.gl/rsxhBPkGtafLKxB6A",
       "idMapa": "mapa-jardinBotanico",
-      "imgSrc": "./assets/botanico.webp",
+      "imgSrc": "../assets/botanico.webp",
       "altFoto": "foto-jardinBotanico",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -37,7 +37,7 @@
       "direccionAtraccion": "Varia segun el bar",
       "promptMaps": "https://maps.app.goo.gl/4pBPUHFR8SCf7wNU7",
       "idMapa": "mapa-baresClandestinos",
-      "imgSrc": "./assets/bar.webp",
+      "imgSrc": "../assets/bar.webp",
       "altFoto": "foto-baresClandestinos",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -51,7 +51,7 @@
       "direccionAtraccion": "Puerto Madero, CABA",
       "promptMaps": "https://maps.app.goo.gl/XdpymqUoB3sPQ8tq6",
       "idMapa": "mapa-puertoMadero",
-      "imgSrc": "./assets/madero.webp",
+      "imgSrc": "../assets/madero.webp",
       "altFoto": "foto-puertoMadero",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -65,7 +65,7 @@
       "direccionAtraccion": "Juana Manso 1166, C1107 CABA",
       "promptMaps": "https://maps.app.goo.gl/aRkibMqDmkvw1xsZ6",
       "idMapa": "mapa-casinoPuertoMadero",
-      "imgSrc": "./assets/flotante.webp",
+      "imgSrc": "../assets/flotante.webp",
       "altFoto": "foto-casinoPuertoMadero",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -79,7 +79,7 @@
       "direccionAtraccion": "Av. Alvear 1891, C1129AAA CABA",
       "promptMaps": "https://maps.app.goo.gl/4tNhMQH8Xxef68Vh7",
       "idMapa": "mapa-palacioAlvear",
-      "imgSrc": "./assets/tango.webp", 
+      "imgSrc": "../assets/tango.webp", 
       "altFoto": "foto-palacioAlvear",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
