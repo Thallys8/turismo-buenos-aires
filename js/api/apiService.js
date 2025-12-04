@@ -1,104 +1,80 @@
 // js/api/apiService.js
 
-// URL base del JSON de atracciones (vista desde index.html)
+// URL base del JSON de atracciones (desde index.html)
 export const API_URL = "./js/api/atracciones.json";
 
 /** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
 export function sanitizeString(value, fallback = "") {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  return trimmed;
+  if (value === null || value === undefined) return fallback;
+  const str = String(value).trim();
+  return str || fallback;
 }
 
 /** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
-function sanitizeStringArray(value) {
+export function sanitizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value
-    .map(v => sanitizeString(v, "")) // si no es string o queda vacío → ""
+    .map(v => sanitizeString(v, ""))
     .filter(v => v.length > 0);
 }
 
-/** Sanitiza URLs muy básicas: si no es string o está vacía, devuelve "" */
-function sanitizeUrl(value) {
-  if (typeof value !== "string") return "";
-  const trimmed = value.trim();
-  if (!trimmed || trimmed === "undefined" || trimmed === "null") return "";
-  return trimmed;
-}
-
 /**
- * Valida y normaliza una atracción cruda del JSON.
- * Devuelve:
- *  - objeto atracción sanitizado si es válida
- *  - null si está demasiado rota y conviene ignorarla
+ * Normaliza una atracción cruda del JSON.
+ * Solo se descarta si NO tiene nombre.
  */
-function validarYAtraccion(raw, index) {
+function normalizarAtraccion(raw, index) {
   if (!raw || typeof raw !== "object") {
-    console.warn(`[apiService] Atracción en índice ${index} no es un objeto válido.`);
+    console.warn(`[apiService] Atracción en índice ${index} no es un objeto válido.`, raw);
     return null;
   }
 
-  // Campos de filtro (lo más importante para la lógica de negocio)
   const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
+  if (!nombreAtraccion) {
+    console.warn(`[apiService] Atracción en índice ${index} descartada por no tener nombre.`, raw);
+    return null;
+  }
+
+  // Filtros
   const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
   const estiloAtraccion = sanitizeStringArray(raw.estiloAtraccion);
   const gruposRecomendadosAtraccion = sanitizeStringArray(raw.gruposRecomendadosAtraccion);
 
-  // Dirección (en tu JSON original se llamaba "dirreccionAtraccion")
-  const direccionAtraccion =
-    sanitizeString(raw.direccionAtraccion, "") ||
-    sanitizeString(raw.dirreccionAtraccion, "Ciudad de Buenos Aires");
+  // Dirección (aceptamos las dos variantes por si quedó el typo)
+  const direccionAtraccion = sanitizeString(
+    raw.direccionAtraccion ?? raw.dirreccionAtraccion,
+    ""
+  );
 
-  const errores = [];
-  if (!nombreAtraccion) errores.push("Falta el nombre de la atracción.");
-  if (turnoAtraccion.length === 0) errores.push("No tiene horarios asignados (día/noche).");
-  if (diasAbiertoAtraccion.length === 0) errores.push("No tiene días de apertura configurados.");
-
-  if (errores.length > 0) {
-    console.warn(
-      `[apiService] Atracción inválida en índice ${index} (${nombreAtraccion || "sin nombre"}):`,
-      errores.join(" | ")
-    );
-    return null;
-  }
-
-  // Campos de UI (para las tarjetas)
-  const titulo =
-    sanitizeString(raw.titulo || "", "") ||
-    nombreAtraccion; // si no hay titulo, usamos el nombre
-
-  const subtitulo = sanitizeString(raw.subtitulo || "", "");
-  const descripcion = sanitizeString(raw.descripcion || "", "");
-  const horarioAbierto = sanitizeString(raw.horarioAbierto || "", "No informado");
-  const promptMaps = sanitizeUrl(raw.promptMaps || "");
-  const imgSrc = sanitizeUrl(raw.imgSrc || "");
-  const altFoto =
-    sanitizeString(raw.altFoto || "", "") ||
-    nombreAtraccion ||
-    "Atracción";
+  // Campos para la tarjeta (lo que usa script.js)
+  const titulo = sanitizeString(raw.titulo, nombreAtraccion);
+  const subtitulo = sanitizeString(raw.subtitulo, "");
+  const descripcion = sanitizeString(raw.descripcion, "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto, "");
+  const idMapa = sanitizeString(raw.idMapa, `map-${index}`);
+  const promptMaps = sanitizeString(raw.promptMaps, "");
+  const imgSrc = sanitizeString(raw.imgSrc, "");
+  const altFoto = sanitizeString(raw.altFoto, titulo);
 
   return {
-    // para filtros
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
     direccionAtraccion,
-    // para UI
     titulo,
     subtitulo,
     descripcion,
     horarioAbierto,
+    idMapa,
     promptMaps,
     imgSrc,
     altFoto
   };
 }
 
-/** Obtiene las atracciones desde el JSON remoto, las sanitiza y valida. */
+/** Obtiene las atracciones desde el JSON, las normaliza y devuelve un array (puede ser vacío). */
 export async function obtenerAtracciones() {
   try {
     const resp = await fetch(API_URL);
@@ -111,51 +87,29 @@ export async function obtenerAtracciones() {
     }
 
     const data = await resp.json();
+    const listaCruda = Array.isArray(data.atracciones) ? data.atracciones : [];
 
-    console.log("[apiService] JSON crudo:", data);
-    console.log(
-      "[apiService] Cantidad en data.atracciones:",
-      Array.isArray(data.atracciones) ? data.atracciones.length : "NO ES ARRAY"
-    );
-
-    if (!data || !Array.isArray(data.atracciones)) {
-      console.error("[apiService] Formato de datos inválido: falta 'atracciones' como arreglo.");
-      throw new Error(
-        "Encontramos un problema con los datos de atracciones. Estamos trabajando para solucionarlo."
-      );
+    if (listaCruda.length === 0) {
+      console.warn("[apiService] El JSON no contiene atracciones.");
+      return [];
     }
 
-    // Sanitizar + validar (map) y descartar las inválidas (filter)
-    const atrSanitizadas = data.atracciones
-      .map(validarYAtraccion)   // función de orden superior map
-      .filter(a => a !== null); // función de orden superior filter
+    // Normalizar (map) y descartar solo las que estén realmente rotas (sin nombre)
+    const normalizadas = listaCruda
+      .map(normalizarAtraccion)
+      .filter(a => a !== null);
 
-    console.log(
-      "[apiService] Cantidad después de validar:",
-      atrSanitizadas.length
-    );
-
-    if (atrSanitizadas.length === 0) {
-      console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
-      throw new Error("Por el momento no hay atracciones disponibles.");
-    }
-
-    return atrSanitizadas;
+    return normalizadas;
   } catch (error) {
     console.error("[apiService] Error general al obtener atracciones:", error);
 
     if (error instanceof SyntaxError) {
-      // Error parseando JSON
       throw new Error(
         "Tuvimos un problema al leer los datos de las atracciones. Por favor recargá la página."
       );
     }
 
-    if (
-      error.message &&
-      (error.message.startsWith("No pudimos cargar") ||
-        error.message.startsWith("Encontramos un problema"))
-    ) {
+    if (error.message && error.message.startsWith("No pudimos cargar")) {
       throw error;
     }
 
@@ -165,82 +119,8 @@ export async function obtenerAtracciones() {
   }
 }
 
-/** Map sobre los datos ya validados. Devuelve solo los nombres de las atracciones. */
+/** Devuelve solo los nombres de las atracciones (por si lo necesitas en otro lado). */
 export async function obtenerNombresAtracciones() {
   const atracciones = await obtenerAtracciones();
   return atracciones.map(a => a.nombreAtraccion);
-}
-
-/** Filtra atracciones por un criterio flexible (turno, estilos, grupos). */
-export async function filtrarAtraccionesPorCriterios(criterios = {}) {
-  const { turno, estilos, grupos } = criterios;
-  const atracciones = await obtenerAtracciones();
-
-  return atracciones.filter(a => {
-    let okTurno = true;
-    let okEstilo = true;
-    let okGrupo = true;
-
-    if (turno && Array.isArray(turno) && turno.length > 0) {
-      okTurno = a.turnoAtraccion.some(t => turno.includes(t));
-    }
-
-    if (estilos && Array.isArray(estilos) && estilos.length > 0) {
-      okEstilo = a.estiloAtraccion.some(e => estilos.includes(e));
-    }
-
-    if (grupos && Array.isArray(grupos) && grupos.length > 0) {
-      okGrupo = a.gruposRecomendadosAtraccion.some(g => grupos.includes(g));
-    }
-
-    return okTurno && okEstilo && okGrupo;
-  });
-}
-
-/** Devuelve estadísticas usando reduce. */
-export async function obtenerEstadisticasAtracciones() {
-  const atracciones = await obtenerAtracciones();
-
-  const estadisticas = atracciones.reduce(
-    (acc, atr) => {
-      acc.total++;
-
-      atr.turnoAtraccion.forEach(t => {
-        acc.porTurno[t] = (acc.porTurno[t] || 0) + 1;
-      });
-
-      atr.estiloAtraccion.forEach(e => {
-        acc.porEstilo[e] = (acc.porEstilo[e] || 0) + 1;
-      });
-
-      atr.gruposRecomendadosAtraccion.forEach(g => {
-        acc.porGrupo[g] = (acc.porGrupo[g] || 0) + 1;
-      });
-
-      return acc;
-    },
-    {
-      total: 0,
-      porTurno: {},
-      porEstilo: {},
-      porGrupo: {}
-    }
-  );
-
-  return estadisticas;
-}
-
-/** Ayuda para integrar con el DOM. */
-export async function cargarAtraccionesEnUI({ onSuccess, onError }) {
-  try {
-    const atracciones = await obtenerAtracciones();
-    if (typeof onSuccess === "function") {
-      onSuccess(atracciones);
-    }
-  } catch (error) {
-    console.error("[apiService] Error al cargar atracciones en UI:", error);
-    if (typeof onError === "function") {
-      onError(error.message || "Error al cargar las atracciones.");
-    }
-  }
 }
