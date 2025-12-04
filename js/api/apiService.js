@@ -6,18 +6,15 @@ export const API_URL = "./js/api/atracciones.json";
 /** Sanitiza un string: asegura que sea string, recorta espacios y aplica fallback si queda vacío. */
 export function sanitizeString(value, fallback = "") {
   if (typeof value !== "string") return fallback;
-
   const trimmed = value.trim();
-  if (!trimmed) return fallback;
-
-  return trimmed;
+  return trimmed || fallback;
 }
 
 /** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
 function sanitizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value
-    .map(v => sanitizeString(v, "")) // si no es string o queda vacío → ""
+    .map(v => sanitizeString(v, ""))
     .filter(v => v.length > 0);
 }
 
@@ -32,6 +29,7 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Campos de filtros / lógica
   const nombreAtraccion = sanitizeString(raw.nombreAtraccion);
   const turnoAtraccion = sanitizeStringArray(raw.turnoAtraccion);
   const diasAbiertoAtraccion = sanitizeStringArray(raw.diasAbiertoAtraccion);
@@ -42,17 +40,25 @@ function validarYAtraccion(raw, index) {
     "Ciudad de Buenos Aires"
   );
 
+  // Campos visuales que usa crearTarjetaHTML()
+  const titulo = sanitizeString(raw.titulo || nombreAtraccion);
+  const subtitulo = sanitizeString(raw.subtitulo, "");
+  const descripcion = sanitizeString(raw.descripcion, "");
+  const horarioAbierto = sanitizeString(raw.horarioAbierto, "");
+  const idMapa = sanitizeString(raw.idMapa, "");
+  const promptMaps = sanitizeString(raw.promptMaps, "");
+  const imgSrc = sanitizeString(raw.imgSrc, "");
+  const altFoto = sanitizeString(raw.altFoto, titulo || "Foto de la atracción");
+
   // Reglas mínimas de validez
   const errores = [];
 
   if (!nombreAtraccion) {
     errores.push("Falta el nombre de la atracción.");
   }
-
   if (turnoAtraccion.length === 0) {
     errores.push("No tiene horarios asignados (día/noche).");
   }
-
   if (diasAbiertoAtraccion.length === 0) {
     errores.push("No tiene días de apertura configurados.");
   }
@@ -65,13 +71,24 @@ function validarYAtraccion(raw, index) {
     return null;
   }
 
+  // Devolvemos TODO lo que el resto de la app necesita
   return {
     nombreAtraccion,
     turnoAtraccion,
     diasAbiertoAtraccion,
     estiloAtraccion,
     gruposRecomendadosAtraccion,
-    direccionAtraccion
+    direccionAtraccion,
+
+    // Campos usados para la tarjeta HTML
+    titulo,
+    subtitulo,
+    descripcion,
+    horarioAbierto,
+    idMapa,
+    promptMaps,
+    imgSrc,
+    altFoto
   };
 }
 
@@ -96,10 +113,9 @@ export async function obtenerAtracciones() {
       );
     }
 
-    // Sanitizar + validar (map) y descartar las inválidas (filter)
     const atrSanitizadas = data.atracciones
-      .map(validarYAtraccion)
-      .filter(a => a !== null);
+      .map(validarYAtraccion)   // map → sanitiza / valida
+      .filter(a => a !== null); // filter → descarta inválidas
 
     if (atrSanitizadas.length === 0) {
       console.warn("[apiService] No se encontraron atracciones válidas después de la validación.");
@@ -165,7 +181,7 @@ export async function filtrarAtraccionesPorCriterios(criterios = {}) {
 export async function obtenerEstadisticasAtracciones() {
   const atracciones = await obtenerAtracciones();
 
-  const estadisticas = atracciones.reduce(
+  return atracciones.reduce(
     (acc, atr) => {
       acc.total++;
 
@@ -190,8 +206,6 @@ export async function obtenerEstadisticasAtracciones() {
       porGrupo: {}
     }
   );
-
-  return estadisticas;
 }
 
 /** Ayuda para integrar con el DOM. */
