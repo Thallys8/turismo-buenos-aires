@@ -14,7 +14,7 @@
       "altFoto": "foto-elCaminito",
       "titulo": "El Caminito",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     },
     {
       "nombreAtraccion": "Jardin Botanico",
@@ -30,7 +30,7 @@
       "altFoto": "foto-jardinBotanico",
       "titulo": "Jardin Botanico",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     },
     {
       "nombreAtraccion": "Bares Clandestinos",
@@ -46,7 +46,7 @@
       "altFoto": "foto-baresClandestinos",
       "titulo": "Bares Clandestinos",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     },
     {
       "nombreAtraccion": "Puerto Madero",
@@ -62,7 +62,7 @@
       "altFoto": "foto-puertoMadero",
       "titulo": "Puerto Madero",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     },
     {
       "nombreAtraccion": "Casino Puerto Madero",
@@ -78,7 +78,7 @@
       "altFoto": "foto-casinoPuertoMadero",
       "titulo": "Casino Puerto Madero",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     },
     {
       "nombreAtraccion": "Palacio Alvear",
@@ -94,7 +94,7 @@
       "altFoto": "foto-palacioAlvear",
       "titulo": "Palacio Alvear",
       "subtitulo": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
     }
   ]
 }
