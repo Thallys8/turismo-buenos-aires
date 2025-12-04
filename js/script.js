@@ -21,7 +21,7 @@ AOS.init();
  * @param {Event} event 
  * @param {HTMLFormElement} formulario 
  */
-function concretarReserva(event, formulario){
+async function concretarReserva(event, formulario){
     event.preventDefault();
 
     const formData = new FormData(formulario);
@@ -35,7 +35,8 @@ function concretarReserva(event, formulario){
     }
 
     const reserva = new Reserva();
-    reserva.guardarReserva(datos);
+    // Esperar a que calcule el precio usando fetch/apiService
+    await reserva.guardarReserva(datos);
     
     formulario.parentElement.remove();
 
@@ -52,6 +53,7 @@ function concretarReserva(event, formulario){
     `);
     document.body.appendChild(nuevoPopUp);
 }
+
 
 /**
  * Genera el menu HTML para que el usuario pueda generar una reserva en la atraccion especifica

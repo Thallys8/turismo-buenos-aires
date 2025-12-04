@@ -1,61 +1,78 @@
-import FiltroAtracciones from "./FiltroAtracciones.js";
-import ConexionAlmacen from "./ConexionAlmacen.js";
+// js/models/Reserva.js
+import { obtenerAtracciones } from "../api/apiService.js";
 
-export default class Reserva{
-    conexionAlmacen;
-    filtroAtracciones;
-    keysObligatorias;
-    datosReserva;
-
-    constructor(){
-        this.conexionAlmacen = new ConexionAlmacen();
-        this.filtroAtracciones = new FiltroAtracciones();
-        this.keysObligatorias = ["atraccion", "visitantes", "disponibilidad", "email"];
-        this.datosReserva = {};
+export default class Reserva {
+    constructor() {
+        /**
+         * Estructura interna de la reserva:
+         * {
+         *   atraccion: string,
+         *   visitantes: number,
+         *   disponibilidad: string,
+         *   email: string,
+         *   precio: number
+         * }
+         */
+        this.reserva = {};
     }
 
     /**
-     * 
-     * @param {Array<(string, any)>} keyValueArray 
+     * Guarda los datos de la reserva a partir de un Array de entries de FormData
+     * y calcula el precio usando los datos de la atracción (vía fetch/apiService).
+     * @param {[string, FormDataEntryValue][]} entries
      */
-    guardarReserva( keyValueArray ){
-        const resultado = keyValueArray.reduce((objeto, [id, valor]) => {
-            if(this.keysObligatorias.includes(id)){
-                objeto[id] = valor;
-            };
-            return objeto;
+    async guardarReserva(entries) {
+        // Pasamos de entries (Array) a objeto plano { clave: valor }
+        this.reserva = entries.reduce((acc, [key, value]) => {
+            acc[key] = value;
+            return acc;
         }, {});
-        
 
-        if( Object.keys(resultado).length === this.keysObligatorias.length){
-            resultado["precio"] = this.calcularPrecio(resultado);
-            this.datosReserva = resultado;
-            this.conexionAlmacen.ingresarInformacionReservas(this.datosReserva);
-        }
-        else{
-            // error en los datos ingresados
-        }
+        // Calcula y agrega el precio
+        await this.calcularPrecio();
     }
 
     /**
-     * 
+     * Calcula el precio de la reserva usando la info de la atracción.
+     * Usa fetch a través de obtenerAtracciones() (apiService).
      */
-    obtenerReserva(){
-        return this.datosReserva;
+    async calcularPrecio() {
+        const atracciones = await obtenerAtracciones();
+
+        const nombreElegido = this.reserva.atraccion;
+        const visitantes = Number(this.reserva.visitantes || 1);
+
+        // Buscamos la atracción por nombre
+        const atr = atracciones.find(a =>
+            a.nombreAtraccion === nombreElegido ||
+            a.titulo === nombreElegido // por si usás titulo en las tarjetas
+        );
+
+        // Lógica de precio (inventada, podés ajustarla a tu criterio)
+        // --- EJEMPLO ---
+        // Base por persona
+        let precioBasePorPersona = 5000;
+
+        // Si la atracción tiene turno de noche, encarece un poco
+        if (atr && Array.isArray(atr.turnoAtraccion) && atr.turnoAtraccion.includes("noche")) {
+            precioBasePorPersona *= 1.2;
+        }
+
+        // Si es "fiesta", suma un poco más
+        if (atr && Array.isArray(atr.estiloAtraccion) && atr.estiloAtraccion.includes("fiesta")) {
+            precioBasePorPersona *= 1.1;
+        }
+
+        // Precio final = base * cantidad de personas
+        const precioFinal = Math.round(precioBasePorPersona * visitantes);
+
+        this.reserva.precio = precioFinal;
     }
 
     /**
-     * Calcula el precio de la reserva segun sus caracteristicas
-     * @param {Object} reserva 
-     * @returns {Number} el precio
+     * Devuelve el objeto con los datos de la reserva (incluyendo precio).
      */
-    calcularPrecio(reserva){
-        let atraccion = this.filtroAtracciones.buscarAtraccionPorNombre(reserva.atraccion);
-        
-        if(atraccion != null && atraccion){
-            let precio = (atraccion.precio * reserva.disponibilidad.length) * reserva.visitantes;
-            return precio;
-        }
-        else return "No se pudo calcular";
+    obtenerReserva() {
+        return this.reserva;
     }
 }
