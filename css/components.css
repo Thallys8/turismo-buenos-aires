@@ -110,6 +110,8 @@ nav .burger img{
 
     width: 90%;
 
+    max-height: 450px;
+
     margin-bottom: 3em;
 
     overflow: hidden;
@@ -117,7 +119,7 @@ nav .burger img{
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .tarjeta div{ /* contiene el texto de la tarjeta */
-    margin: 1em 2em;
+    margin: 1em 1em;
     padding: 0.5em;
     width: 35%;
 }

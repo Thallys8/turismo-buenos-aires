@@ -1,61 +1,57 @@
-import FiltroAtracciones from "./FiltroAtracciones.js";
-import ConexionAlmacen from "./ConexionAlmacen.js";
+// js/models/Reserva.js
+import { obtenerAtracciones } from "../api/apiService.js";
 
-export default class Reserva{
-    conexionAlamacen;
-    filtroAtracciones;
-    keysObligatorias;
-    datosReserva;
+export default class Reserva {
 
-    constructor(){
-        this.conexionAlamacen = new ConexionAlmacen();
-        this.filtroAtracciones = new FiltroAtracciones();
-        this.keysObligatorias = ["atraccion", "visitantes", "disponibilidad", "email"];
-        this.datosReserva = {};
+    constructor(atraccion, visitantes, disponibilidad, email) {
+        this.atraccion = atraccion;
+        this.visitantes = Number(visitantes) || 0;
+        this.disponibilidad = disponibilidad;
+        this.email = email;
+        this.precio = 0;
     }
 
-    /**
-     * 
-     * @param {Array<(string, any)>} keyValueArray 
-     */
-    guardarReserva( keyValueArray ){
-        const resultado = keyValueArray.reduce((objeto, [id, valor]) => {
-            if(this.keysObligatorias.includes(id)){
-                objeto[id] = valor;
-            };
-            return objeto;
-        }, {});
-        
+    // Busca la atracción y calcula precio usando fetch
+    async calcularPrecio() {
+        const listaAtracciones = await obtenerAtracciones();
+        const datosAtraccion = listaAtracciones.find(
+            a => a.nombreAtraccion === this.atraccion
+        );
 
-        if( Object.keys(resultado).length === this.keysObligatorias.length){
-            resultado["precio"] = this.calcularPrecio(resultado);
-            this.datosReserva = resultado;
-            conexionAlamacen.ingresarInformacionReservas(this.datosReserva);
+        if (!datosAtraccion) {
+            throw new Error("No se encontró la atracción seleccionada");
         }
-        else{
-            // error en los datos ingresados
-        }
+
+        const precioBase = datosAtraccion.precio || 0;
+        this.precio = precioBase * this.visitantes;
     }
 
-    /**
-     * 
-     */
-    obtenerReserva(){
-        return this.datosReserva;
+    async guardar() {
+        await this.calcularPrecio();
+
+        const reservaFinal = {
+            atraccion: this.atraccion,
+            visitantes: this.visitantes,
+            disponibilidad: this.disponibilidad,
+            email: this.email,
+            precio: this.precio
+        };
+
+        // Guardar en localStorage o en tu almacén
+        const reservas = JSON.parse(localStorage.getItem("reservas") || "[]");
+        reservas.push(reservaFinal);
+        localStorage.setItem("reservas", JSON.stringify(reservas));
+
+        return reservaFinal;
     }
 
-    /**
-     * Calcula el precio de la reserva segun sus caracteristicas
-     * @param {Object} reserva 
-     * @returns {Number} el precio
-     */
-    calcularPrecio(reserva){
-        let atraccion = this.filtroAtracciones.buscarAtraccionPorNombre(reserva.atraccion);
-        
-        if(atraccion != null && atraccion){
-            let precio = (atraccion.precio * reserva.disponibilidad.length) * reserva.visitantes;
-            return precio;
-        }
-        else return "No se pudo calcular";
+    obtenerReserva() {
+        return {
+            atraccion: this.atraccion,
+            visitantes: this.visitantes,
+            disponibilidad: this.disponibilidad,
+            email: this.email,
+            precio: this.precio
+        };
     }
 }

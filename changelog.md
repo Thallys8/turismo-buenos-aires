@@ -3,12 +3,40 @@
 Este archivo se actualiza con cada Pull Request para registrar avances y correcciones
 
 ### Added  
+- [feature/dev-libreria-externa-AOS] Integracion de la libreria AOS al sistema  
+PR: [#121](https://github.com/Thallys8/turismo-buenos-aires/pull/121) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas)
+- [feature/tester-qa-js-testing-suite] Se creó y agregó los archivos de las puebas Jamine y Lighthouse.  
+PR: [#126](https://github.com/Thallys8/turismo-buenos-aires/pull/126) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+- [feature/dev-async-fetch-api] Creó el /js/api/apiService.js  
+PR: [#125](https://github.com/Thallys8/turismo-buenos-aires/pull/125) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+
 
 ### Changed  
+- [feature/coordinador-devops-readme-documentacion] Actualizacion del readme.md  
+PR: [#123](https://github.com/Thallys8/turismo-buenos-aires/pull/123) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas).
+- [feature/tester-qa-js-testing-suite] Se actualizó el archivo testin-doc de las pruebas Jamine y tambien el archivo de Lighthouse para pruebas Mobile.  
+PR: [#131](https://github.com/Thallys8/turismo-buenos-aires/pull/131) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/dev-async-fetch-api] Se actualizó js/api/apiService.js agregando las funcionalidades fetch, se adaptó apiService.js para que funcione fetch y se cambió esteticamente el código de testing-runnet.md.  
+PR: [#132](https://github.com/Thallys8/turismo-buenos-aires/pull/132) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
 
 
 ### Fixed  
-
+- [feature/dev-async-fetch-api] Correción de los archivos Readme y changelog , adaptados a la entrega del parcial.  
+PR: [#133](https://github.com/Thallys8/turismo-buenos-aires/pull/133) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/dev-async-fetch-api] Corrección de los errores de consola.  
+PR: [#134](https://github.com/Thallys8/turismo-buenos-aires/pull/134) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/tester-qa-js-testing-suite] Completando las pruebas de las funciones que agregamos a de apiService.js y corrigiendo los errores de test de script.js.    
+PR: [#135](https://github.com/Thallys8/turismo-buenos-aires/pull/135) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
+- [feature/tester-qa-js-testing-suite] CRemoción de Window para que la página funcione corretamente.      
+PR: [#136](https://github.com/Thallys8/turismo-buenos-aires/pull/136) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).  
+- [feature/dev-async-fetch-api] Remoción de Window restantes, adecuación del código script.js  
+PR: [#137](https://github.com/Thallys8/turismo-buenos-aires/pull/137) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones y errores en consola al momento de finalizar la reserva.  
+PR: [#138](https://github.com/Thallys8/turismo-buenos-aires/pull/138) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
+- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones y errores en consola al momento de finalizar la reserva.  
+PR: [#139](https://github.com/Thallys8/turismo-buenos-aires/pull/139) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
+- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones.  
+PR: [#140](https://github.com/Thallys8/turismo-buenos-aires/pull/134) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
 
 ---  
 

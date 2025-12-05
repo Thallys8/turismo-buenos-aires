@@ -2,117 +2,119 @@ import StorageUtil from "../utils/storage.js";
 
 describe("StorageUtil", () => {
 
-    // ==========================
-    // Mock simple de Storage
-    // ==========================
-    function crearMockStorage() {
-        let store = {};
-        return {
-            getItem: jasmine.createSpy("getItem").and.callFake(key => store[key] || null),
-            setItem: jasmine.createSpy("setItem").and.callFake((key, value) => store[key] = value),
-            removeItem: jasmine.createSpy("removeItem").and.callFake(key => delete store[key]),
-            clear: jasmine.createSpy("clear").and.callFake(() => store = {}),
-            key: jasmine.createSpy("key").and.callFake(i => Object.keys(store)[i] || null),
-            get length() { return Object.keys(store).length; }
-        };
-    }
+  beforeEach(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
 
-    let localMock, sessionMock;
+  // =============================================================
+  // 1) Guarda y obtiene un objeto en localStorage
+  // =============================================================
+  it("guarda y obtiene un objeto en localStorage", () => {
+    const clave = "test-objeto";
+    const objeto = { a: 1, b: 2 };
 
-    beforeEach(() => {
-        localMock = crearMockStorage();
-        sessionMock = crearMockStorage();
+    // Firma real: guardar(clave, valor, tipo)
+    StorageUtil.guardar(clave, objeto, "local");
 
-        // reemplazar los storages reales con mocks
-        //window.localStorage = localMock;
-        //window.sessionStorage = sessionMock;
+    // Firma real: obtener(clave, tipo)
+    const resultado = StorageUtil.obtener(clave, "local");
 
-        spyOn(window.localStorage, "getItem").and.callFake(key => store[key] || null);
-        spyOn(window.localStorage, "setItem").and.callFake((key, value) => store[key] = value);
-        spyOn(window.localStorage, "removeItem").and.callFake(key => delete store[key]);
-        spyOn(window.localStorage, "clear").and.callFake(() => store = {});
-        spyOn(window.localStorage, "key").and.callFake(i => Object.keys(store)[i] || null);
-    });
+    expect(resultado).toEqual(objeto);
+  });
 
-    // =============================================================
-    // 1) Guarda y obtiene un objeto en localStorage
-    // =============================================================
-    it("guarda y obtiene un objeto en localStorage", () => {
-        const obj = { a: 1, b: 2 };
+  // =============================================================
+  // 2) Guarda y obtiene un string en sessionStorage
+  // =============================================================
+  it("guarda y obtiene un string en sessionStorage", () => {
+    const clave = "test-string";
+    const valor = "Hola mundo";
 
-        StorageUtil.guardar("objeto", obj, "local");
-        expect(localStorage.setItem).toHaveBeenCalled();
+    // Espiamos sessionStorage.setItem
+    spyOn(sessionStorage, "setItem").and.callThrough();
 
-        const resultado = StorageUtil.obtener("objeto", "local");
-        expect(resultado).toEqual(obj);
-    });
+    // guardar(clave, valor, tipo)
+    StorageUtil.guardar(clave, valor, "session");
 
-    // =============================================================
-    // 2) Guarda y obtiene un string en sessionStorage
-    // =============================================================
-    it("guarda y obtiene un string en sessionStorage", () => {
-        const texto = "hola mundo";
+    // Verificamos que sessionStorage.setItem haya sido llamado
+    expect(sessionStorage.setItem).toHaveBeenCalled();
 
-        StorageUtil.guardar("texto", texto, "session");
-        expect(sessionStorage.setItem).toHaveBeenCalled();
+    const resultado = StorageUtil.obtener(clave, "session");
+    expect(resultado).toBe(valor);
+  });
 
-        const resultado = StorageUtil.obtener("texto", "session");
-        expect(resultado).toEqual(texto);
-    });
+  // =============================================================
+  // 3) actualizar es equivalente a guardar
+  // =============================================================
+  it("actualizar es equivalente a guardar", () => {
+    const clave = "clave-actualizar";
+    const valor = { x: 1 };
 
-    // =============================================================
-    // 3) actualizar es equivalente a guardar
-    // =============================================================
-    it("actualizar es equivalente a guardar", () => {
-        StorageUtil.actualizar("clave", { x: 1 }, "local");
+    spyOn(localStorage, "setItem").and.callThrough();
 
-        expect(localStorage.setItem)
-            .toHaveBeenCalledWith("clave", JSON.stringify({ x: 1 }));
-    });
+    // Firma real: actualizar(clave, valor, tipo)
+    StorageUtil.actualizar(clave, valor, "local");
 
-    // =============================================================
-    // 4) eliminar borra la clave del storage
-    // =============================================================
-    it("eliminar borra la clave del storage", () => {
-        StorageUtil.guardar("borrar", { t: 1 }, "local");
+    expect(localStorage.setItem)
+      .toHaveBeenCalledWith(clave, JSON.stringify(valor));
+  });
 
-        StorageUtil.eliminar("borrar", "local");
-        expect(localStorage.removeItem).toHaveBeenCalledWith("borrar");
-    });
+  // =============================================================
+  // 4) eliminar borra la clave del storage
+  // =============================================================
+  it("eliminar borra la clave del storage", () => {
+    const clave = "test-eliminar";
 
-    // =============================================================
-    // 5) listar devuelve solo las claves con el prefijo indicado
-    // =============================================================
-    it("listar devuelve solo las claves con el prefijo indicado", () => {
-        StorageUtil.guardar("app:uno", 1, "local");
-        StorageUtil.guardar("app:dos", 2, "local");
-        StorageUtil.guardar("otro:tres", 3, "local");
+    localStorage.setItem(clave, "valor");
 
-        const lista = StorageUtil.listar("app:", "local");
-        expect(lista).toEqual(["app:uno", "app:dos"]);
-    });
+    // Firma real: eliminar(clave, tipo)
+    StorageUtil.eliminar(clave, "local");
 
-    // =============================================================
-    // 6) limpiar borra todas las claves del storage seleccionado
-    // =============================================================
-    it("limpiar borra todas las claves del storage seleccionado", () => {
-        StorageUtil.guardar("a", 1, "local");
-        StorageUtil.guardar("b", 2, "local");
+    expect(localStorage.getItem(clave)).toBeNull();
+  });
 
-        StorageUtil.limpiar("local");
-        expect(localStorage.clear).toHaveBeenCalled();
-        expect(localStorage.length).toBe(0);
-    });
+  // =============================================================
+  // 5) listar devuelve solo las claves con el prefijo indicado
+  // =============================================================
+  it("listar devuelve solo las claves con el prefijo indicado", () => {
+    localStorage.clear();
+    localStorage.setItem("prefijo-1", "a");
+    localStorage.setItem("prefijo-2", "b");
+    localStorage.setItem("otra-3", "c");
 
-    // =============================================================
-    // 7) obtener devuelve null si el JSON está corrupto
-    // =============================================================
-    it("obtener devuelve null si el JSON está corrupto", () => {
-        localStorage.setItem("corrupto", "{esto no es json");
+    // Firma real: listar(prefijo, tipo)
+    const resultado = StorageUtil.listar("prefijo-", "local");
 
-        const resultado = StorageUtil.obtener("corrupto", "local");
+    // Asumimos que devuelve un array de claves
+    expect(Array.isArray(resultado)).toBeTrue();
+    expect(resultado.length).toBe(2);
+    expect(resultado).toEqual(["prefijo-1", "prefijo-2"]);
+  });
 
-        expect(resultado).toBeNull();
-    });
+  // =============================================================
+  // 6) limpiar borra todas las claves del storage seleccionado
+  // =============================================================
+  it("limpiar borra todas las claves del storage seleccionado", () => {
+    localStorage.setItem("a", "1");
+    localStorage.setItem("b", "2");
+
+    // Firma real: limpiar(tipo)
+    StorageUtil.limpiar("local");
+
+    expect(localStorage.length).toBe(0);
+  });
+
+  // =============================================================
+  // 7) obtener devuelve null si el JSON está corrupto
+  // =============================================================
+  it("obtener devuelve null si el JSON está corrupto", () => {
+    const clave = "json-malo";
+
+    localStorage.setItem(clave, "{no es json válido");
+
+    const resultado = StorageUtil.obtener(clave, "local");
+
+    expect(resultado).toBeNull();
+  });
 
 });
