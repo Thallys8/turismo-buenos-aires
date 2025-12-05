@@ -13,7 +13,7 @@
       "imgSrc": "./assets/laboca.webp",
       "altFoto": "foto-elCaminito",
       "titulo": "El Caminito",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     },
@@ -30,7 +30,7 @@
       "imgSrc": "./assets/botanico.webp",
       "altFoto": "foto-jardinBotanico",
       "titulo": "Jardin Botanico",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     },
@@ -47,7 +47,7 @@
       "imgSrc": "./assets/bar.webp",
       "altFoto": "foto-baresClandestinos",
       "titulo": "Bares Clandestinos",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     },
@@ -64,7 +64,7 @@
       "imgSrc": "./assets/madero.webp",
       "altFoto": "foto-puertoMadero",
       "titulo": "Puerto Madero",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     },
@@ -81,7 +81,7 @@
       "imgSrc": "./assets/flotante.webp",
       "altFoto": "foto-casinoPuertoMadero",
       "titulo": "Casino Puerto Madero",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     },
@@ -98,7 +98,7 @@
       "imgSrc": "./assets/tango.webp", 
       "altFoto": "foto-palacioAlvear",
       "titulo": "Palacio Alvear",
-      "subtitulo": "Neque porro quisquam est qui dolorem",
+      "subtitulo": "Neque porro quisquam est qui",
       "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
       "precio": 5000
     }
