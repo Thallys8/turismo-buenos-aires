@@ -25,7 +25,6 @@ async function concretarReserva(event, formulario){
     event.preventDefault();
 
     const formData = new FormData(formulario);
-    const datos = Array.from(formData);
 
     const validador = new Validador();
     const emailError = document.getElementById("email-error");
@@ -34,25 +33,36 @@ async function concretarReserva(event, formulario){
         return;
     }
 
-    const reserva = new Reserva();
-    //Esperar a que calcule el precio usando fetch/apiService
-    await reserva.guardarReserva(datos);
-    
-    formulario.parentElement.remove();
+    try {
+        const reserva = new Reserva(
+            formData.get("atraccion"),
+            formData.get("visitantes"),
+            formData.get("disponibilidad"),
+            formData.get("email")
+        );
 
-    let datosReserva = reserva.obtenerReserva();
-    let nuevoPopUp = crearPopUpSimple(`
-        <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
-        <ul>
-            <li> Atraccion: ${datosReserva["atraccion"]} </li>
-            <li> Personas: ${datosReserva["visitantes"]} </li>
-            <li> Dias: ${datosReserva["disponibilidad"]} </li>
-            <li> Contacto: ${datosReserva["email"]} </li>
-        </ul>
-        <p> Pronto sera contactado en su correo, debera abonar $${datosReserva["precio"]} </p>
-    `);
-    document.body.appendChild(nuevoPopUp);
+        await reserva.guardar();
+
+        formulario.parentElement.remove();
+
+        const datosReserva = reserva.obtenerReserva();
+        const nuevoPopUp = crearPopUpSimple(`
+            <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
+            <ul>
+                <li> Atraccion: ${datosReserva.atraccion} </li>
+                <li> Personas: ${datosReserva.visitantes} </li>
+                <li> Dias: ${datosReserva.disponibilidad} </li>
+                <li> Contacto: ${datosReserva.email} </li>
+            </ul>
+            <p> Pronto sera contactado en su correo, debera abonar $${datosReserva.precio} </p>
+        `);
+        document.body.appendChild(nuevoPopUp);
+    } catch (error) {
+        console.error(error);
+        alert(error.message || "Ocurrió un problema al guardar la reserva.");
+    }
 }
+
 
 /**
  * Genera el menu HTML para que el usuario pueda generar una reserva en la atraccion especifica
