@@ -35,7 +35,7 @@ PR: [#137](https://github.com/Thallys8/turismo-buenos-aires/pull/137) @Thallys8 
 PR: [#138](https://github.com/Thallys8/turismo-buenos-aires/pull/138) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
 - [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones y errores en consola al momento de finalizar la reserva.  
 PR: [#139](https://github.com/Thallys8/turismo-buenos-aires/pull/139) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
-- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones.
+- [feature/dev-async-fetch-api] Correción de las targetas para mostrar los imagenes de las atracciones.  
 PR: [#140](https://github.com/Thallys8/turismo-buenos-aires/pull/134) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).    
 
 ---  
