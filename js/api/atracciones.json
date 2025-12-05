@@ -14,7 +14,7 @@
       "altFoto": "foto-elCaminito",
       "titulo": "El Caminito",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     },
     {
@@ -31,7 +31,7 @@
       "altFoto": "foto-jardinBotanico",
       "titulo": "Jardin Botanico",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     },
     {
@@ -48,7 +48,7 @@
       "altFoto": "foto-baresClandestinos",
       "titulo": "Bares Clandestinos",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     },
     {
@@ -65,7 +65,7 @@
       "altFoto": "foto-puertoMadero",
       "titulo": "Puerto Madero",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     },
     {
@@ -82,7 +82,7 @@
       "altFoto": "foto-casinoPuertoMadero",
       "titulo": "Casino Puerto Madero",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     },
     {
@@ -99,7 +99,7 @@
       "altFoto": "foto-palacioAlvear",
       "titulo": "Palacio Alvear",
       "subtitulo": "Neque porro quisquam est qui",
-      "descripcion": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+      "descripcion": "Lorem Ipsum is simply dummy text of.",
       "precio": 5000
     }
   ]
