@@ -110,6 +110,8 @@ nav .burger img{
 
     width: 90%;
 
+    max-height: 260px;
+    
     margin-bottom: 3em;
 
     overflow: hidden;
