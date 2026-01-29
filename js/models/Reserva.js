@@ -1,5 +1,6 @@
 // js/models/Reserva.js
 import { obtenerAtracciones } from "../api/apiService.js";
+import storage from "../utils/storage.js";
 
 export default class Reserva {
 
@@ -14,6 +15,7 @@ export default class Reserva {
     // Busca la atracción y calcula precio usando fetch
     async calcularPrecio() {
         const listaAtracciones = await obtenerAtracciones();
+
         const datosAtraccion = listaAtracciones.find(
             a => a.nombreAtraccion === this.atraccion
         );
@@ -22,7 +24,7 @@ export default class Reserva {
             throw new Error("No se encontró la atracción seleccionada");
         }
 
-        const precioBase = datosAtraccion.precio || 0;
+        const precioBase = datosAtraccion.precioAtraccion || 0;
         this.precio = precioBase * this.visitantes;
     }
 
@@ -37,10 +39,10 @@ export default class Reserva {
             precio: this.precio
         };
 
-        // Guardar en localStorage o en tu almacén
-        const reservas = JSON.parse(localStorage.getItem("reservas") || "[]");
+        // Guardar en storage
+        const reservas = storage.obtener("reservas").datos ?? [];
         reservas.push(reservaFinal);
-        localStorage.setItem("reservas", JSON.stringify(reservas));
+        storage.guardar("reservas", reservas);
 
         return reservaFinal;
     }
