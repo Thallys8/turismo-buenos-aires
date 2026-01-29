@@ -593,11 +593,11 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
         : `<p class="col-12 text-muted">Mapa no disponible</p>`;
 
     const imagenHTML = imgSrc
-        ? `<img loading="lazy" src="${imgSrc}" alt="${datosAtraccion.altFoto || titulo}" >`
+        ? `<img loading="lazy" src="${imgSrc}" alt="${datosAtraccion.altFoto || titulo}" class="col-12 col-md-6">`
         : "";
 
     elementoHTML.innerHTML = `
-        <div class="row h-md-100">
+        <div class="row pt-3 pb-3 h-md-100 col-12 col-md-6">
             <hgroup class="col-12">
                 <h3>${titulo}</h3>
                 <p>${subtitulo}</p>
@@ -608,11 +608,11 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
                 <summary>Horarios</summary>
                 <p>${horarioAbierto}</p>
             </details>
-            <label class="direccion-label col-12">Direccion</label> <br>
+            <label class="direccion-label col-12">Direccion</label>
             <p class="col-12">${direccion}</p>
             ${iframeHTML}
 
-            <button type="button" class="btn reservar-btn" value="${titulo}">Reservar</button>
+            <button type="button" class="btn reservar-btn mt-3" value="${titulo}">Reservar</button>
         </div>
 
         ${imagenHTML}
