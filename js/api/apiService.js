@@ -9,6 +9,10 @@ export function sanitizeString(value, fallback = "") {
   const trimmed = value.trim();
   return trimmed || fallback;
 }
+export function sanitizeNumber(value){
+  if(!Number.isFinite(value)) return 0;
+  return value;
+}
 
 /** Sanitiza un array de strings: fuerza a array, limpia cada valor y quita vacíos. */
 function sanitizeStringArray(value) {
@@ -39,6 +43,7 @@ function validarYAtraccion(raw, index) {
     raw.direccionAtraccion,
     "Ciudad de Buenos Aires"
   );
+  const precioAtraccion = sanitizeNumber(raw.precio);
 
   // Campos visuales que usa crearTarjetaHTML()
   const titulo = sanitizeString(raw.titulo || nombreAtraccion);
@@ -79,6 +84,7 @@ function validarYAtraccion(raw, index) {
     estiloAtraccion,
     gruposRecomendadosAtraccion,
     direccionAtraccion,
+    precioAtraccion,
 
     // Campos usados para la tarjeta HTML
     titulo,
