@@ -1,9 +1,6 @@
 import ConexionAlamacen from './models/ConexionAlmacen.js';
 import FiltroAtracciones from './models/FiltroAtracciones.js';
-import Itinerario from './models/Itinerario.js';
-import Reserva from './models/Reserva.js';
 import Semana from './models/Semana.js';
-import Validador from './models/Validador.js';
 import { obtenerAtracciones } from "./api/apiService.js";
 
 const conexionAlamacen = new ConexionAlamacen();
@@ -26,7 +23,9 @@ async function concretarReserva(event, formulario){
 
     const formData = new FormData(formulario);
 
+    const Validador = await import('./models/Validador.js');
     const validador = new Validador();
+
     const emailError = document.getElementById("email-error");
     if(!(validador.esEmail(formData.get("email")))){
         emailError.textContent = "El email ingresado no es valido";
@@ -34,6 +33,7 @@ async function concretarReserva(event, formulario){
     }
 
     try {
+        const Reserva = await import('./models/Reserva.js');
         const reserva = new Reserva(
             formData.get("atraccion"),
             formData.get("visitantes"),
@@ -226,9 +226,11 @@ if(btnDia != null && btnDia)
  * @param {Event} event 
  * @param {HTMLFormElement} formulario 
  */
-function concretarSubscripcionNews( event, formulario ){
+async function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
+    
+    const Validador = await import('./models/Validador.js');
     const validador = new Validador();
 
     const emailError = document.getElementById("email-error");
@@ -337,11 +339,13 @@ function popUpItinerarioCompleto(){
  * y si este esta completo, lo almacena
  * @param {HTMLFormElement} formulario 
  */
-function almacenarDiaItinerario(formulario) {
+async function almacenarDiaItinerario(formulario) {
     const formData = new FormData(formulario);
     const datosItinerario = { datos: []};
     
+    const Validador = await import('./models/Validador.js');
     const validador = new Validador();
+
     const emailError = document.getElementById("email-error");
     if(!(validador.esEmail(formData.get("email")))){
         emailError.textContent = "El email ingresado no es valido";
@@ -527,6 +531,7 @@ function generarMenuItinerario(opciones) {
  * y solicita crear la pantalla que continuara con la creacion
  */
 async function generarItinerario(){
+    const Itinerario = await import('./models/Itinerario.js');
     itinerario = new Itinerario();
     opcionesAtraccion = [];
 

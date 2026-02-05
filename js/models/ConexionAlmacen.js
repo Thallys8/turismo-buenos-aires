@@ -1,7 +1,3 @@
-// js/models/ConexionAlmacen.js
-
-import managerAlmacenamiento from "../utils/storage.js";
-import Semana from "./Semana.js";
 
 /**
  * Maneja las conexiones con el almacenamiento interno en storage.js
@@ -9,9 +5,19 @@ import Semana from "./Semana.js";
  * NO usa fetch: la carga de atracciones la hace apiService.js
  */
 export default class ConexionAlmacen {
+    managerAlmacenamiento;
     semana;
     keys;
 
+    async inicializar(){
+        this.managerAlmacenamiento = (await import("../utils/storage.js")).default;
+        const { default: Semana } = await import("./Semana.js");
+
+        this.semana = new Semana();
+
+        // Genera las claves iniciales en localStorage
+        this.generarClaves();
+    }
     constructor() {
         this.keys = {
             atracciones: "atracciones",  // la dejamos por compatibilidad, aunque hoy no se llena desde acá
@@ -19,12 +25,10 @@ export default class ConexionAlmacen {
             newsletter: "newsletter",
             reservas: "reservas"
         };
-
-        this.semana = new Semana();
-
-        // Genera las claves iniciales en localStorage
-        this.generarClaves();
+        
+        this.inicializar();
     }
+    
 
     /**
      * Genera las claves dentro del almacenamiento si no existen
@@ -33,7 +37,7 @@ export default class ConexionAlmacen {
         for (let llave of Object.keys(this.keys)) {
             const claveReal = this.keys[llave];
             if (!this.existeClave(claveReal)) {
-                managerAlmacenamiento.guardar(claveReal, { datos: [] }, "local");
+                this.managerAlmacenamiento.guardar(claveReal, { datos: [] }, "local");
             }
         }
     }
@@ -44,7 +48,7 @@ export default class ConexionAlmacen {
      * @returns {Boolean} Valor de verdad
      */
     existeClave(clave) {
-        const respuesta = managerAlmacenamiento.obtener(clave, "local");
+        const respuesta = this.managerAlmacenamiento.obtener(clave, "local");
         return (respuesta !== undefined && respuesta !== null);
     }
 
@@ -54,7 +58,7 @@ export default class ConexionAlmacen {
      * @returns {Array<object>} los datos de todas las atracciones
      */
     solicitarInformacionAtracciones() {
-        const respuesta = managerAlmacenamiento.obtener(this.keys.atracciones, "local");
+        const respuesta = this.managerAlmacenamiento.obtener(this.keys.atracciones, "local");
         if (respuesta && Array.isArray(respuesta.datos)) {
             return respuesta.datos;
         }
@@ -86,7 +90,7 @@ export default class ConexionAlmacen {
      * @param {any} valor 
      */
     agregarLocalArrayActualizable(clave, valor) {
-        const respuesta = managerAlmacenamiento.obtener(clave, "local");
+        const respuesta = this.managerAlmacenamiento.obtener(clave, "local");
 
         if (respuesta !== undefined && respuesta !== null) {
             const arrayDatos = respuesta.datos;
@@ -95,7 +99,7 @@ export default class ConexionAlmacen {
                 arrayDatos.push(valor);
                 respuesta.datos = arrayDatos;
 
-                managerAlmacenamiento.actualizar(clave, respuesta, "local");
+                this.managerAlmacenamiento.actualizar(clave, respuesta, "local");
             }
         }
     }
