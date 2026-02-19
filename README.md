@@ -3,10 +3,21 @@
 ## 🎓 Datos academicos
 - **Carrera:** Tecnicatura universitaria en programacion de sistema
 - **Materia:** 3ER BIM. /2025 - (1827) PROGRAMACION WEB I
+- **Profesor:** Velasquez Rojas, Matias Alejandro
 - **Grupo:** Grupo 3
 
-## 📣 Descripcion
-Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos
+## 📣 Introduccion
+Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos. Implementando funcionalidades de creacion de itinerarios, reservas online, filtrado de atracciones y subscripciones a una newsletter.
+
+## Stack tecnologico
+
+Actualmente el stack tecnológico es acotado, estando orientado a desarrollo frontend puro. Se emplea JavaScript nativo (ES6 Modules) para la lógica y manipulación del DOM, junto con HTML5 y CSS3 para la estructura y estilos. Tambien se utilizan las siguientes librerias:
+- **Bootstrap:** Libreria de diseño y estructuracion de contenido, para diseño responsive y sistema de grillas.
+- **AOS:** Libreria que provee animaciones para los elementos de la web, para animaciones basadas en scroll.
+
+## Anexos
+
+- [Mesa Nro. 630303 - Nro. de Matricula 153835 - Anexo - "Frameworks y Node JS"](./anexos-mesa-630303-matricula-153835/anexos.md)
 
 ## 🎯 Objetivo del entregable - Recuperatório Parcial 2
 En esta entrega se corregir todos los request change realizados por el profesor desde la entrega del Parcial 2.
