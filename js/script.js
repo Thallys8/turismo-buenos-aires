@@ -1,10 +1,7 @@
-
 import ConexionAlamacen from './models/ConexionAlmacen.js';
 import FiltroAtracciones from './models/FiltroAtracciones.js';
-import Itinerario from './models/Itinerario.js';
-import Reserva from './models/Reserva.js';
 import Semana from './models/Semana.js';
-import Validador from './models/Validador.js';
+import { obtenerAtracciones } from "./api/apiService.js";
 
 const conexionAlamacen = new ConexionAlamacen();
 const filtroAtracciones = new FiltroAtracciones();
@@ -13,44 +10,59 @@ const semana = new Semana();
 const formularioAvanzado = document.getElementById("formulario-selector-avanzado");
 const listaActividades = document.getElementById("lista-de-actividades");
 
+AOS.init();
+
 /**
  * esta funcion es llamada caundo se hace click en el boton de la tarjeta de atraccion.
  * Recibe la informacion de la reserva, la envia a almacenar y genera un popup avisando de su registro
  * @param {Event} event 
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
-function concretarReserva(event, formulario){
+async function concretarReserva(event, formulario){
     event.preventDefault();
 
     const formData = new FormData(formulario);
-    const datos = Array.from(formData);
 
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
+
     const emailError = document.getElementById("email-error");
     if(!(validador.esEmail(formData.get("email")))){
         emailError.textContent = "El email ingresado no es valido";
         return;
     }
 
+    try {
+        const Reserva = (await import('./models/Reserva.js')).default;
+        const reserva = new Reserva(
+            formData.get("atraccion"),
+            formData.get("visitantes"),
+            formData.get("disponibilidad"),
+            formData.get("email")
+        );
 
-    const reserva = new Reserva();
-    reserva.guardarReserva(datos);
-    
-    formulario.parentElement.remove();
+        await reserva.guardar();
 
-    let datosReserva = reserva.obtenerReserva();
-    let nuevoPopUp = crearPopUpSimple(`
-        <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
-        <ul>
-            <li> Atraccion: ${datosReserva["atraccion"]} </li>
-            <li> Personas: ${datosReserva["visitantes"]} </li>
-            <li> Dias: ${datosReserva["disponibilidad"]} </li>
-            <li> Contacto: ${datosReserva["email"]} </li>
-        </ul>
-        <p> Pronto sera contactado en su correo, debera abonar $${datosReserva["precio"]} </p>
-    `);
-    document.body.appendChild(nuevoPopUp);
+        formulario.parentElement.remove();
+
+        const datosReserva = reserva.obtenerReserva();
+        const nuevoPopUp = crearPopUpSimple(`
+            <p> Todo listo! Ya tiene su reservacion con las siguientes caracteristicas: </p>
+            <ul>
+                <li> Atraccion: ${datosReserva.atraccion} </li>
+                <li> Personas: ${datosReserva.visitantes} </li>
+                <li> Dias: ${datosReserva.disponibilidad} </li>
+                <li> Contacto: ${datosReserva.email} </li>
+            </ul>
+            <p> Pronto sera contactado en su correo, debera abonar $${datosReserva.precio} </p>
+        `);
+        document.body.appendChild(nuevoPopUp);
+    } catch (error) {
+        console.error(error);
+        alert(error.message || "Ocurrió un problema al guardar la reserva.");
+    }
 }
+
 
 /**
  * Genera el menu HTML para que el usuario pueda generar una reserva en la atraccion especifica
@@ -93,36 +105,55 @@ function generarMenuReserva(event){
 /**
  * Recibe los parametros de busqueda y solicita las atracciones que los cumplan.
  * Generando las tarjetas nuevas en la web 
- * @param {Number[]} parametros Los parametros de busqueda para contrastar con las opciones
+ * @param {Object} parametros Los parametros de busqueda para contrastar con las opciones
  */
-function handlerSubmitBusqueda(parametros, listaActividades){
+async function handlerSubmitBusqueda(parametros, listaActividades){
     let elementosHTML = [];
 
-    const valoresNulos = Array.from(parametros).filter( value =>{
-        if ( !(value != null && value) )
-            return value;
-    });
-    if(valoresNulos.length == 0)
-        elementosHTML = crearAtracciones(parametros, generarMenuReserva);
+    try {
+        // 1) Pedimos los datos al apiService (fetch)
+        // Usamos obtenerAtracciones para poder mockearla en los tests
+        const todasLasAtracciones = await obtenerAtracciones();
 
-    // destruye todos los elementos contenidos y agrega los nuevos
-    
-    if(listaActividades != null && listaActividades){
-        while (listaActividades.firstChild) {
-            listaActividades.removeChild(listaActividades.firstChild);
+        // 2) Filtramos usando la lógica de FiltroAtracciones
+        const listaDatos = filtroAtracciones.buscarAtracciones(
+            parametros.momento,
+            parametros.horario,
+            parametros.actividad,
+            parametros.grupo,
+            todasLasAtracciones     
+        );
+
+        // 3) Creamos las tarjetas a partir de los datos filtrados
+        elementosHTML = crearAtracciones(listaDatos, generarMenuReserva);
+
+        // 4) Limpiar y pintar en el DOM
+        if(listaActividades){
+            while (listaActividades.firstChild) {
+                listaActividades.removeChild(listaActividades.firstChild);
+            }
+
+            if(elementosHTML.length > 0 ){
+                elementosHTML.forEach(elemento => listaActividades.appendChild(elemento));
+            } else {
+                const cantAtracciones = todasLasAtracciones.length;
+                listaActividades.innerHTML = `
+                    <p class="text-center mb-5">
+                        De las ${cantAtracciones} atracciones almacenadas, ninguna cumple con el criterio buscado.
+                    </p>`;
+            }
+
+            listaActividades.scrollIntoView();
         }
 
-        if(elementosHTML.length > 0 ){
-        elementosHTML.forEach(elemento => {
-            listaActividades.appendChild(elemento);
-        });
+    } catch (error) {
+        console.error(error);
+        if (listaActividades) {
+            listaActividades.innerHTML = `
+                <p class="text-center mb-5 text-danger">
+                    ${error.message || "No pudimos cargar las atracciones. Probá nuevamente en unos minutos."}
+                </p>`;
         }
-        else{
-            let cantAtracciones = conexionAlamacen.solicitarInformacionAtracciones().length;
-            listaActividades.innerHTML = `<p class=\"text-center mb-5\"> De las ${cantAtracciones} atracciones almacenadas, ninguno cumple con el criterio buscado </p>`;
-        }
-
-        listaActividades.scrollIntoView();
     }
 }
 
@@ -135,29 +166,32 @@ function formularioSubmit(event){
 
     const formData = new FormData(formularioAvanzado);
 
+    // Momento: semana / finde
     const momento = [];
-    
-    if (formData.get("semana") === "1")  
-        momento.push(1);
-    if (formData.get("finde")  === "2")
-        momento.push(2);
+    if (formData.get("semana") === "1")  momento.push(1);
+    if (formData.get("finde")  === "2")  momento.push(2);
+    if (momento.length === 0) momento.push(1, 2); // si no elige, tomamos ambos
 
-    if(momento.length == 0) momento.push(1, 2);
+    // Horario, actividad y grupo: un único valor cada uno
+    const horarioValor    = formData.get("horario");         // "1" o "2"
+    const actividadValor  = formData.get("tipo-actividad");  // "1","2","3","4" o "[1,2,3,4]"
+    const grupoValor      = formData.get("tipo-grupo");      // "1","2","3","4" o "[1,2,3,4]"
 
-    const horario = [...formData.get("horario")];
-    const actividad = [...formData.get("tipo-actividad")];
-    const grupo = [...formData.get("tipo-grupo")];
+    const horario   = horarioValor   ? [horarioValor]   : [];
+    const actividad = actividadValor ? [actividadValor] : [];
+    const grupo     = grupoValor     ? [grupoValor]     : [];
 
-    const parametros = {momento: momento, horario: horario, actividad: actividad, grupo: grupo}
+    const parametros = { momento, horario, actividad, grupo };
     handlerSubmitBusqueda(parametros, listaActividades);
 }
+
 if (formularioAvanzado != null && formularioAvanzado) 
     formularioAvanzado.addEventListener('submit', formularioSubmit);
 
 // genera una lista con el numero de opciones [1...10]
 const maxTipos = 10;
 const opciones = [];
-for (var i = 0; i <= maxTipos; i++) {
+for (let i = 0; i <= maxTipos; i++) {
     opciones.push(i);
 }
 
@@ -166,7 +200,7 @@ for (var i = 0; i <= maxTipos; i++) {
  * Con un solo criterio
  */
 function onclickAtraccionesDia(){
-    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones}
+    const parametros = {momento: opciones, horario: [0], actividad: opciones, grupo: opciones};
     handlerSubmitBusqueda(parametros, listaActividades);
 }
 
@@ -175,7 +209,7 @@ function onclickAtraccionesDia(){
  * Con un solo criterio
  */
 function onclickAtraccionesNoche(){
-    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones}
+    const parametros = {momento: opciones, horario: [1], actividad: opciones, grupo: opciones};
     handlerSubmitBusqueda(parametros, listaActividades);
 }
 const btnNoche = document.getElementById("atracciones-noche-elegir");
@@ -190,11 +224,13 @@ if(btnDia != null && btnDia)
  * Recibe el formulario HTML con la informacion de la informacion, almacenandolo y
  * generando un aviso de subscripcion correcta
  * @param {Event} event 
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
-function concretarSubscripcionNews( event, formulario ){
+async function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
+    
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
 
     const emailError = document.getElementById("email-error");
@@ -220,9 +256,6 @@ function concretarSubscripcionNews( event, formulario ){
  * @param {Event} event evento de click
  */
 function subscripcionNewsletter(event){
-
-    // generar html para nuevo formulario de subscripcion
-    // este nuevo html se encarga de la validacion
     const nuevoElemento = crearPopUpFormulario(`
         <label for="nombre" class="form-label "> Ingrese su nombre completo </label>
         <input required type="text" name="nombre" id="nombre" class="form-control w-75">
@@ -247,7 +280,6 @@ function subscripcionNewsletter(event){
     `, (event) => { concretarSubscripcionNews(event, event.target); });
 
     document.body.appendChild(nuevoElemento);
-    // con los datos del formulario, generar subscripcion
 }
 const botonNewsletter = document.getElementById("btn-newsletter");
 if(botonNewsletter != null && botonNewsletter) 
@@ -305,22 +337,24 @@ function popUpItinerarioCompleto(){
 /**
  * Recibe los datos del formulario del itinerario durante el submit, cargandolo al itinerario
  * y si este esta completo, lo almacena
- * @param {Event} event 
- * @param {HTMLElement} formulario 
+ * @param {HTMLFormElement} formulario 
  */
-function almacenarDiaItinerario(formulario) {
+async function almacenarDiaItinerario(formulario) {
     const formData = new FormData(formulario);
     const datosItinerario = { datos: []};
     
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
+
     const emailError = document.getElementById("email-error");
     if(!(validador.esEmail(formData.get("email")))){
         emailError.textContent = "El email ingresado no es valido";
         return;
     }
 
-    const diasSeleccionados = Array.from(formulario.querySelectorAll('input[name="dias"]:checked'))
-        .map(cb => cb.value);
+    const diasSeleccionados = Array.from(
+        formulario.querySelectorAll('input[name="dias"]:checked')
+    ).map(cb => cb.value);
     
     diasSeleccionados.forEach(dia => {
         const diaFinal = {
@@ -328,7 +362,7 @@ function almacenarDiaItinerario(formulario) {
             mañana: formData.get(`${dia}-mañana`),
             tarde: formData.get(`${dia}-tarde`),
             noche: formData.get(`${dia}-noche`)
-        }
+        };
         datosItinerario.datos.push(diaFinal);
     });
     datosItinerario.email = formData.get("email");
@@ -347,7 +381,7 @@ function almacenarDiaItinerario(formulario) {
 /**
  * Actualiza las tabs segun el dia elegido
  * @param {HTMLElement} contenedor 
- * @param {HTMLElement[]} opciones 
+ * @param {String[]} opciones 
  */
 function actualizarTabs(contenedor, opciones) {
     const checkboxes = contenedor.querySelectorAll('input[name="dias"]:checked');
@@ -406,7 +440,7 @@ function actualizarTabs(contenedor, opciones) {
         </div>
     `).join('');
 
-    Object.keys(valoresElegidos).map(name => {
+    Object.keys(valoresElegidos).forEach(name => {
         const select = document.querySelector(`select[name="${name}"]`);
         if(select) {
             select.value = valoresElegidos[name];
@@ -438,7 +472,7 @@ function actualizarTabs(contenedor, opciones) {
 
 /**
  * Genera el HTML necesario para ingresar el itinerario y lo agrega al DOM
- * @param {HTMLElement[]} opciones Las opciones para el tag <Select> 
+ * @param {String[]} opciones Las opciones para el tag <Select> 
  */
 function generarMenuItinerario(opciones) {
     const diasSemana = semana.getSemana();
@@ -496,25 +530,28 @@ function generarMenuItinerario(opciones) {
  * Funcion de inicio para la generacion del itinerario, genera el setup inicial 
  * y solicita crear la pantalla que continuara con la creacion
  */
-function generarItinerario(){
+async function generarItinerario(){
+    const Itinerario = (await import('./models/Itinerario.js')).default;
     itinerario = new Itinerario();
     opcionesAtraccion = [];
 
-    const datosAtracciones = conexionAlamacen.solicitarInformacionAtracciones();
-    
-    let atracciones = [];
-    if(datosAtracciones != null && datosAtracciones) 
-        atracciones = datosAtracciones.map(atraccion => {return atraccion.titulo});
+    try {
+        const datosAtracciones = await obtenerAtracciones(); // apiService (mockeable en tests)
 
-    for(let i = 0; i < atracciones.length; i++){
-        opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
+        const atracciones = datosAtracciones.map(a => a.nombreAtraccion);
+
+        for (let i = 0; i < atracciones.length; i++) {
+            opcionesAtraccion.push(`<option value="${atracciones[i]}">${atracciones[i]}</option>`);
+        }
+        opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
+
+        generarMenuItinerario(opcionesAtraccion);
+    } catch (error) {
+        console.error(error);
+        alert(error.message || "No pudimos cargar las atracciones para el itinerario.");
     }
-    opcionesAtraccion.push(`<option value="ninguna" selected> Ninguna </option>`);
-
-    generarMenuItinerario(opcionesAtraccion);
-
-    // generar el itinerario y envialo por email (no de verdad) 
 }
+
 const botonItinerario = document.getElementById("btn-itinerario");
 if(botonItinerario != null && botonItinerario) 
     botonItinerario.addEventListener("click", generarItinerario);
@@ -522,65 +559,92 @@ if(botonItinerario != null && botonItinerario)
 /**
  * Crea y le da formato al HTML de la tarjeta utilizando los datos proporcionados
  * @param {*} datosAtraccion Los datos de la atraccion
- * @param {*} callback Callback para el boton de reserva
+ * @param {Function} callback Callback para el boton de reserva
+ * @param {String} fadeStyle estilo de animación AOS
  */
-function crearTarjetaHTML( datosAtraccion, callback ){
-    let elementoHTML = document.createElement("article");
+function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
+    const elementoHTML = document.createElement("article");
     elementoHTML.className = "tarjeta col-6 container";
+    elementoHTML.setAttribute("data-aos", fadeStyle);
+    elementoHTML.setAttribute("data-aos-delay", "400");
+
+    // Usamos campos reales del JSON + defaults
+    const titulo = datosAtraccion.titulo || datosAtraccion.nombreAtraccion || "Atracción";
+    const subtitulo = datosAtraccion.subtitulo || "";
+    const descripcion = datosAtraccion.descripcion || "";
+    const horarioAbierto = datosAtraccion.horarioAbierto || "No informado";
+    const direccion = datosAtraccion.direccionAtraccion || "Ciudad de Buenos Aires";
+
+    const mapaSrc = datosAtraccion.promptMaps && datosAtraccion.promptMaps.trim()
+        ? datosAtraccion.promptMaps
+        : null;
+
+    const imgSrc = datosAtraccion.imgSrc && datosAtraccion.imgSrc.trim()
+        ? datosAtraccion.imgSrc
+        : null;
+
+    const iframeHTML = mapaSrc
+        ? `
+        <iframe class="google-maps ratio ratio-16x9 col-12"
+            width="180"
+            height="150"
+            style="border:0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="${mapaSrc}">
+        </iframe>
+        `
+        : `<p class="col-12 text-muted">Mapa no disponible</p>`;
+
+    const imagenHTML = imgSrc
+        ? `<img loading="lazy" src="${imgSrc}" alt="${datosAtraccion.altFoto || titulo}" class="col-12 col-md-6">`
+        : "";
 
     elementoHTML.innerHTML = `
-        <div class="row h-md-100">
+        <div class="row pt-3 pb-3 h-md-100 col-12 col-md-6">
             <hgroup class="col-12">
-                <h3>${datosAtraccion.titulo}</h3>
-                <p>${datosAtraccion.subtitulo}</p>
+                <h3>${titulo}</h3>
+                <p>${subtitulo}</p>
             </hgroup>
-            <p class="col-12">${datosAtraccion.descripcion}</p>
+            <p class="col-12">${descripcion}</p>
 
             <details class="col-12">
                 <summary>Horarios</summary>
-                <p>${datosAtraccion.horarioAbierto || "No informado"}</p>
+                <p>${horarioAbierto}</p>
             </details>
-            <label class="direccion-label col-12">Direccion</label> <br>
-            <iframe class="google-maps ratio ratio-16x9 col-12" id="${datosAtraccion.idMapa}"
-                width="180"
-                height="150"
-                style="border:0"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="${datosAtraccion.promptMaps}">
-            </iframe>
+            <label class="direccion-label col-12">Direccion</label>
+            <p class="col-12">${direccion}</p>
+            ${iframeHTML}
 
-            <button type="button" class="btn reservar-btn" value="${datosAtraccion.titulo}">Reservar</button>
+            <button type="button" class="btn reservar-btn mt-3" value="${titulo}">Reservar</button>
         </div>
 
-        <img loading="lazy" src="${datosAtraccion.imgSrc}" alt="${datosAtraccion.altFoto}" >
+        ${imagenHTML}
     `;
 
-    const button = elementoHTML.querySelector('.reservar-btn');
-    button.addEventListener('click', (event) => {
+    const button = elementoHTML.querySelector(".reservar-btn");
+    button.addEventListener("click", (event) => {
         callback(event);
     });
 
     return elementoHTML;
 }
+
+
 /**
- * Crea las tarjetas de las atraciones utilizando la informacion almacenada
- * @param {object} criterios parametros de las atracciones deseadas
+ * Crea las tarjetas de las atracciones utilizando la informacion filtrada
+ * @param {Object[]} listaDatos lista de datos de atracciones (ya filtradas)
  * @param {Function} callbackReserva funcion a ejecutarse al hacer click en "Reservar"
  * @returns {HTMLElement[]} tarjetaHTML con los datos de atraccion recibidos
 */
-function crearAtracciones( criterios, callbackReserva )
-{
-    const nuevasTarjetas = [];
-    const listaDatos = filtroAtracciones.buscarAtracciones(
-        criterios.momento, criterios.horario, criterios.actividad, criterios.grupo
-    );
-    listaDatos.forEach( atraccion => {
-        nuevasTarjetas.push( crearTarjetaHTML(atraccion, callbackReserva) );
+function crearAtracciones( listaDatos, callbackReserva ){
+    let fadeStyle = "fade-right";
+    return listaDatos.map( atraccion => {
+        const tarjeta = crearTarjetaHTML(atraccion, callbackReserva, fadeStyle);
+        fadeStyle = (fadeStyle === "fade-right") ? "fade-left" : "fade-right";
+        return tarjeta;
     });
-
-    return nuevasTarjetas;
 }
 
 /**
@@ -589,7 +653,7 @@ function crearAtracciones( criterios, callbackReserva )
  * @param {Function} nuevoOnSubmit callback para usar durante el submit
  * @returns {HTMLElement} El popup creado 
  */
-function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
+function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit ){
     // contenedor que da el fondo semi-transparente
     const contenedor = document.createElement("div");
     contenedor.className = "panel-con-fondo container-fluid row overflow-scroll";
@@ -601,11 +665,11 @@ function crearPopUpFormulario( nuevoInnerHtml, nuevoOnSubmit){
 
     contenedor.appendChild(formulario);
 
-    const boton = document.createElement("button")
+    const boton = document.createElement("button");
     boton.addEventListener("click", () => { contenedor.remove(); });
     boton.innerText = "Cerrar";
 
-    const botonSubmit = document.createElement("button")
+    const botonSubmit = document.createElement("button");
     botonSubmit.type = "submit";
     botonSubmit.innerText = "Finalizar";
 
@@ -630,7 +694,7 @@ function crearPopUpSimple( nuevoInnerHtml ){
     const contenedor = document.createElement("div");
     contenedor.className = "panel-con-fondo-frente";
 
-    const boton = document.createElement("button")
+    const boton = document.createElement("button");
     boton.addEventListener("click", () => { contenedor.parentElement.remove(); });
     boton.innerText = "Cerrar";
 
@@ -639,39 +703,4 @@ function crearPopUpSimple( nuevoInnerHtml ){
 
     fondo.appendChild(contenedor);
     return fondo;
-}
-
-if (typeof window !== 'undefined') {
-    // Funciones principales
-    window.handlerSubmitBusqueda = handlerSubmitBusqueda;
-    window.formularioSubmit = formularioSubmit;
-    window.onclickAtraccionesDia = onclickAtraccionesDia;
-    window.onclickAtraccionesNoche = onclickAtraccionesNoche;
-    
-    // Funciones de reserva
-    window.concretarReserva = concretarReserva;
-    window.generarMenuReserva = generarMenuReserva;
-    
-    // Funciones de newsletter
-    window.concretarSubscripcionNews = concretarSubscripcionNews;
-    window.subscripcionNewsletter = subscripcionNewsletter;
-    
-    // Funciones de itinerario
-    window.almacenarDiaItinerario = almacenarDiaItinerario;
-    window.generarMenuItinerario = generarMenuItinerario;
-    window.generarItinerario = generarItinerario;
-    window.popUpItinerarioCompleto = popUpItinerarioCompleto;
-    
-    // Funciones helper de creación HTML
-    window.crearAtracciones = crearAtracciones;
-    window.crearTarjetaHTML = crearTarjetaHTML;
-    window.crearPopUpFormulario = crearPopUpFormulario;
-    window.crearPopUpSimple = crearPopUpSimple;
-    
-    // Instancias globales
-    window.formularioAvanzado = formularioAvanzado;
-    window.listaActividades = listaActividades;
-    window.conexionAlamacen = conexionAlamacen;
-    window.filtroAtracciones = filtroAtracciones;
-    window.semana = semana;
 }
