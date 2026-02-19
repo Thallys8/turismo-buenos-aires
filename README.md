@@ -8,6 +8,9 @@
 ## 📣 Descripcion
 Este proyecto se trata de una pagina web interactiva dedicada a la promocion turistica de la ciudad de Buenos Aires, que promovera las actividades turisticas tanto diurnas como nocturnas y facilitara la participacion de los visitantes en estos eventos
 
+## 🎯 Objetivo del entregable - Recuperatório Parcial 2
+En esta entrega se corregir todos los request change realizados por el profesor desde la entrega del Parcial 2.
+
 ## 🎯 Objetivo del entregable - Parcial 2
 En esta entrega se integraran nuevas librerrias externas para ampliar la funcionalidad del sistema y se consumiran datos desde APIs a traves de fetch y promises, resultando en un codigo con funcionalidad expandida y con un testeo comprensivo.
 
