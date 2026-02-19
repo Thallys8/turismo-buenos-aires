@@ -23,7 +23,7 @@ async function concretarReserva(event, formulario){
 
     const formData = new FormData(formulario);
 
-    const Validador = await import('./models/Validador.js');
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
 
     const emailError = document.getElementById("email-error");
@@ -33,7 +33,7 @@ async function concretarReserva(event, formulario){
     }
 
     try {
-        const Reserva = await import('./models/Reserva.js');
+        const Reserva = (await import('./models/Reserva.js')).default;
         const reserva = new Reserva(
             formData.get("atraccion"),
             formData.get("visitantes"),
@@ -230,7 +230,7 @@ async function concretarSubscripcionNews( event, formulario ){
     event.preventDefault();
     const datosFormulario = new FormData(formulario);
     
-    const Validador = await import('./models/Validador.js');
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
 
     const emailError = document.getElementById("email-error");
@@ -343,7 +343,7 @@ async function almacenarDiaItinerario(formulario) {
     const formData = new FormData(formulario);
     const datosItinerario = { datos: []};
     
-    const Validador = await import('./models/Validador.js');
+    const Validador = (await import('./models/Validador.js')).default;
     const validador = new Validador();
 
     const emailError = document.getElementById("email-error");
@@ -531,7 +531,7 @@ function generarMenuItinerario(opciones) {
  * y solicita crear la pantalla que continuara con la creacion
  */
 async function generarItinerario(){
-    const Itinerario = await import('./models/Itinerario.js');
+    const Itinerario = (await import('./models/Itinerario.js')).default;
     itinerario = new Itinerario();
     opcionesAtraccion = [];
 
