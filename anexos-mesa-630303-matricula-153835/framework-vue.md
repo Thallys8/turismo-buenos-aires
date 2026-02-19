@@ -14,6 +14,7 @@ Seria moderadamente complejo, ya que ayuda que el sistema ya este mayormente div
 
 ## Ejemplo de codigo - "Antes y despues":
 
+[script.js - linea 528](../js/script.js)
 ```javascript
 
 function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
