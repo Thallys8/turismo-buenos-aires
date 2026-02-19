@@ -27,6 +27,7 @@ La implementacion se haria de la siguiente forma:
 
 ## Ejemplo de codigo - "Antes y despues":
 
+### Antes
 [script.js - linea 528](../js/script.js)
 ```javascript
 
@@ -101,6 +102,8 @@ function crearTarjetaHTML(datosAtraccion, callback, fadeStyle) {
 
 ```
 
+
+### Despues
 ```
 
 ---
