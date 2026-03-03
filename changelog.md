@@ -9,6 +9,8 @@ PR: [#121](https://github.com/Thallys8/turismo-buenos-aires/pull/121) @Tomig02 (
 PR: [#126](https://github.com/Thallys8/turismo-buenos-aires/pull/126) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
 - [feature/dev-async-fetch-api] Creó el /js/api/apiService.js  
 PR: [#125](https://github.com/Thallys8/turismo-buenos-aires/pull/125) @Thallys8 (Desarrollador JS Asíncrono + Tester QA/JS ).
+- [feature/anexo-frameworks-node-js-matricula-153835] Documento posibles frameworks a integrar en el proyecto  
+PR: [#143](https://github.com/Thallys8/turismo-buenos-aires/pull/143) @Tomig02 (Coordinador/DevOps + Desarrollador JS librerias externas)
 
 
 ### Changed  
